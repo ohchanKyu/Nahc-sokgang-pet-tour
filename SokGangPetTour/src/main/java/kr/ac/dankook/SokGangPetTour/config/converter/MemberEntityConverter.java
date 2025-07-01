@@ -1,6 +1,6 @@
 package kr.ac.dankook.SokGangPetTour.config.converter;
 
-import kr.ac.dankook.SokGangPetTour.dto.response.MemberResponse;
+import kr.ac.dankook.SokGangPetTour.dto.response.authResponse.MemberResponse;
 import kr.ac.dankook.SokGangPetTour.entity.Member;
 import kr.ac.dankook.SokGangPetTour.exception.ApiErrorCode;
 import kr.ac.dankook.SokGangPetTour.exception.ApiException;

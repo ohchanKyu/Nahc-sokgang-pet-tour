@@ -2,7 +2,7 @@ package kr.ac.dankook.SokGangPetTour.service;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
-import kr.ac.dankook.SokGangPetTour.dto.response.MailResponse;
+import kr.ac.dankook.SokGangPetTour.dto.response.authResponse.MailResponse;
 import kr.ac.dankook.SokGangPetTour.entity.Member;
 import kr.ac.dankook.SokGangPetTour.exception.ApiErrorCode;
 import kr.ac.dankook.SokGangPetTour.exception.ApiException;

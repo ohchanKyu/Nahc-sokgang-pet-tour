@@ -3,7 +3,7 @@ package kr.ac.dankook.SokGangPetTour.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import kr.ac.dankook.SokGangPetTour.config.principal.PrincipalDetails;
-import kr.ac.dankook.SokGangPetTour.dto.response.TokenResponse;
+import kr.ac.dankook.SokGangPetTour.dto.response.authResponse.TokenResponse;
 import kr.ac.dankook.SokGangPetTour.entity.Member;
 import kr.ac.dankook.SokGangPetTour.repository.MemberRepository;
 import kr.ac.dankook.SokGangPetTour.util.EncryptionUtil;
@@ -24,22 +24,18 @@ public class JwtTokenProvider {
 
     @Value("${jwt.secret}")
     private String secretKey;
-    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30분
-    public static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 30; // 30일
+    private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // 30 minutes
+    public static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 30; // 30 day
     private final MemberRepository memberRepository;
 
     public TokenResponse generateToken(Authentication authentication) {
 
-        // PrincipalDetails 객체 캐스팅
-        // 로그인 완료 시 토큰 생성
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         log.info("Login User Id : {}",principalDetails.getMember().getUserId());
 
         long now = (new Date()).getTime();
 
         String accessToken = JWT.create()
-                // principalDetails.getUsername() UserId ex) kyu1234
-                // UserId를 통해 서명을 다시 한 후 유효성 Entity 검사까지 진행
                 .withSubject(principalDetails.getUsername())
                 .withExpiresAt(new Date(now + ACCESS_TOKEN_EXPIRE_TIME))
                 .withClaim("key", EncryptionUtil.encrypt(principalDetails.getMember().getId()))
@@ -47,7 +43,6 @@ public class JwtTokenProvider {
                 .withClaim("name",principalDetails.getMember().getName())
                 .sign(Algorithm.HMAC512(secretKey));
 
-        // Refresh Token 생성
         String refreshToken = JWT.create()
                 .withSubject(principalDetails.getUsername())
                 .withExpiresAt(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
@@ -63,7 +58,6 @@ public class JwtTokenProvider {
         Optional<Member> memberEntity = memberRepository.findByUserId(userId);
         if (memberEntity.isPresent()) {
             PrincipalDetails principalDetails = new PrincipalDetails(memberEntity.get());
-            // Member Entity 권한이 주이므로 Session 객체의 목적은 Member 권한
             return new UsernamePasswordAuthenticationToken(
                     principalDetails, jwtToken, principalDetails.getAuthorities());
         }

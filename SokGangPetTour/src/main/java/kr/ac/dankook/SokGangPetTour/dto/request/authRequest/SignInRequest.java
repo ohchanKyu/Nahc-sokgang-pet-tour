@@ -1,4 +1,4 @@
-package kr.ac.dankook.SokGangPetTour.dto.request;
+package kr.ac.dankook.SokGangPetTour.dto.request.authRequest;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;

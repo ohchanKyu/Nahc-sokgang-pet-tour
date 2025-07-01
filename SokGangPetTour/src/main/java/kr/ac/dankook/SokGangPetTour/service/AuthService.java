@@ -2,10 +2,10 @@ package kr.ac.dankook.SokGangPetTour.service;
 
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import kr.ac.dankook.SokGangPetTour.config.principal.PrincipalDetails;
-import kr.ac.dankook.SokGangPetTour.dto.request.SignInRequest;
-import kr.ac.dankook.SokGangPetTour.dto.request.SignupRequest;
-import kr.ac.dankook.SokGangPetTour.dto.request.TokenRequest;
-import kr.ac.dankook.SokGangPetTour.dto.response.TokenResponse;
+import kr.ac.dankook.SokGangPetTour.dto.request.authRequest.SignInRequest;
+import kr.ac.dankook.SokGangPetTour.dto.request.authRequest.SignupRequest;
+import kr.ac.dankook.SokGangPetTour.dto.request.authRequest.TokenRequest;
+import kr.ac.dankook.SokGangPetTour.dto.response.authResponse.TokenResponse;
 import kr.ac.dankook.SokGangPetTour.entity.Member;
 import kr.ac.dankook.SokGangPetTour.exception.ApiErrorCode;
 import kr.ac.dankook.SokGangPetTour.exception.ApiException;
@@ -21,7 +21,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.io.IOException;
 import java.util.Optional;
 
 @Service
@@ -42,7 +41,7 @@ public class AuthService {
     }
 
     @Transactional
-    public TokenResponse signupProcess(SignupRequest signupRequest) throws IOException {
+    public TokenResponse signupProcess(SignupRequest signupRequest){
 
         if (isExistUserIdProcess(signupRequest.getUserId())){
             throw new ApiException(ApiErrorCode.DUPLICATE_ID);
@@ -86,17 +85,17 @@ public class AuthService {
             authentication = jwtTokenProvider.validateToken(targetRefreshToken);
             log.info("Verification RefreshToken - {}",targetRefreshToken);
         } catch (JWTVerificationException e){
-            log.info("Not Valid Refresh Token -{}",targetRefreshToken);
+            log.error("Not Valid Refresh Token -{}",targetRefreshToken);
             throw new ApiException(ApiErrorCode.REFRESH_TOKEN_EXPIRED);
         }
         String targetUserId = jwtTokenProvider.getUserIdFromToken(tokenRequest.getRefreshToken());
         Optional<String> redisRefreshToken = jwtRedisHandler.findByUserId(targetUserId);
         if (redisRefreshToken.isEmpty()){
-            log.info("Not Exists Refresh Token In Redis DB -{} -{}",targetUserId,targetRefreshToken);
+            log.error("Not Exists Refresh Token In Redis DB -{} -{}",targetUserId,targetRefreshToken);
             throw new ApiException(ApiErrorCode.REFRESH_TOKEN_NOT_EXIST);
         }else{
             if (!targetRefreshToken.equals(redisRefreshToken.get())){
-                log.info("Not Equals Refresh Token In Redis DB -{} -{}",targetUserId,targetRefreshToken);
+                log.error("Not Equals Refresh Token In Redis DB -{} -{}",targetUserId,targetRefreshToken);
                 throw new ApiException(ApiErrorCode.REFRESH_TOKEN_NOT_EQUAL);
             }
         }

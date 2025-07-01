@@ -1,11 +1,11 @@
 package kr.ac.dankook.SokGangPetTour.controller;
 
 import jakarta.validation.Valid;
-import kr.ac.dankook.SokGangPetTour.dto.request.*;
+import kr.ac.dankook.SokGangPetTour.dto.request.authRequest.*;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiResponse;
-import kr.ac.dankook.SokGangPetTour.dto.response.AuthMailResponse;
-import kr.ac.dankook.SokGangPetTour.dto.response.MailResponse;
-import kr.ac.dankook.SokGangPetTour.dto.response.TokenResponse;
+import kr.ac.dankook.SokGangPetTour.dto.response.authResponse.AuthMailResponse;
+import kr.ac.dankook.SokGangPetTour.dto.response.authResponse.MailResponse;
+import kr.ac.dankook.SokGangPetTour.dto.response.authResponse.TokenResponse;
 import kr.ac.dankook.SokGangPetTour.entity.Member;
 import kr.ac.dankook.SokGangPetTour.exception.ApiErrorCode;
 import kr.ac.dankook.SokGangPetTour.exception.ValidationException;

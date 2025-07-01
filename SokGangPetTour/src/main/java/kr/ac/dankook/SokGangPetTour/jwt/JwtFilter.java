@@ -32,10 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain) throws ServletException, IOException {
 
         String requestURI = request.getRequestURI();
-        if (requestURI.startsWith("/auth/identity/") ||
-                requestURI.startsWith("/admin/auth/") ||
-                requestURI.startsWith("/actuator/health") ||
-                requestURI.startsWith("/eureka/")) {
+        if (requestURI.startsWith("/auth/identity/")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -49,6 +46,7 @@ public class JwtFilter extends OncePerRequestFilter {
             Authentication authentication = jwtTokenProvider.validateToken(authToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }catch (JWTVerificationException e) {
+            log.error("Jwt Verification Exception - {}",e.getMessage());
             request.setAttribute("exception", e);
         }
         filterChain.doFilter(request,response);

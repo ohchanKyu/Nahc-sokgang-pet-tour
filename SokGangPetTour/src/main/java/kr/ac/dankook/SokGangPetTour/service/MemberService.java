@@ -1,7 +1,7 @@
 package kr.ac.dankook.SokGangPetTour.service;
 
 import kr.ac.dankook.SokGangPetTour.config.converter.MemberEntityConverter;
-import kr.ac.dankook.SokGangPetTour.dto.request.FindIdRequest;
+import kr.ac.dankook.SokGangPetTour.dto.request.authRequest.FindIdRequest;
 import kr.ac.dankook.SokGangPetTour.entity.*;
 import kr.ac.dankook.SokGangPetTour.repository.*;
 import lombok.RequiredArgsConstructor;

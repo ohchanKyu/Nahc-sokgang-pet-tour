@@ -31,9 +31,9 @@ public class MailService {
     private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
     private final RedisTemplate<String,String> redisTemplate;
-    private static final long AUTH_MAIL_TOKEN_EXPIRE_TIME = 1000 * 60 * 15; // 15분
+    private static final long AUTH_MAIL_TOKEN_EXPIRE_TIME = 1000 * 60 * 15; // 15 Minutes
 
-    public MailResponse createVerifyCodeMailResponse(Member member) throws IOException {
+    public MailResponse createVerifyCodeMailResponse(Member member){
 
         String verificationCode = generateVerificationCode();
 

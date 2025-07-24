@@ -9,5 +9,5 @@ public class ApiResponse<T> {
 
     private final boolean success = true;
     private final int statusCode;
-    private final T Data;
+    private final T data;
 }

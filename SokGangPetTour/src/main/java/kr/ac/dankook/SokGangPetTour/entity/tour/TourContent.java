@@ -9,7 +9,6 @@ import java.util.List;
 @Entity
 @Table(name = "tour_content")
 @Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -22,7 +21,7 @@ public class TourContent {
     // 상세주소
     private String detailAddress;
     // 우편번호
-    private int postCode;
+    private String postCode;
     // 지역코드
     private int areaCode;
     // 시군구 코드
@@ -46,6 +45,7 @@ public class TourContent {
     // 장소 이름
     private String title;
     // 개요
+    @Setter
     @Column(columnDefinition = "TEXT")
     private String overview;
     
@@ -64,4 +64,5 @@ public class TourContent {
     // 반려동물 동반 정보
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<TourDetailPet> detailPet;
+
 }

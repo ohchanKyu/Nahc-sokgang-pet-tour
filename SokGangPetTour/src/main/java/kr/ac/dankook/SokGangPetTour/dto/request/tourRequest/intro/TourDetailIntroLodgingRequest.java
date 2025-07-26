@@ -1,20 +1,15 @@
-package kr.ac.dankook.SokGangPetTour.entity.tour.tourIntro;
+package kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.intro;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import kr.ac.dankook.SokGangPetTour.entity.tour.TourDetailIntro;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
-@Table(name = "tour_detail_intro_lodging") // 숙박
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@SuperBuilder
-public class TourDetailIntroLodging extends TourDetailIntro {
+@Getter
+@Setter
+public class TourDetailIntroLodgingRequest {
 
+    private String contentTypeId;
     private String accomCountLodging;  // 수용 가능인원
     private String benikia;            // 베니키아 여부
     private String checkInTime;        // 입실 시간
@@ -23,15 +18,12 @@ public class TourDetailIntroLodging extends TourDetailIntro {
     private String foodPlace;          // 식음료장
     private String goodStay;           // 굿스테이 여부
     private String hanok;              // 한옥 여부
-    @Column(length = 2000)
     private String infoCenterLodging;  // 문의 및 안내
     private String parkingLodging;     // 주차시설
     private String pickup;             // 픽업 서비스
     private String roomCount;          // 객실수
-    @Column(length = 2000)
     private String reservationLodging; // 예약안내
     private String reservationUrl;     // 예약안내 홈페이지
-    @Column(length = 2000)
     private String roomType;           // 객실유형
     private String scaleLodging;       // 규모
     private String subFacility;        // 부대시설 (기타)
@@ -47,6 +39,5 @@ public class TourDetailIntroLodging extends TourDetailIntro {
     private String sauna;              // 사우나실 여부
     private String seminar;            // 세미나실 여부
     private String sports;             // 스포츠 시설 여부
-    @Column(length = 2000)
     private String refundRegulation;   // 환불규정
 }

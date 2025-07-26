@@ -44,7 +44,7 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                                .requestMatchers("/auth/identity/**","api/tour/**").permitAll()
+                                .requestMatchers("/auth/identity/**","/api/tour/**").permitAll()
                                 .requestMatchers("/auth/api/user/**").hasAnyRole("USER","ADMIN")
                                 .anyRequest().authenticated()
                 )

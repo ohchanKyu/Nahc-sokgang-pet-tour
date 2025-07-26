@@ -8,8 +8,7 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "tour_detail_repeat")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @SuperBuilder
 public class TourDetailRepeat {
@@ -23,4 +22,5 @@ public class TourDetailRepeat {
     private TourContent content;
     // 콘텐츠 타입 ID
     private String contentTypeId;
+
 }

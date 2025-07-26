@@ -1,23 +1,18 @@
-package kr.ac.dankook.SokGangPetTour.entity.tour.tourIntro;
+package kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.intro;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import kr.ac.dankook.SokGangPetTour.entity.tour.TourDetailIntro;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
-@Table(name = "tour_detail_intro_culture") // 문화시설
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@SuperBuilder
-public class TourDetailIntroCulture extends TourDetailIntro {
+@Getter
+@Setter
+public class TourDetailIntroCultureRequest {
 
+    private String contentTypeId;
     private String accomCountCulture;       // 수용인원
     private String chkCreditCardCulture;    // 신용카드 가능 여부
-    @Column(length = 2000)
+    private String discountInfo;            // 할인정보
     private String infoCenterCulture;       // 문의 및 안내
     private String parkingCulture;          // 주차시설
     private String parkingFee;              // 주차요금

@@ -1,29 +1,22 @@
-package kr.ac.dankook.SokGangPetTour.entity.tour.tourIntro;
+package kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.intro;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import kr.ac.dankook.SokGangPetTour.entity.tour.TourDetailIntro;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
-@Table(name = "tour_detail_intro_tourist") // 관광지
-@Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@SuperBuilder
-public class TourDetailIntroTourist extends TourDetailIntro {
+@Getter
+@Setter
+public class TourDetailIntroTouristRequest {
 
+    private String contentTypeId;
     private String accomCount;       // 수용인원
     private String chkCreditCard;    // 신용카드 가능 여부
     private String expAgeRange;      // 체험가능 연령
-    @Column(length = 2000)
     private String expGuide;         // 체험안내
     private String heritage1;        // 세계 문화유산 유무
     private String heritage2;        // 세계 자연유산 유무
     private String heritage3;        // 세계 기록유산 유무
-    @Column(length = 2000)
     private String infoCenter;       // 문의 및 안내
     private String openDate;         // 개장일
     private String parking;          // 주차시설

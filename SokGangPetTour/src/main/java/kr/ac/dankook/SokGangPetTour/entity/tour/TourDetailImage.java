@@ -6,10 +6,8 @@ import lombok.*;
 @Entity
 @Table(name = "tour_detail_image")
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@Builder
 public class TourDetailImage {
 
     @Id
@@ -26,4 +24,13 @@ public class TourDetailImage {
     private String smallImgUrl;
     // 이미지 이름
     private String imgName;
+
+    @Builder
+    public TourDetailImage(TourContent tourContent, String originImgUrl,
+                           String smallImgUrl,String imgName){
+        this.content = tourContent;
+        this.originImgUrl = originImgUrl;
+        this.smallImgUrl =  smallImgUrl;
+        this.imgName = imgName;
+    }
 }

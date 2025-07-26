@@ -1,6 +1,6 @@
 package kr.ac.dankook.SokGangPetTour.controller;
 
-import kr.ac.dankook.SokGangPetTour.config.converter.MemberEntityConverter;
+import kr.ac.dankook.SokGangPetTour.util.converter.MemberEntityConverter;
 import kr.ac.dankook.SokGangPetTour.config.principal.PrincipalDetails;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiMessageResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiResponse;

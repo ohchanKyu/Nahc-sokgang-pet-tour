@@ -1,7 +1,7 @@
 package kr.ac.dankook.SokGangPetTour.config;
 
-import kr.ac.dankook.SokGangPetTour.config.converter.DateToLocalDateTimeKstConverter;
-import kr.ac.dankook.SokGangPetTour.config.converter.LocalDateTimeToDateKstConverter;
+import kr.ac.dankook.SokGangPetTour.util.converter.DateToLocalDateTimeKstConverter;
+import kr.ac.dankook.SokGangPetTour.util.converter.LocalDateTimeToDateKstConverter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.config.BeanPostProcessor;

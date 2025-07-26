@@ -1,20 +1,15 @@
-package kr.ac.dankook.SokGangPetTour.entity.tour.tourIntro;
+package kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.intro;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import kr.ac.dankook.SokGangPetTour.entity.tour.TourDetailIntro;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
-@Entity
-@Table(name = "tour_detail_intro_festival") // 행사/공연/축제
+@AllArgsConstructor
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@SuperBuilder
-public class TourDetailIntroFestival extends TourDetailIntro {
+public class TourDetailIntroFestivalRequest {
 
+    private String contentTypeId;
     private String ageLimit;           // 관람 가능연령
     private String bookingPlace;       // 예매처
     private String discountInfoFestival; // 할인정보

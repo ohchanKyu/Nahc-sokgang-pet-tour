@@ -8,8 +8,7 @@ import lombok.experimental.SuperBuilder;
 @Table(name = "tour_detail_intro")
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @SuperBuilder
 public class TourDetailIntro {

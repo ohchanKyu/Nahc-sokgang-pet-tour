@@ -1,4 +1,4 @@
-package kr.ac.dankook.SokGangPetTour.config.converter;
+package kr.ac.dankook.SokGangPetTour.util.converter;
 
 import kr.ac.dankook.SokGangPetTour.dto.response.authResponse.MemberResponse;
 import kr.ac.dankook.SokGangPetTour.entity.Member;

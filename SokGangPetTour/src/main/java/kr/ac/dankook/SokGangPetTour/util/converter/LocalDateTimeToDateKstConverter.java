@@ -1,4 +1,4 @@
-package kr.ac.dankook.SokGangPetTour.config.converter;
+package kr.ac.dankook.SokGangPetTour.util.converter;
 
 import lombok.NonNull;
 import org.springframework.core.convert.converter.Converter;

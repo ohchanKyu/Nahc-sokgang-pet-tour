@@ -9,8 +9,7 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Table(name = "tour_detail_repeat_room")
 @Getter
-@Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @SuperBuilder
 public class TourDetailRepeatRoom extends TourDetailRepeat{

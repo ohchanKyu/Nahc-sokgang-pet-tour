@@ -12,6 +12,7 @@ import java.util.List;
 @Builder
 public class VetPlaceResponse {
 
+    private String id;
     private String placeName;
     private String address;
     private String phoneNumber;

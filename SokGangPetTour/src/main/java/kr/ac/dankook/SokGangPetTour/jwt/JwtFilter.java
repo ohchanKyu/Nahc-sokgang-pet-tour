@@ -5,7 +5,6 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.ac.dankook.SokGangPetTour.exception.TokenErrorCode;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,8 +38,8 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         String authToken = resolveToken(request);
         if (!StringUtils.hasText(authToken)) {
-            jwtErrorResponseHandler.sendErrorResponseProcess(response,
-                    TokenErrorCode.UNAUTHORIZED_ACCESS_TOKEN_REQUIRED);
+//            jwtErrorResponseHandler.sendErrorResponseProcess(response,
+//                    TokenErrorCode.UNAUTHORIZED_ACCESS_TOKEN_REQUIRED);
             return;
         }
         try{

@@ -23,8 +23,8 @@ public class SecurityConfig {
 
     private final JwtTokenProvider jwtTokenProvider;
     private final JwtErrorResponseHandler jwtErrorResponseHandler;
-    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    //private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    //private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final CorsConfig corsConfig;
 
     @Bean
@@ -48,10 +48,10 @@ public class SecurityConfig {
                                 .requestMatchers("/auth/api/user/**").hasAnyRole("USER","ADMIN")
                                 .anyRequest().authenticated()
                 )
-                .addFilterBefore(new JwtFilter(jwtTokenProvider,jwtErrorResponseHandler), UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling((except) ->
-                        except.accessDeniedHandler(jwtAccessDeniedHandler)
-                                .authenticationEntryPoint(jwtAuthenticationEntryPoint));
+                .addFilterBefore(new JwtFilter(jwtTokenProvider, jwtErrorResponseHandler), UsernamePasswordAuthenticationFilter.class);
+        //.exceptionHandling((except) ->
+        //except.accessDeniedHandler(jwtAccessDeniedHandler)
+        //.authenticationEntryPoint(jwtAuthenticationEntryPoint));
         return http.build();
     }
 }

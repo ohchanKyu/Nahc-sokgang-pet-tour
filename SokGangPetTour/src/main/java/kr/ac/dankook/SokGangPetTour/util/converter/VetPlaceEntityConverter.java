@@ -4,18 +4,16 @@ import kr.ac.dankook.SokGangPetTour.dto.response.vetPlaceResponse.VetPlaceOperat
 import kr.ac.dankook.SokGangPetTour.dto.response.vetPlaceResponse.VetPlaceResponse;
 import kr.ac.dankook.SokGangPetTour.entity.VetPlace;
 import kr.ac.dankook.SokGangPetTour.entity.VetPlaceOperatingHour;
+import kr.ac.dankook.SokGangPetTour.util.EncryptionUtil;
 
 import java.util.List;
 
 public class VetPlaceEntityConverter {
 
-    public static VetPlaceResponse convertToVetPlaceResponse(VetPlace vetPlace) {
+    public static VetPlaceResponse convertToVetPlaceResponse(VetPlace vetPlace,boolean isIncludeOperatingHours) {
 
-//        List<VetPlaceOperatingHour> lists = vetPlace.getOperatingHours();
-//        List<VetPlaceOperatingHourResponse> responses =
-//                lists.stream().map(VetPlaceEntityConverter::convertToVetPlaceOperatingHourResponse).toList();
-
-        return VetPlaceResponse.builder()
+        VetPlaceResponse vetPlaceResponse = VetPlaceResponse.builder()
+                .id(EncryptionUtil.encrypt(vetPlace.getId()))
                 .category(vetPlace.getCategory())
                 .placeName(vetPlace.getPlaceName())
                 .longitude(vetPlace.getLongitude())
@@ -25,6 +23,14 @@ public class VetPlaceEntityConverter {
                 .phoneNumber(vetPlace.getPhoneNumber())
                 .maxSizeInfo(vetPlace.getMaxSizeInfo())
                 .isParking(vetPlace.isParking()).build();
+
+        if (!isIncludeOperatingHours) return vetPlaceResponse;
+
+        List<VetPlaceOperatingHourResponse> operatingHours = vetPlace.getOperatingHours()
+                .stream().map(VetPlaceEntityConverter::convertToVetPlaceOperatingHourResponse).toList();
+        vetPlaceResponse.setOperatingHours(operatingHours);
+
+        return vetPlaceResponse;
     }
 
     public static VetPlaceOperatingHourResponse convertToVetPlaceOperatingHourResponse(

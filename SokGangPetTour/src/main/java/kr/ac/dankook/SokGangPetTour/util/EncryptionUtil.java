@@ -1,8 +1,7 @@
 package kr.ac.dankook.SokGangPetTour.util;
 
 
-import kr.ac.dankook.SokGangPetTour.exception.ApiErrorCode;
-import kr.ac.dankook.SokGangPetTour.exception.EncryptException;
+import kr.ac.dankook.SokGangPetTour.error.exception.EncryptException;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.crypto.Cipher;
@@ -39,7 +38,7 @@ public class EncryptionUtil {
             byte[] decryptedBytes = cipher.doFinal(decodedData);
             return ByteBuffer.wrap(decryptedBytes).getLong();
         }catch (Exception e){
-            throw new EncryptException(ApiErrorCode.DECRYPT_ERROR);
+            throw new EncryptException("복호화에 실패하였습니다.");
         }
     }
 }

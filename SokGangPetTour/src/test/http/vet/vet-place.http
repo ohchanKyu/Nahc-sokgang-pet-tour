@@ -1,2 +1,11 @@
 ### 모든 반려동물 병원,약국 장소 반환
 GET http://localhost:8080/api/vet/places
+
+### 특정 반려동물 병원,약국 장소 반환
+GET http://localhost:8080/api/vet/place/aAPzwpKf-0mFtlfbU1wCWA
+
+### 특정 장소를 키워드를 통해 검색
+GET http://localhost:8080/api/vet/place/search?keyword=온누리
+
+### 장소를 거리순으로 반환
+GET http://localhost:8080/api/vet/place/dist?latitude=37.75242930942907&longitude=128.87875636352248

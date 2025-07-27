@@ -36,7 +36,7 @@ public class AuthController {
         if (bindingResult.hasErrors()){
             validateBindingResult(bindingResult);
         }
-        return ResponseEntity.ok(new ApiResponse<>(200, memberService.findUserIdProcess(findIdRequest)));
+        return ResponseEntity.ok(new ApiResponse<>(true,200, memberService.findUserIdProcess(findIdRequest)));
     }
 
     @PostMapping("/verify-code/{userId}")
@@ -45,9 +45,9 @@ public class AuthController {
             Member member = memberService.findMemberByUserIdProcess(userId);
             MailResponse mailResponse = mailService.createVerifyCodeMailResponse(member);
             mailService.sendMail(mailResponse);
-            return ResponseEntity.ok(new ApiResponse<>(200,new AuthMailResponse(member.getEmail(),userId, true)));
+            return ResponseEntity.ok(new ApiResponse<>(true,200,new AuthMailResponse(member.getEmail(),userId, true)));
         }
-        return ResponseEntity.ok(new ApiResponse<>(200,new AuthMailResponse("USER_NOT_EXIT","USER_NOT_EXIT",false)));
+        return ResponseEntity.ok(new ApiResponse<>(true,200,new AuthMailResponse("USER_NOT_EXIT","USER_NOT_EXIT",false)));
     }
 
     @PostMapping("/is-verify")
@@ -61,7 +61,7 @@ public class AuthController {
                 verifyCodeRequest.getAuthMailToken(),
                 verifyCodeRequest.getVerifyCode()
         );
-        return ResponseEntity.ok(new ApiResponse<>(200,isVerifyCode));
+        return ResponseEntity.ok(new ApiResponse<>(true,200,isVerifyCode));
     }
 
     @PatchMapping("/password")
@@ -75,12 +75,12 @@ public class AuthController {
             passwordChangeRequest.getAuthMailToken(),
             passwordChangeRequest.getNewPassword()
         );
-        return ResponseEntity.ok(new ApiResponse<>(200,true));
+        return ResponseEntity.ok(new ApiResponse<>(true,200,true));
     }
 
     @GetMapping("/is-duplicate/{userId}")
     public ResponseEntity<ApiResponse<Boolean>> isDuplicate(@PathVariable String userId){
-        return ResponseEntity.ok(new ApiResponse<>(200,authService.isExistUserIdProcess(userId)));
+        return ResponseEntity.ok(new ApiResponse<>(true,200,authService.isExistUserIdProcess(userId)));
     }
 
     @PostMapping("/sign-up")
@@ -88,7 +88,7 @@ public class AuthController {
         if (bindingResult.hasErrors()){
             validateBindingResult(bindingResult);
         }
-        return ResponseEntity.ok(new ApiResponse<>(201,authService.signupProcess(signupRequest)));
+        return ResponseEntity.ok(new ApiResponse<>(true,201,authService.signupProcess(signupRequest)));
     }
 
     @PostMapping("/sign-in")
@@ -96,7 +96,7 @@ public class AuthController {
         if (bindingResult.hasErrors()){
             validateBindingResult(bindingResult);
         }
-        return ResponseEntity.ok(new ApiResponse<>(200,authService.signInProcess(signInRequest)));
+        return ResponseEntity.ok(new ApiResponse<>(true,200,authService.signInProcess(signInRequest)));
     }
 
     @PostMapping("/reissue")
@@ -105,7 +105,7 @@ public class AuthController {
         if (bindingResult.hasErrors()){
             validateBindingResult(bindingResult);
         }
-        return ResponseEntity.ok(new ApiResponse<>(200,authService.reissueTokenProcess(tokenRequest)));
+        return ResponseEntity.ok(new ApiResponse<>(true,200,authService.reissueTokenProcess(tokenRequest)));
     }
 
     private void validateBindingResult(BindingResult bindingResult) {

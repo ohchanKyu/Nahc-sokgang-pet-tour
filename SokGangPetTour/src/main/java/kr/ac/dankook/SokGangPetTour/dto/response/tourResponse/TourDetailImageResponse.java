@@ -1,13 +1,14 @@
-package kr.ac.dankook.SokGangPetTour.dto.response.tour;
+package kr.ac.dankook.SokGangPetTour.dto.response.tourResponse;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class TourDetailRepeatResponse {
+public class TourDetailImageResponse {
     private Response response;
-    @Data public static class Response {
+    @Data
+    public static class Response {
         private Header header;
         private Body body;
     }
@@ -23,7 +24,9 @@ public class TourDetailRepeatResponse {
     }
     @Data public static class Item {
         private String contentid;
-        private String infoname;
-        private String infotext;
+        private String originimgurl;
+        private String smallimageurl;
+        private String imgname;
+        private String cpyrhtDivCd;
     }
 }

@@ -1,4 +1,4 @@
-package kr.ac.dankook.SokGangPetTour.dto.response.tour;
+package kr.ac.dankook.SokGangPetTour.dto.response.tourResponse;
 
 import lombok.Data;
 

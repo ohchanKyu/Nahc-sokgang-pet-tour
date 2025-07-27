@@ -1,11 +1,11 @@
-package kr.ac.dankook.SokGangPetTour.dto.response.tour;
+package kr.ac.dankook.SokGangPetTour.dto.response.tourResponse;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class TourDetailIntroResponse {
+public class TourDetailRepeatResponse {
     private Response response;
     @Data public static class Response {
         private Header header;
@@ -23,12 +23,7 @@ public class TourDetailIntroResponse {
     }
     @Data public static class Item {
         private String contentid;
-        private String infocenter;
-        private String parking;
-        private String restdate;
-        private String usetime;
-        private String chkcreditcard;
-        private String accomcount;
-        // 타입별로 필드 다를 수 있음 (Map으로 받을 수도 있음)
+        private String infoname;
+        private String infotext;
     }
 }

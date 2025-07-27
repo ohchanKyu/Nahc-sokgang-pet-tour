@@ -1,0 +1,2 @@
+### 모든 반려동물 병원,약국 장소 반환
+GET http://localhost:8080/api/vet/places

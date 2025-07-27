@@ -28,11 +28,11 @@ public class MemberController {
         Member member = memberEntityConverter.getMemberByMemberId(id);
         MemberResponse apiResponse = memberEntityConverter.convertMemberEntity(member);
         return ResponseEntity.ok(
-                new ApiResponse<>(200, apiResponse));
+                new ApiResponse<>(true,200, apiResponse));
     }
     @DeleteMapping("/{memberId}")
     public ResponseEntity<ApiResponse<Boolean>> deleteMember(@PathVariable @DecryptId Long memberId){
-        return ResponseEntity.ok(new ApiResponse<>(200,
+        return ResponseEntity.ok(new ApiResponse<>(true,200,
                 memberService.deleteMemberProcess(memberId)));
     }
     @PostMapping("/logout")

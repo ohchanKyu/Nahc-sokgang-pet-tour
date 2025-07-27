@@ -1,32 +1,42 @@
-package kr.ac.dankook.SokGangPetTour.dto.response.tour;
+package kr.ac.dankook.SokGangPetTour.dto.response.tourResponse;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class TourDetailImageResponse {
+public class TourDetailCommonResponse {
     private Response response;
+
     @Data
     public static class Response {
         private Header header;
         private Body body;
     }
-    @Data public static class Header {
+
+    @Data
+    public static class Header {
         private String resultCode;
         private String resultMsg;
     }
-    @Data public static class Body {
+
+    @Data
+    public static class Body {
         private Items items;
     }
-    @Data public static class Items {
+
+    @Data
+    public static class Items {
         private List<Item> item;
     }
-    @Data public static class Item {
+
+    @Data
+    public static class Item {
         private String contentid;
-        private String originimgurl;
-        private String smallimageurl;
-        private String imgname;
+        private String homepage;
+        private String tel;
+        private String overview;
+        private String zipcode;
         private String cpyrhtDivCd;
     }
 }

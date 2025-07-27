@@ -7,7 +7,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class ApiResponse<T> {
 
-    private final boolean success = true;
+    private final boolean success;
     private final int statusCode;
     private final T data;
 }

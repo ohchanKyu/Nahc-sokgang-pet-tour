@@ -9,3 +9,6 @@ GET http://localhost:8080/api/vet/place/search?keyword=온누리
 
 ### 장소를 거리순으로 반환
 GET http://localhost:8080/api/vet/place/dist?latitude=37.75242930942907&longitude=128.87875636352248
+
+### 장소를 필터를 통해 반환
+GET http://localhost:8080/api/vet/place/filter?category=PHARMACY&isParking=true

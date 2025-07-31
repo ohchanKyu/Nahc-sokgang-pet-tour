@@ -1,8 +1,11 @@
 package kr.ac.dankook.SokGangPetTour.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiResponse;
+import kr.ac.dankook.SokGangPetTour.dto.response.tourPlaceResponse.TourContentDetailResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.tourPlaceResponse.TourContentDistResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.tourPlaceResponse.TourContentResponse;
+import kr.ac.dankook.SokGangPetTour.service.TourContentCacheService;
 import kr.ac.dankook.SokGangPetTour.service.TourContentService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +21,7 @@ import java.util.List;
 public class TourContentController {
 
     private final TourContentService tourContentService;
+    private final TourContentCacheService tourContentCacheService;
 
     // 모든 기본 데이터 반환
     @GetMapping("/places")
@@ -27,8 +31,10 @@ public class TourContentController {
     }
     // 장소에 대한 상세정보 반환 -> 캐시 사용
     @GetMapping("/place/{placeId}")
-    public ResponseEntity<ApiResponse<?>> getPlaceWithDetail(@PathVariable String placeId){
-        return ResponseEntity.ok(new ApiResponse<>(true,200,"AA"));
+    public ResponseEntity<ApiResponse<TourContentDetailResponse>> getPlaceWithDetail(
+            @PathVariable String placeId) throws JsonProcessingException {
+        return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
+                tourContentCacheService.findTourContentDetailById(placeId)));
     }
 
     // 장소 이름 또는 주소 검색을 통해 반환
@@ -39,6 +45,7 @@ public class TourContentController {
         return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
                 tourContentService.getTourContentByKeyword(keyword)));
     }
+
     // 좌표를 통해 거리순으로 데이터 반환 -> 거리 정보 포함
     @GetMapping("/place/dist")
     public ResponseEntity<ApiResponse<List<TourContentDistResponse>>> getVetPlaceByDist(

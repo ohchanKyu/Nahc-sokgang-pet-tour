@@ -6,12 +6,12 @@ import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.TourDetailPetRequest
 import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.intro.*;
 import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.repeat.TourDetailRepeatCommonRequest;
 import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.repeat.TourDetailRepeatRoomRequest;
-import kr.ac.dankook.SokGangPetTour.dto.response.tourPlaceResponse.TourContentResponse;
+import kr.ac.dankook.SokGangPetTour.dto.response.tourPlaceResponse.*;
 import kr.ac.dankook.SokGangPetTour.entity.tour.*;
 import kr.ac.dankook.SokGangPetTour.entity.tour.tourIntro.*;
+import org.springframework.transaction.annotation.Transactional;
 
 public class TourEntityConverter {
-
 
     public static TourContentResponse convertToTourContentResponse(TourContent tourContent){
         return TourContentResponse.builder()
@@ -33,7 +33,194 @@ public class TourEntityConverter {
                 .title(tourContent.getTitle())
                 .overview(tourContent.getOverview()).build();
     }
+    // TourDetailImage -> TourDetailImageResponse
+    public static TourDetailImageResponse convertToTourDetailImageResponse(TourDetailImage image) {
+        return TourDetailImageResponse.builder()
+                .originImgUrl(image.getOriginImgUrl())
+                .smallImgUrl(image.getSmallImgUrl())
+                .imgName(image.getImgName())
+                .build();
+    }
 
+    // TourDetailPet -> TourDetailPetResponse
+    public static TourDetailPetResponse convertToTourDetailPetResponse(TourDetailPet pet) {
+        return TourDetailPetResponse.builder()
+                .relaAcdntRiskMtr(pet.getRelaAcdntRiskMtr())
+                .acmpyTypeCd(pet.getAcmpyTypeCd())
+                .relaPosesFclty(pet.getRelaPosesFclty())
+                .relaFrnshPrdlst(pet.getRelaFrnshPrdlst())
+                .acmpyPsblCpam(pet.getAcmpyPsblCpam())
+                .relaRntlPrdlst(pet.getRelaRntlPrdlst())
+                .acmpyNeedMtr(pet.getAcmpyNeedMtr())
+                .build();
+    }
+
+    // TourDetailRepeatCommon -> TourDetailRepeatCommonResponse
+    public static TourDetailRepeatCommonResponse convertToTourDetailRepeatCommonResponse(TourDetailRepeatCommon common) {
+        return TourDetailRepeatCommonResponse.builder()
+                .infoName(common.getInfoName())
+                .infoText(common.getInfoText())
+                .build();
+    }
+
+    // TourDetailRepeatRoom -> TourDetailRepeatRoomResponse
+    public static TourDetailRepeatRoomResponse convertToTourDetailRepeatRoomResponse(TourDetailRepeatRoom room) {
+        return TourDetailRepeatRoomResponse.builder()
+                .roomInfoNo(room.getRoomInfoNo())
+                .roomTitle(room.getRoomTitle())
+                .roomSize1(room.getRoomSize1())
+                .roomSize2(room.getRoomSize2())
+                .roomCount(room.getRoomCount())
+                .roomBaseCount(room.getRoomBaseCount())
+                .roomMaxCount(room.getRoomMaxCount())
+                .roomOffSeasonMinFee1(room.getRoomOffSeasonMinFee1())
+                .roomOffSeasonMinFee2(room.getRoomOffSeasonMinFee2())
+                .roomPeakSeasonMinFee1(room.getRoomPeakSeasonMinFee1())
+                .roomPeakSeasonMinFee2(room.getRoomPeakSeasonMinFee2())
+                .roomIntro(room.getRoomIntro())
+                .roomBathFacility(room.getRoomBathFacility())
+                .roomBath(room.getRoomBath())
+                .roomHomeTheater(room.getRoomHomeTheater())
+                .roomAirCondition(room.getRoomAirCondition())
+                .roomTv(room.getRoomTv())
+                .roomPc(room.getRoomPc())
+                .roomCable(room.getRoomCable())
+                .roomInternet(room.getRoomInternet())
+                .roomRefrigerator(room.getRoomRefrigerator())
+                .roomToiletries(room.getRoomToiletries())
+                .roomSofa(room.getRoomSofa())
+                .roomCook(room.getRoomCook())
+                .roomTable(room.getRoomTable())
+                .roomHairDryer(room.getRoomHairDryer())
+                .roomImg1(room.getRoomImg1())
+                .roomImg1Alt(room.getRoomImg1Alt())
+                .roomImg2(room.getRoomImg2())
+                .roomImg2Alt(room.getRoomImg2Alt())
+                .roomImg3(room.getRoomImg3())
+                .roomImg3Alt(room.getRoomImg3Alt())
+                .roomImg4(room.getRoomImg4())
+                .roomImg4Alt(room.getRoomImg4Alt())
+                .roomImg5(room.getRoomImg5())
+                .roomImg5Alt(room.getRoomImg5Alt())
+                .build();
+    }
+
+    // TourDetailIntroCulture -> TourDetailIntroCultureResponse
+    public static TourDetailIntroCultureResponse convertToTourDetailIntroCultureResponse(TourDetailIntroCulture culture) {
+        return TourDetailIntroCultureResponse.builder()
+                .accomCountCulture(culture.getAccomCountCulture())
+                .chkCreditCardCulture(culture.getChkCreditCardCulture())
+                .infoCenterCulture(culture.getInfoCenterCulture())
+                .parkingCulture(culture.getParkingCulture())
+                .parkingFee(culture.getParkingFee())
+                .restDateCulture(culture.getRestDateCulture())
+                .useFee(culture.getUseFee())
+                .useTimeCulture(culture.getUseTimeCulture())
+                .scale(culture.getScale())
+                .build();
+    }
+
+    // TourDetailIntroFood -> TourDetailIntroFoodResponse
+    public static TourDetailIntroFoodResponse convertToTourDetailIntroFoodResponse(TourDetailIntroFood food) {
+        return TourDetailIntroFoodResponse.builder()
+                .chkCreditCardFood(food.getChkCreditCardFood())
+                .firstMenu(food.getFirstMenu())
+                .infoCenterFood(food.getInfoCenterFood())
+                .kidsFacility(food.getKidsFacility())
+                .openTimeFood(food.getOpenTimeFood())
+                .packing(food.getPacking())
+                .parkingFood(food.getParkingFood())
+                .reservationFood(food.getReservationFood())
+                .restDateFood(food.getRestDateFood())
+                .smoking(food.getSmoking())
+                .treatMenu(food.getTreatMenu())
+                .build();
+    }
+
+    // TourDetailIntroLeports -> TourDetailIntroLeportsResponse
+    public static TourDetailIntroLeportsResponse convertToTourDetailIntroLeportsResponse(TourDetailIntroLeports leports) {
+        return TourDetailIntroLeportsResponse.builder()
+                .accomCountLeports(leports.getAccomCountLeports())
+                .chkCreditCardLeports(leports.getChkCreditCardLeports())
+                .expAgeRangeLeports(leports.getExpAgeRangeLeports())
+                .infoCenterLeports(leports.getInfoCenterLeports())
+                .openPeriod(leports.getOpenPeriod())
+                .parkingFeeLeports(leports.getParkingFeeLeports())
+                .parkingLeports(leports.getParkingLeports())
+                .reservation(leports.getReservation())
+                .restDateLeports(leports.getRestDateLeports())
+                .useFeeLeports(leports.getUseFeeLeports())
+                .useTimeLeports(leports.getUseTimeLeports())
+                .build();
+    }
+
+    // TourDetailIntroLodging -> TourDetailIntroLodgingResponse
+    public static TourDetailIntroLodgingResponse convertToTourDetailIntroLodgingResponse(TourDetailIntroLodging lodging) {
+        return TourDetailIntroLodgingResponse.builder()
+                .accomCountLodging(lodging.getAccomCountLodging())
+                .benikia(lodging.getBenikia())
+                .checkInTime(lodging.getCheckInTime())
+                .checkOutTime(lodging.getCheckOutTime())
+                .chkCooking(lodging.getChkCooking())
+                .foodPlace(lodging.getFoodPlace())
+                .goodStay(lodging.getGoodStay())
+                .hanok(lodging.getHanok())
+                .infoCenterLodging(lodging.getInfoCenterLodging())
+                .parkingLodging(lodging.getParkingLodging())
+                .pickup(lodging.getPickup())
+                .roomCount(lodging.getRoomCount())
+                .reservationLodging(lodging.getReservationLodging())
+                .roomType(lodging.getRoomType())
+                .scaleLodging(lodging.getScaleLodging())
+                .subFacility(lodging.getSubFacility())
+                .barbecue(lodging.getBarbecue())
+                .beauty(lodging.getBeauty())
+                .beverage(lodging.getBeverage())
+                .bicycle(lodging.getBicycle())
+                .campfire(lodging.getCampfire())
+                .fitness(lodging.getFitness())
+                .karaoke(lodging.getKaraoke())
+                .publicBath(lodging.getPublicBath())
+                .publicPc(lodging.getPublicPc())
+                .sauna(lodging.getSauna())
+                .seminar(lodging.getSeminar())
+                .sports(lodging.getSports())
+                .refundRegulation(lodging.getRefundRegulation())
+                .build();
+    }
+
+    // TourDetailIntroShopping -> TourDetailIntroShoppingResponse
+    public static TourDetailIntroShoppingResponse convertToTourDetailIntroShoppingResponse(TourDetailIntroShopping shopping) {
+        return TourDetailIntroShoppingResponse.builder()
+                .chkCreditCard(shopping.getChkCreditCard())
+                .infoCenterShopping(shopping.getInfoCenterShopping())
+                .openTime(shopping.getOpenTime())
+                .parkingShopping(shopping.getParkingShopping())
+                .restDateShopping(shopping.getRestDateShopping())
+                .restRoom(shopping.getRestRoom())
+                .saleItem(shopping.getSaleItem())
+                .scaleShopping(shopping.getScaleShopping())
+                .build();
+    }
+
+    // TourDetailIntroTourist -> TourDetailIntroTouristResponse
+    public static TourDetailIntroTouristResponse convertToTourDetailIntroTouristResponse(TourDetailIntroTourist tourist) {
+        return TourDetailIntroTouristResponse.builder()
+                .accomCount(tourist.getAccomCount())
+                .chkCreditCard(tourist.getChkCreditCard())
+                .expAgeRange(tourist.getExpAgeRange())
+                .expGuide(tourist.getExpGuide())
+                .heritage1(tourist.getHeritage1())
+                .heritage2(tourist.getHeritage2())
+                .heritage3(tourist.getHeritage3())
+                .infoCenter(tourist.getInfoCenter())
+                .openDate(tourist.getOpenDate())
+                .parking(tourist.getParking())
+                .restDate(tourist.getRestDate())
+                .useSeason(tourist.getUseSeason())
+                .useTime(tourist.getUseTime())
+                .build();
+    }
     public static TourDetailRepeatCommon convertToTourDetailRepeatCommon(TourDetailRepeatCommonRequest item, TourContent tourContent){
         return TourDetailRepeatCommon.builder()
                 .content(tourContent)

@@ -5,7 +5,7 @@ GET http://localhost:8080/api/tour/test
 GET http://localhost:8080/api/tour/places
 
 ### 데이터 상세 정보 반환
-GET http://localhost:8080/api/tour/place/1223212
+GET http://localhost:8080/api/tour/place/2557959
 
 ### 키워드 검색을 통해 데이터 반환
 GET http://localhost:8080/api/tour/place/search?keyword=해변

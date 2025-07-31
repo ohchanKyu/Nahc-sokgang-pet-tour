@@ -1,12 +1,15 @@
 package kr.ac.dankook.SokGangPetTour.service;
-import kr.ac.dankook.SokGangPetTour.dto.response.tourPlaceResponse.TourContentDistResponse;
-import kr.ac.dankook.SokGangPetTour.dto.response.tourPlaceResponse.TourContentResponse;
+import kr.ac.dankook.SokGangPetTour.dto.response.tourPlaceResponse.*;
 import kr.ac.dankook.SokGangPetTour.entity.tour.TourContent;
+import kr.ac.dankook.SokGangPetTour.entity.tour.TourDetailRepeatCommon;
+import kr.ac.dankook.SokGangPetTour.entity.tour.TourDetailRepeatRoom;
+import kr.ac.dankook.SokGangPetTour.entity.tour.tourIntro.*;
 import kr.ac.dankook.SokGangPetTour.repository.tour.TourContentRepository;
 import kr.ac.dankook.SokGangPetTour.util.converter.TourEntityConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -59,5 +62,68 @@ public class TourContentService {
                 }).toList());
         distResponses.sort(Comparator.comparingDouble(TourContentDistResponse::getDistance));
         return distResponses;
+    }
+
+    @Transactional(readOnly = true)
+    public TourContentDetailResponse convertToDetailResponse(String key) {
+
+        TourContent tourContent = tourContentRepository.findById(key).orElse(null);
+        if (tourContent == null) return null;
+
+        TourContentResponse tourContentResponse = TourEntityConverter.convertToTourContentResponse(tourContent);
+        List<TourDetailImageResponse> images = tourContent.getDetailImages().stream()
+                .map(TourEntityConverter::convertToTourDetailImageResponse)
+                .toList();
+        List<TourDetailPetResponse> pets = tourContent.getDetailPet().stream()
+                .map(TourEntityConverter::convertToTourDetailPetResponse)
+                .toList();
+
+        List<TourDetailRepeatCommonResponse> repeatCommons = tourContent.getDetailRepeats().stream()
+                .filter(repeat -> repeat instanceof TourDetailRepeatCommon)
+                .map(repeat -> TourEntityConverter.convertToTourDetailRepeatCommonResponse((TourDetailRepeatCommon) repeat))
+                .toList();
+        List<TourDetailRepeatRoomResponse> repeatRooms = tourContent.getDetailRepeats().stream()
+                .filter(repeat -> repeat instanceof TourDetailRepeatRoom)
+                .map(repeat -> TourEntityConverter.convertToTourDetailRepeatRoomResponse((TourDetailRepeatRoom) repeat))
+                .toList();
+
+        List<TourDetailIntroCultureResponse> introCultures = tourContent.getDetailIntros().stream()
+                .filter(intro -> intro instanceof TourDetailIntroCulture)
+                .map(intro -> TourEntityConverter.convertToTourDetailIntroCultureResponse((TourDetailIntroCulture) intro))
+                .toList();
+        List<TourDetailIntroFoodResponse> introFoods = tourContent.getDetailIntros().stream()
+                .filter(intro -> intro instanceof TourDetailIntroFood)
+                .map(intro -> TourEntityConverter.convertToTourDetailIntroFoodResponse((TourDetailIntroFood) intro))
+                .toList();
+        List<TourDetailIntroLeportsResponse> introLeports = tourContent.getDetailIntros().stream()
+                .filter(intro -> intro instanceof TourDetailIntroLeports)
+                .map(intro -> TourEntityConverter.convertToTourDetailIntroLeportsResponse((TourDetailIntroLeports) intro))
+                .toList();
+        List<TourDetailIntroLodgingResponse> introLodgings = tourContent.getDetailIntros().stream()
+                .filter(intro -> intro instanceof TourDetailIntroLodging)
+                .map(intro -> TourEntityConverter.convertToTourDetailIntroLodgingResponse((TourDetailIntroLodging) intro))
+                .toList();
+        List<TourDetailIntroShoppingResponse> introShopping = tourContent.getDetailIntros().stream()
+                .filter(intro -> intro instanceof TourDetailIntroShopping)
+                .map(intro -> TourEntityConverter.convertToTourDetailIntroShoppingResponse((TourDetailIntroShopping) intro))
+                .toList();
+        List<TourDetailIntroTouristResponse> introTourists = tourContent.getDetailIntros().stream()
+                .filter(intro -> intro instanceof TourDetailIntroTourist)
+                .map(intro -> TourEntityConverter.convertToTourDetailIntroTouristResponse((TourDetailIntroTourist) intro))
+                .toList();
+
+        return TourContentDetailResponse.builder()
+                .tourContentResponse(tourContentResponse)
+                .imagesInfo(images)
+                .petsInfo(pets)
+                .repeatCommons(repeatCommons.isEmpty() ? null : repeatCommons)
+                .repeatRooms(repeatRooms.isEmpty() ? null : repeatRooms)
+                .introCultures(introCultures.isEmpty() ? null : introCultures)
+                .introFoods(introFoods.isEmpty() ? null : introFoods)
+                .introLeports(introLeports.isEmpty() ? null : introLeports)
+                .introLodgings(introLodgings.isEmpty() ? null : introLodgings)
+                .introShopping(introShopping.isEmpty() ? null : introShopping)
+                .introTourists(introTourists.isEmpty() ? null : introTourists)
+                .build();
     }
 }

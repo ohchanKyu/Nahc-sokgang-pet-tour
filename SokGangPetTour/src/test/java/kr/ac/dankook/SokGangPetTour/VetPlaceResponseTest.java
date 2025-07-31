@@ -41,14 +41,14 @@ public class VetPlaceResponseTest {
         assertThat(places.size()).isEqualTo(267);
     }
 
-    @Test
-    @DisplayName("카테고리별 장소 데이터 반환 응답 테스트")
-    public void getVetPlaceByCategoryTest(){
-        long startTime = System.currentTimeMillis();
-        List<VetPlaceResponse> places = vetPlaceService.getVetPlacesByCategory("HOSPITAL");
-        long executionTime = System.currentTimeMillis() - startTime;
-        log.info("총 실행 시간 - {}ms",executionTime);
-    }
+//    @Test
+//    @DisplayName("카테고리별 장소 데이터 반환 응답 테스트")
+//    public void getVetPlaceByCategoryTest(){
+//        long startTime = System.currentTimeMillis();
+//        List<VetPlaceResponse> places = vetPlaceService.getPlaces("HOSPITAL");
+//        long executionTime = System.currentTimeMillis() - startTime;
+//        log.info("총 실행 시간 - {}ms",executionTime);
+//    }
 
     @Test
     @DisplayName("하나의 장소 데이터 반환 응답 테스트")

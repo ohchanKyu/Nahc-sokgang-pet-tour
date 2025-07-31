@@ -6,11 +6,33 @@ import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.TourDetailPetRequest
 import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.intro.*;
 import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.repeat.TourDetailRepeatCommonRequest;
 import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.repeat.TourDetailRepeatRoomRequest;
+import kr.ac.dankook.SokGangPetTour.dto.response.tourPlaceResponse.TourContentResponse;
 import kr.ac.dankook.SokGangPetTour.entity.tour.*;
 import kr.ac.dankook.SokGangPetTour.entity.tour.tourIntro.*;
 
 public class TourEntityConverter {
 
+
+    public static TourContentResponse convertToTourContentResponse(TourContent tourContent){
+        return TourContentResponse.builder()
+                .contentId(tourContent.getContentId())
+                .address(tourContent.getAddress())
+                .detailAddress(tourContent.getDetailAddress())
+                .postCode(tourContent.getPostCode())
+                .areaCode(tourContent.getAreaCode())
+                .sigunguCode(tourContent.getSigunguCode())
+                .cat1(tourContent.getCat1())
+                .cat2(tourContent.getCat2())
+                .cat3(tourContent.getCat3())
+                .contentTypeId(tourContent.getContentTypeId())
+                .originalImageUrl(tourContent.getOriginalImageUrl())
+                .thumbnailImageUrl(tourContent.getThumbnailImageUrl())
+                .longitude(tourContent.getLongitude())
+                .latitude(tourContent.getLatitude())
+                .telephone(tourContent.getTelephone())
+                .title(tourContent.getTitle())
+                .overview(tourContent.getOverview()).build();
+    }
 
     public static TourDetailRepeatCommon convertToTourDetailRepeatCommon(TourDetailRepeatCommonRequest item, TourContent tourContent){
         return TourDetailRepeatCommon.builder()

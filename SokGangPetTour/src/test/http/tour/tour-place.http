@@ -1,0 +1,17 @@
+### 테스트
+GET http://localhost:8080/api/tour/test
+
+### 전체 데이터 반환
+GET http://localhost:8080/api/tour/places
+
+### 데이터 상세 정보 반환
+GET http://localhost:8080/api/tour/place/1223212
+
+### 키워드 검색을 통해 데이터 반환
+GET http://localhost:8080/api/tour/place/search?keyword=해변
+
+### 거리순으로 데이터 반환
+GET http://localhost:8080/api/tour/place/dist?latitude=37.75242930942907&longitude=128.87875636352248
+
+### 필터를 통해 데이터 반환
+GET http://localhost:8080/api/tour/place/filter?cat1=A01&sigunguCode=1

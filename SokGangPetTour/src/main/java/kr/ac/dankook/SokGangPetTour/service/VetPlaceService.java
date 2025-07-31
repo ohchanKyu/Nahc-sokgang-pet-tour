@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import static kr.ac.dankook.SokGangPetTour.util.DistCalculationUtil.getDistance;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -91,26 +93,5 @@ public class VetPlaceService {
                     !currentTime.isBefore(h.getOpenTime()) &&
                     currentTime.isBefore(h.getCloseTime())
                 );
-    }
-
-    private double getDistance(
-            double statLatitude, double statLongitude, double desLatitude, double desLongitude
-    ) {
-        double theta = desLongitude - statLongitude;
-        double dist = Math.sin(deg2rad(statLatitude)) *
-                Math.sin(deg2rad(desLatitude)) +
-                Math.cos(deg2rad(statLatitude)) *
-                        Math.cos(deg2rad(desLatitude)) *
-                        Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515 * 1609.344;
-        return dist / 1000;
-    }
-    private double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
-    }
-    private double rad2deg(double rad) {
-        return (rad * 180 / Math.PI);
     }
 }

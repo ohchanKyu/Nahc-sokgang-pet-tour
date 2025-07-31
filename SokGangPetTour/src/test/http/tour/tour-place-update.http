@@ -1,0 +1,5 @@
+### test
+GET http://localhost:8080/api/tour/test
+
+### 모든 Tour 데이터 동기화
+POST http://localhost:8080/api/tour/sync

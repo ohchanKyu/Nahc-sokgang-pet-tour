@@ -19,7 +19,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
-
         ErrorCode errorCode = e.getErrorCode();
         return ResponseEntity.internalServerError()
                 .body(new ErrorResponse(errorCode.getCode(),errorCode.getMessage()));

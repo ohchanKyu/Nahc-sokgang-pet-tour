@@ -2,6 +2,7 @@ package kr.ac.dankook.SokGangPetTour.error;
 
 import kr.ac.dankook.SokGangPetTour.error.exception.CustomException;
 import kr.ac.dankook.SokGangPetTour.error.exception.EntityNotFoundException;
+import kr.ac.dankook.SokGangPetTour.error.exception.ExternalApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -46,6 +47,12 @@ public class GlobalExceptionHandler {
                 .collect(Collectors.joining(", "));
         return ResponseEntity.badRequest()
                 .body(new ErrorResponse("E003",errorMessages));
+    }
+
+    @ExceptionHandler(ExternalApiException.class)
+    public ResponseEntity<ErrorResponse> handleExternalApiException(ExternalApiException e) {
+        return ResponseEntity.badRequest()
+                .body(new ErrorResponse("E004",e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)

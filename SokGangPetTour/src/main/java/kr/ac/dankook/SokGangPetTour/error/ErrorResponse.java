@@ -10,5 +10,6 @@ import java.time.LocalDateTime;
 public class ErrorResponse {
     private String code;
     private String message;
+    private final boolean success = false;
     private final LocalDateTime timestamp = LocalDateTime.now();
 }

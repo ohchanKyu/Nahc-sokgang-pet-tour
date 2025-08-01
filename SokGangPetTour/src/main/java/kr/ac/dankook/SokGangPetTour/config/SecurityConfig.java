@@ -44,9 +44,9 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorizeRequests) ->
                         authorizeRequests
-                                .requestMatchers("/auth/identity/**","/api/tour/**","/api/vet/**").permitAll()
-                                .requestMatchers("/auth/api/user/**").hasAnyRole("USER","ADMIN")
-                                .anyRequest().authenticated()
+                                //.requestMatchers("/auth/identity/**","/api/tour/**","/api/vet/**").permitAll()
+                                //.requestMatchers("/auth/api/user/**").hasAnyRole("USER","ADMIN")
+                                .anyRequest().permitAll()
                 )
                 .addFilterBefore(new JwtFilter(jwtTokenProvider, jwtErrorResponseHandler), UsernamePasswordAuthenticationFilter.class);
         //.exceptionHandling((except) ->

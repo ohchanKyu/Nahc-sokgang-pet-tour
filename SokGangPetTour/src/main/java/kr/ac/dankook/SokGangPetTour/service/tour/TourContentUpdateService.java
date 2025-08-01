@@ -1,4 +1,4 @@
-package kr.ac.dankook.SokGangPetTour.service;
+package kr.ac.dankook.SokGangPetTour.service.tour;
 
 import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.TourContentRequest;
 import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.TourDetailImageRequest;

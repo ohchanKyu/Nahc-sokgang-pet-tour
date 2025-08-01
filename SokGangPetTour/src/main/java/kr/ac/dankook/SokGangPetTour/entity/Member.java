@@ -1,17 +1,15 @@
 package kr.ac.dankook.SokGangPetTour.entity;
 
 import jakarta.persistence.*;
+import kr.ac.dankook.SokGangPetTour.entity.chatBot.ChatBotRoom;
 import lombok.*;
-
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "member")
 @Getter
-@Setter
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Member extends BaseEntity{
 
     @Id
@@ -26,13 +24,22 @@ public class Member extends BaseEntity{
     private String email;
     @Column(nullable = false)
     private String name;
-    @Column(nullable = false)
-    private String roles;
 
-    public List<String> getRoleList(){
-        if (!this.roles.isEmpty()){
-            return Arrays.asList(this.roles.split(","));
-        }
-        return List.of();
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private Role role = Role.USER;
+
+    @Builder
+    public Member(String userId, String password, String email,
+                  String name, Role role) {
+        this.userId = userId;
+        this.password = password;
+        this.email = email;
+        this.name = name;
+        this.role = role;
     }
+
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private final List<ChatBotRoom> chatBotRooms = new ArrayList<>();
+
 }

@@ -1,9 +1,10 @@
-package kr.ac.dankook.SokGangPetTour.service;
+package kr.ac.dankook.SokGangPetTour.service.tour;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kr.ac.dankook.SokGangPetTour.dto.response.tourPlaceResponse.*;
+import kr.ac.dankook.SokGangPetTour.service.DistributedLockProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;

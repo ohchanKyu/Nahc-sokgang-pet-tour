@@ -1,6 +1,6 @@
 package kr.ac.dankook.SokGangPetTour.dto.response.vetPlaceResponse;
 
-import kr.ac.dankook.SokGangPetTour.entity.VetPlaceCategory;
+import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlaceCategory;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;

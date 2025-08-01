@@ -1,6 +1,3 @@
-### 테스트
-GET http://localhost:8080/api/tour/test
-
 ### 전체 데이터 반환
 GET http://localhost:8080/api/tour/places
 

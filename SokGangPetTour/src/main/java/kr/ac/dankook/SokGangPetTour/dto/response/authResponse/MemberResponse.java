@@ -1,5 +1,6 @@
 package kr.ac.dankook.SokGangPetTour.dto.response.authResponse;
 
+import kr.ac.dankook.SokGangPetTour.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +19,5 @@ public class MemberResponse {
     private String userId;
     private LocalDateTime createTime;
     private String email;
-    private String roles;
+    private Role role;
 }

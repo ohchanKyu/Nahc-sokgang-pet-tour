@@ -1,8 +1,12 @@
 package kr.ac.dankook.SokGangPetTour;
 
 import kr.ac.dankook.SokGangPetTour.entity.*;
-import kr.ac.dankook.SokGangPetTour.repository.VetPlaceMigrationRepository;
-import kr.ac.dankook.SokGangPetTour.repository.VetPlaceRepository;
+import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlace;
+import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlaceCategory;
+import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlaceMigration;
+import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlaceOperatingHour;
+import kr.ac.dankook.SokGangPetTour.repository.vetPlace.VetPlaceMigrationRepository;
+import kr.ac.dankook.SokGangPetTour.repository.vetPlace.VetPlaceRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

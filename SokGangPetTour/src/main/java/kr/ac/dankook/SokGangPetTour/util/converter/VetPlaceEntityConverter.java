@@ -2,8 +2,8 @@ package kr.ac.dankook.SokGangPetTour.util.converter;
 
 import kr.ac.dankook.SokGangPetTour.dto.response.vetPlaceResponse.VetPlaceOperatingHourResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.vetPlaceResponse.VetPlaceResponse;
-import kr.ac.dankook.SokGangPetTour.entity.VetPlace;
-import kr.ac.dankook.SokGangPetTour.entity.VetPlaceOperatingHour;
+import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlace;
+import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlaceOperatingHour;
 import kr.ac.dankook.SokGangPetTour.util.EncryptionUtil;
 
 import java.util.List;

@@ -1,8 +1,11 @@
-package kr.ac.dankook.SokGangPetTour.service;
+package kr.ac.dankook.SokGangPetTour.service.vetPlace;
 import kr.ac.dankook.SokGangPetTour.dto.response.vetPlaceResponse.VetPlaceDistResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.vetPlaceResponse.VetPlaceResponse;
 import kr.ac.dankook.SokGangPetTour.entity.*;
-import kr.ac.dankook.SokGangPetTour.repository.VetPlaceRepository;
+import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlace;
+import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlaceCategory;
+import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlaceOperatingHour;
+import kr.ac.dankook.SokGangPetTour.repository.vetPlace.VetPlaceRepository;
 import kr.ac.dankook.SokGangPetTour.util.converter.VetPlaceEntityConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

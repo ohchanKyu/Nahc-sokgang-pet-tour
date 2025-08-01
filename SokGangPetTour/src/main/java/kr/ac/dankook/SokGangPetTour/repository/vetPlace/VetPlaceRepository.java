@@ -1,7 +1,7 @@
-package kr.ac.dankook.SokGangPetTour.repository;
+package kr.ac.dankook.SokGangPetTour.repository.vetPlace;
 
-import kr.ac.dankook.SokGangPetTour.entity.VetPlace;
-import kr.ac.dankook.SokGangPetTour.entity.VetPlaceCategory;
+import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlace;
+import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlaceCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;

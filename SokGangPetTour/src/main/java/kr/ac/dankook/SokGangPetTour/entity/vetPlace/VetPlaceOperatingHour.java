@@ -1,6 +1,7 @@
-package kr.ac.dankook.SokGangPetTour.entity;
+package kr.ac.dankook.SokGangPetTour.entity.vetPlace;
 
 import jakarta.persistence.*;
+import kr.ac.dankook.SokGangPetTour.entity.DayType;
 import lombok.*;
 
 import java.time.LocalTime;

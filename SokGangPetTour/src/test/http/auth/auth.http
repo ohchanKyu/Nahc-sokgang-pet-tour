@@ -1,0 +1,11 @@
+### 회원가입
+### PK - aAPzwpKf-0mFtlfbU1wCWA
+POST http://localhost:8080/api/v1/auth/signup
+Content-Type: application/json
+
+{
+  "name" : "오규찬",
+  "userId" : "admin1234",
+  "password" : "admin1234!",
+  "email" : "okc0202@naver.com"
+}

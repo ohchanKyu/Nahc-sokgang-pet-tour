@@ -6,8 +6,7 @@ import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.repeat.TourDetailRep
 import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.repeat.TourDetailRepeatRoomRequest;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiMessageResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.tourResponse.TourSyncResponse;
-import kr.ac.dankook.SokGangPetTour.service.TourContentService;
-import kr.ac.dankook.SokGangPetTour.service.TourContentUpdateService;
+import kr.ac.dankook.SokGangPetTour.service.tour.TourContentUpdateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;

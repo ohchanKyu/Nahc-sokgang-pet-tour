@@ -1,6 +1,7 @@
 package kr.ac.dankook.SokGangPetTour.entity;
 
 import jakarta.persistence.*;
+import kr.ac.dankook.SokGangPetTour.entity.chat.ChatRoom;
 import kr.ac.dankook.SokGangPetTour.entity.chatBot.ChatBotRoom;
 import lombok.*;
 import java.util.ArrayList;
@@ -42,4 +43,6 @@ public class Member extends BaseEntity{
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<ChatBotRoom> chatBotRooms = new ArrayList<>();
 
+    @OneToMany(mappedBy = "member",fetch = FetchType.LAZY)
+    private final List<ChatRoom> chatRooms = new ArrayList<>();
 }

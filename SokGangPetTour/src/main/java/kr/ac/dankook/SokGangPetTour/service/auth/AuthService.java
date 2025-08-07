@@ -35,10 +35,10 @@ public class AuthService {
 
     private MemberResponse convertToDtoResponse(Member member){
         return MemberResponse.builder()
-                .id(EncryptionUtil.encrypt(member.getId()))
+                .id(member.getId())
                 .name(member.getName())
                 .userId(member.getUserId())
                 .email(member.getEmail())
-                .role(member.getRole()).createTime(member.getCreatedDateTime()).build();
+                .role(member.getRole().name()).createTime(member.getCreatedDateTime()).build();
     }
 }

@@ -1,5 +1,6 @@
 package kr.ac.dankook.SokGangPetTour.dto.response.authResponse;
 
+import kr.ac.dankook.SokGangPetTour.entity.Member;
 import kr.ac.dankook.SokGangPetTour.entity.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,10 +15,19 @@ import java.time.LocalDateTime;
 @Builder
 public class MemberResponse {
 
-    private String id;
+    private Long id;
     private String name;
     private String userId;
-    private LocalDateTime createTime;
     private String email;
-    private Role role;
+    private LocalDateTime createTime;
+    private String role;
+
+    public MemberResponse(Member member) {
+        this.id = member.getId();
+        this.name = member.getName();
+        this.userId = member.getUserId();
+        this.email = member.getEmail();
+        this.createTime = LocalDateTime.now();
+        this.role = member.getRole().name();
+    }
 }

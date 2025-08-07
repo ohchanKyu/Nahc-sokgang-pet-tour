@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/kakao")
+@RequestMapping("/api/v1/kakao")
 @Slf4j
 public class KakaoLocationController {
 

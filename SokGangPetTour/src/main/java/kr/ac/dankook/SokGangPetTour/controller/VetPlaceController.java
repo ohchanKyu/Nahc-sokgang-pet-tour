@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/vet")
+@RequestMapping("/api/v1/vet")
 @RequiredArgsConstructor
 @Slf4j
 public class VetPlaceController {

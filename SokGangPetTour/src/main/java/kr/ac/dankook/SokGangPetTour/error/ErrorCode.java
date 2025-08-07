@@ -18,6 +18,12 @@ public enum ErrorCode {
     INVALID_TOKEN("A002","유효하지 않은 토큰입니다."),
     EXPIRED_TOKEN("A003","만료된 토큰입니다."),
 
+    // 채팅관련 에러
+    EXCEED_PARTICIPANT("C002","최대 참가 인원을 초과하였습니다."),
+    RANGE_ERROR_PARTICIPANT("C002","채팅방에 참여한 참가자가 존재하지 않습니다"),
+    DELAY_JOIN_CHATROOM("C003","채팅방 참여가 잠시 지연되었습니다. 3분 내로 입장 처리 하겠습니다."),
+    DELAY_LEAVE_CHATROOM("C004","채팅방 나가기가 잠시 지연되었습니다. 잠시만 기다려주세요."),
+    ALREADY_JOIN_CHATROOM("C005","이미 해당 채팅방에 참여중입니다."),
     // 권한관련 에러
     ACCESS_DENIED("P001","접근 권한이 존재하지 않습니다."),
 

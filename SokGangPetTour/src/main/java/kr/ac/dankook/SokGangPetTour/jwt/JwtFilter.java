@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import kr.ac.dankook.SokGangPetTour.error.ErrorCode;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,32 +31,24 @@ public class JwtFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
 
-        String requestURI = request.getRequestURI();
-        if (requestURI.startsWith("/auth/identity/") || requestURI.startsWith("/api/tour")
-            || requestURI.startsWith("/api/vet") || requestURI.startsWith("/api")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
         String authToken = resolveToken(request);
         if (!StringUtils.hasText(authToken)) {
-//            jwtErrorResponseHandler.sendErrorResponseProcess(response,
-//                    TokenErrorCode.UNAUTHORIZED_ACCESS_TOKEN_REQUIRED);
+            jwtErrorResponseHandler.sendErrorResponse(response, ErrorCode.UNAUTHORIZED);
             return;
         }
         try{
             Authentication authentication = jwtTokenProvider.validateToken(authToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }catch (JWTVerificationException e) {
-            log.error("Jwt Verification Exception - {}",e.getMessage());
             request.setAttribute("exception", e);
         }
         filterChain.doFilter(request,response);
     }
 
-    private String resolveToken(HttpServletRequest request){
+    private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)){
-            return bearerToken.substring(7);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith(BEARER_PREFIX)) {
+            return bearerToken.substring(BEARER_PREFIX.length());
         }
         return null;
     }

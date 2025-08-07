@@ -10,7 +10,7 @@ public enum ErrorCode {
 
     // 회원관련 에러
     MEMBER_NOT_FOUND("M001","회원을 찾을 수 없습니다."),
-    DUPLICATE_EMAIL("M002","이미 존재하는 이메일입니다."),
+    DUPLICATE_ID("M002","이미 존재하는 아이디입니다."),
     INVALID_PASSWORD("M003","비밀번호가 일치하지 않습니다."),
 
     // 인증관련 에러

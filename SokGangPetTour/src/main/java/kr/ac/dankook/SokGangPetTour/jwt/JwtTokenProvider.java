@@ -3,8 +3,8 @@ package kr.ac.dankook.SokGangPetTour.jwt;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import kr.ac.dankook.SokGangPetTour.config.principal.PrincipalDetails;
-import kr.ac.dankook.SokGangPetTour.dto.response.authResponse.TokenResponse;
 import kr.ac.dankook.SokGangPetTour.entity.Member;
+import kr.ac.dankook.SokGangPetTour.entity.TokenType;
 import kr.ac.dankook.SokGangPetTour.repository.MemberRepository;
 import kr.ac.dankook.SokGangPetTour.util.EncryptionUtil;
 import lombok.RequiredArgsConstructor;
@@ -28,45 +28,44 @@ public class JwtTokenProvider {
     public static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 30; // 30 day
     private final MemberRepository memberRepository;
 
-    public TokenResponse generateToken(Authentication authentication) {
+    // 토큰 생성
+    public String generateToken(Authentication authentication,TokenType tokenType) {
 
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-        log.info("Login User Id : {}",principalDetails.getMember().getUserId());
+        Member member = principalDetails.getMember();
 
         long now = (new Date()).getTime();
 
-        String accessToken = JWT.create()
-                .withSubject(principalDetails.getUsername())
-                .withExpiresAt(new Date(now + ACCESS_TOKEN_EXPIRE_TIME))
-                .withClaim("key", EncryptionUtil.encrypt(principalDetails.getMember().getId()))
-                .withClaim("userId",principalDetails.getMember().getUserId())
-                .withClaim("name",principalDetails.getMember().getName())
-                .sign(Algorithm.HMAC512(secretKey));
+        Date expired = tokenType == TokenType.ACCESS_TOKEN ?
+                new Date(now + ACCESS_TOKEN_EXPIRE_TIME) :
+                new Date(now + REFRESH_TOKEN_EXPIRE_TIME);
 
-        String refreshToken = JWT.create()
+        return JWT.create()
                 .withSubject(principalDetails.getUsername())
-                .withExpiresAt(new Date(now + REFRESH_TOKEN_EXPIRE_TIME))
-                .withClaim("key",EncryptionUtil.encrypt(principalDetails.getMember().getId()))
-                .withClaim("userId",principalDetails.getMember().getUserId())
-                .withClaim("name",principalDetails.getMember().getName())
+                .withExpiresAt(expired)
+                // AES 암호화된 키
+                .withClaim("key", EncryptionUtil.encrypt(member.getId()))
+                // 사용자 권한
+                .withClaim("role",member.getRole().getTitle())
                 .sign(Algorithm.HMAC512(secretKey));
-        return new TokenResponse(accessToken,refreshToken);
     }
 
+    // Token 검증
     public Authentication validateToken(String jwtToken){
-        String userId = getUserIdFromToken(jwtToken);
-        Optional<Member> memberEntity = memberRepository.findByUserId(userId);
-        if (memberEntity.isPresent()) {
-            PrincipalDetails principalDetails = new PrincipalDetails(memberEntity.get());
+        String key = getUserKeyFromToken(jwtToken);
+        Long decryptId = EncryptionUtil.decrypt(key);
+        // DB 부하 감소를 위해 Redis 사용 고려
+        Optional<Member> entity = memberRepository.findById(decryptId);
+        if (entity.isPresent()) {
+            PrincipalDetails principalDetails = new PrincipalDetails(entity.get());
             return new UsernamePasswordAuthenticationToken(
                     principalDetails, jwtToken, principalDetails.getAuthorities());
         }
         return null;
     }
 
-    public String getUserIdFromToken(String jwtToken){
+    private String getUserKeyFromToken(String jwtToken){
         return JWT.require(Algorithm.HMAC512(secretKey))
-                .build().verify(jwtToken).getClaim("userId")
-                .asString();
+                .build().verify(jwtToken).getClaim("key").asString();
     }
 }

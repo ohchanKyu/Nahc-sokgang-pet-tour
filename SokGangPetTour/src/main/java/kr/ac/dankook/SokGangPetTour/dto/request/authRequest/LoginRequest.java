@@ -1,14 +1,12 @@
 package kr.ac.dankook.SokGangPetTour.dto.request.authRequest;
 
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
-@NoArgsConstructor
-public class SignInRequest {
+public class LoginRequest {
 
     @NotBlank(message = "ID is Required.")
     private String userId;

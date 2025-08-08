@@ -1,5 +1,7 @@
 package kr.ac.dankook.SokGangPetTour.service.auth;
 
+import com.auth0.jwt.exceptions.JWTVerificationException;
+import kr.ac.dankook.SokGangPetTour.config.principal.PrincipalDetails;
 import kr.ac.dankook.SokGangPetTour.dto.request.authRequest.LoginRequest;
 import kr.ac.dankook.SokGangPetTour.dto.request.authRequest.MailRequest;
 import kr.ac.dankook.SokGangPetTour.dto.request.authRequest.SignupRequest;
@@ -17,11 +19,13 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -78,10 +82,39 @@ public class AuthService {
         Authentication authentication = authenticationManager.getObject()
                 .authenticate(authenticationToken);
 
+        return createTokenAndSaveInCache(authentication,loginRequest.getUserId());
+    }
+
+    public TokenResponse reissueToken(String refreshToken){
+
+        Authentication authentication;
+        try{
+            authentication = jwtTokenProvider.validateToken(refreshToken);
+        }catch (JWTVerificationException e){
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        }
+
+        PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+        String userId = principalDetails.getUsername();
+
+        Optional<String> existRefreshToken = authCacheService.getRefreshToken(userId);
+        if (existRefreshToken.isEmpty() || !existRefreshToken.get().equals(refreshToken)){
+            throw new CustomException(ErrorCode.BAD_CREDENTIAL);
+        }
+        return createTokenAndSaveInCache(authentication,userId);
+    }
+
+    public void logout(String userId){
+        authCacheService.deleteKey(userId);
+        SecurityContextHolder.clearContext();
+    }
+
+    private TokenResponse createTokenAndSaveInCache(Authentication authentication,String userId){
         TokenResponse tokens = new TokenResponse(
                 jwtTokenProvider.generateToken(authentication, TokenType.ACCESS_TOKEN),
                 jwtTokenProvider.generateToken(authentication,TokenType.REFRESH_TOKEN)
         );
+        authCacheService.saveRefreshToken(userId, tokens.getRefreshToken());
         return tokens;
     }
 }

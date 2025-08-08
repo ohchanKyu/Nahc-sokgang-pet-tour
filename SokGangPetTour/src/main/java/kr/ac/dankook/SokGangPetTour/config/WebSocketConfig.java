@@ -13,7 +13,7 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @RequiredArgsConstructor
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    private StompHandler stompHandler;
+    private final StompHandler stompHandler;
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {

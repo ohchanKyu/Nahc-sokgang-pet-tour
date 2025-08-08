@@ -23,7 +23,7 @@ public class RedisChatSubscriber {
                     DESTINATION_PREFIX + chatMessage.getRoomId() , chatMessage
             );
         }catch (Exception e){
-            log.error("Exception during sending chatting - {}", e.getMessage());
+            log.error("Failed to deserialize chat message: {}", e.getMessage());
         }
     }
 }

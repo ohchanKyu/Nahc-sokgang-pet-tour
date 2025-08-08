@@ -3,6 +3,7 @@ package kr.ac.dankook.SokGangPetTour.entity.chat;
 import jakarta.persistence.*;
 import kr.ac.dankook.SokGangPetTour.entity.BaseEntity;
 import kr.ac.dankook.SokGangPetTour.entity.Member;
+import kr.ac.dankook.SokGangPetTour.entity.chatBot.ChatBotRoom;
 import kr.ac.dankook.SokGangPetTour.error.ErrorCode;
 import kr.ac.dankook.SokGangPetTour.error.exception.CustomException;
 import lombok.AccessLevel;
@@ -12,6 +13,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="chat_room")
@@ -29,8 +32,7 @@ public class ChatRoom extends BaseEntity {
     private String description;
 
     @Column(nullable = false)
-    @ColumnDefault("300")
-    private int maxParticipants;
+    private int maxParticipants = 300;
     private int currentParticipants;
 
     @Enumerated(EnumType.STRING)
@@ -39,6 +41,7 @@ public class ChatRoom extends BaseEntity {
 
     private String lastMessage;
     private LocalDateTime lastMessageTime;
+    private Long lastMessageNumber;
 
     @Version
     private Long version;
@@ -46,6 +49,9 @@ public class ChatRoom extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="member_id", nullable = false)
     private Member member;
+
+    @OneToMany(mappedBy = "chatRoom", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private final List<ChatRoomParticipant> chatRoomParticipants = new ArrayList<>();
 
     @Builder
     public ChatRoom(String name, String description, int maxParticipants,Member createdMember) {
@@ -55,6 +61,7 @@ public class ChatRoom extends BaseEntity {
         this.member = createdMember;
         this.currentParticipants = 1;
         this.status = ChatRoomStatus.READ_WRITE;
+        this.lastMessageNumber = 0L;
     }
 
     public void increaseParticipants() {
@@ -74,6 +81,7 @@ public class ChatRoom extends BaseEntity {
     public void updateMessages(String lastMessage){
         this.lastMessage = lastMessage;
         this.lastMessageTime = LocalDateTime.now();
+        this.lastMessageNumber++;
     }
 
     public void updateChatRoomStatus(ChatRoomStatus status){

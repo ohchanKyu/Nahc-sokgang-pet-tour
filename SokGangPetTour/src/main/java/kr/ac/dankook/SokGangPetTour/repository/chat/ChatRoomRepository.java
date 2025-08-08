@@ -10,7 +10,6 @@ import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
-
 import java.util.Optional;
 
 @Repository
@@ -19,11 +18,12 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom,Long> {
     @Query("select c from ChatRoom c where c.name LIKE %:keyword% or c.description LIKE %:keyword%")
     Page<ChatRoom> searchByKeyword(@Param("keyword") String keyword, Pageable pageable);
 
-    @Query("select distinct c from ChatRoom c where c.member = :member")
-    Page<ChatRoom> findByMember(@Param("member") Member member, Pageable pageable);
-
     @Lock(LockModeType.OPTIMISTIC)
     @Query("select c from ChatRoom c where c.id = :id")
     Optional<ChatRoom> findByIdWithOptimisticLock(Long id);
+
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select c from ChatRoom c where c.id = :id")
+    Optional<ChatRoom> findByIdWithPessimisticLock(Long id);
 
 }

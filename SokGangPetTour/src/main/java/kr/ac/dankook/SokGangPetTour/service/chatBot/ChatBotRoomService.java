@@ -1,6 +1,5 @@
 package kr.ac.dankook.SokGangPetTour.service.chatBot;
 
-import kr.ac.dankook.SokGangPetTour.dto.request.chatBotRequest.ChatBotRoomCreateRequest;
 import kr.ac.dankook.SokGangPetTour.dto.response.chatBotResponse.ChatBotRoomResponse;
 import kr.ac.dankook.SokGangPetTour.entity.Member;
 import kr.ac.dankook.SokGangPetTour.entity.chatBot.ChatBotRoom;
@@ -24,16 +23,12 @@ public class ChatBotRoomService {
     private final ChatBotHistoryService chatBotHistoryService;
 
     @Transactional
-    public ChatBotRoomResponse saveNewChatBotRoom(ChatBotRoomCreateRequest request){
-
-        Long decryptId = EncryptionUtil.decrypt(request.getMemberId());
-        Member member = memberRepository.findById(decryptId)
-                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+    public ChatBotRoomResponse saveNewChatBotRoom(Member member,String title){
 
         ChatBotRoom chatBotRoom = ChatBotRoom.builder()
-                .title(request.getTitle()).member(member).build();
+                .title(title).member(member).build();
         ChatBotRoom newEntity = chatBotRoomRepository.save(chatBotRoom);
-        return covertToDtoResponse(newEntity);
+        return new ChatBotRoomResponse(newEntity);
     }
 
     @Transactional
@@ -42,7 +37,7 @@ public class ChatBotRoomService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
         List<ChatBotRoom> lists = chatBotRoomRepository.findChatBotRoomByMember(member);
-        return lists.stream().map(this::covertToDtoResponse).toList();
+        return lists.stream().map(ChatBotRoomResponse::new).toList();
     }
 
     @Transactional
@@ -50,13 +45,5 @@ public class ChatBotRoomService {
         Long decryptId = EncryptionUtil.decrypt(sessionId);
         chatBotRoomRepository.deleteById(decryptId);
         chatBotHistoryService.deleteChatBotHistory(sessionId);
-    }
-
-    private ChatBotRoomResponse covertToDtoResponse(ChatBotRoom chatBotRoom){
-        return ChatBotRoomResponse.builder()
-                .roomId(EncryptionUtil.encrypt(chatBotRoom.getId()))
-                .title(chatBotRoom.getTitle())
-                .lastMessage(chatBotRoom.getLastMessage())
-                .lastMessageTime(chatBotRoom.getLastMessageTime()).build();
     }
 }

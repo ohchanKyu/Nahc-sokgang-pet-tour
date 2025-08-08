@@ -22,7 +22,7 @@ public class ChatBotHistoryService {
 
     public List<ChatBotHistoryResponse> getAllChatBotHistory(String sessionId){
         List<ChatBotHistory> lists = chatBotHistoryRepository.findBySessionId(sessionId);
-        return lists.stream().map(this::convertToDtoResponse).toList();
+        return lists.stream().map(ChatBotHistoryResponse::new).toList();
     }
 
     @Transactional
@@ -38,13 +38,5 @@ public class ChatBotHistoryService {
 
     public void deleteChatBotHistory(String sessionId){
         chatBotHistoryRepository.deleteBySessionId(sessionId);
-    }
-
-    private ChatBotHistoryResponse convertToDtoResponse(ChatBotHistory chatBotHistory){
-        return ChatBotHistoryResponse.builder()
-                .sessionId(chatBotHistory.getSessionId())
-                .role(chatBotHistory.getRole())
-                .content(chatBotHistory.getContent())
-                .time(chatBotHistory.getTime()).build();
     }
 }

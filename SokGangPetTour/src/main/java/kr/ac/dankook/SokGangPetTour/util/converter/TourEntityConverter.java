@@ -9,7 +9,6 @@ import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.repeat.TourDetailRep
 import kr.ac.dankook.SokGangPetTour.dto.response.tourPlaceResponse.*;
 import kr.ac.dankook.SokGangPetTour.entity.tour.*;
 import kr.ac.dankook.SokGangPetTour.entity.tour.tourIntro.*;
-import org.springframework.transaction.annotation.Transactional;
 
 public class TourEntityConverter {
 

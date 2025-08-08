@@ -1,13 +1,12 @@
 package kr.ac.dankook.SokGangPetTour.controller;
 
 import jakarta.validation.Valid;
+import kr.ac.dankook.SokGangPetTour.config.principal.PrincipalDetails;
 import kr.ac.dankook.SokGangPetTour.dto.request.chatRequest.ChatRoomCreateRequest;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiMessageResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.chatResponse.ChatRoomResponse;
-import kr.ac.dankook.SokGangPetTour.entity.Member;
 import kr.ac.dankook.SokGangPetTour.facade.ChatRoomJoinFacade;
-import kr.ac.dankook.SokGangPetTour.service.auth.MemberService;
 import kr.ac.dankook.SokGangPetTour.service.chat.ChatRoomJoinService;
 import kr.ac.dankook.SokGangPetTour.service.chat.ChatRoomService;
 import kr.ac.dankook.SokGangPetTour.util.DecryptId;
@@ -17,7 +16,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -29,18 +27,17 @@ import java.util.List;
 public class ChatRoomController {
 
     private final ChatRoomService chatRoomService;
-    private final MemberService memberService;
     private final ChatRoomJoinService chatRoomJoinService;
     private final ChatRoomJoinFacade chatRoomJoinFacade;
 
     @PostMapping
     public ResponseEntity<ApiResponse<ChatRoomResponse>> createNewChatRoom(
             @RequestBody @Valid ChatRoomCreateRequest request,
-            @AuthenticationPrincipal User user
-            ){
-        Member member = memberService.getCurrentMember(user.getUsername());
+            @AuthenticationPrincipal PrincipalDetails user
+    )
+    {
         return ResponseEntity.status(201).body(new ApiResponse<>(true,201,
-                chatRoomService.saveNewChatRoom(member,request)));
+                chatRoomService.saveNewChatRoom(user.getMember(),request)));
     }
 
     @GetMapping
@@ -52,10 +49,10 @@ public class ChatRoomController {
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<List<ChatRoomResponse>>> getMyChatRooms(
-            @AuthenticationPrincipal User user) {
-        Member member = memberService.getCurrentMember(user.getUsername());
+            @AuthenticationPrincipal PrincipalDetails user)
+    {
         return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
-                chatRoomService.getMyChatRoomList(member)));
+                chatRoomService.getMyChatRoomList(user.getMember())));
     }
 
     @GetMapping("/search")
@@ -69,30 +66,27 @@ public class ChatRoomController {
     @GetMapping("/join/{roomId}")
     public ResponseEntity<ApiResponse<Boolean>> isJoinChatRoom(
             @PathVariable @DecryptId Long roomId,
-            @AuthenticationPrincipal User user
+            @AuthenticationPrincipal PrincipalDetails user
     ){
-        Member member = memberService.getCurrentMember(user.getUsername());
         return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
-                chatRoomJoinService.isJoinChatRoom(roomId, member)));
+                chatRoomJoinService.isJoinChatRoom(roomId, user.getMember())));
     }
 
     @PostMapping("/join/{roomId}")
     public ResponseEntity<ApiResponse<ChatRoomResponse>> joinChatRoom(
             @PathVariable @DecryptId Long roomId,
-            @AuthenticationPrincipal User user
+            @AuthenticationPrincipal PrincipalDetails user
     ) throws InterruptedException {
-        Member member = memberService.getCurrentMember(user.getUsername());
         return ResponseEntity.status(200).body(new ApiResponse<>(true,201,
-                chatRoomJoinFacade.joinChatRoom(roomId,member)));
+                chatRoomJoinFacade.joinChatRoom(roomId,user.getMember())));
     }
 
     @DeleteMapping("/join/{roomId}")
     public ResponseEntity<ApiMessageResponse> leaveChatRoom(
             @PathVariable @DecryptId Long roomId,
-            @AuthenticationPrincipal User user
+            @AuthenticationPrincipal PrincipalDetails user
     ) throws InterruptedException {
-        Member member = memberService.getCurrentMember(user.getUsername());
-        chatRoomJoinFacade.leaveChatRoom(roomId,member);
+        chatRoomJoinFacade.leaveChatRoom(roomId,user.getMember());
         return ResponseEntity.status(200).body(new ApiMessageResponse(true,200,
                 "채팅방을 성공적으로 나갔습니다."));
     }

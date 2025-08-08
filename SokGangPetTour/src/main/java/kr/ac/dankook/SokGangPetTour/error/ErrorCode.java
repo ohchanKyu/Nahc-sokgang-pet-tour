@@ -18,6 +18,7 @@ public enum ErrorCode {
     INVALID_TOKEN("A002","유효하지 않은 토큰입니다."),
     EXPIRED_TOKEN("A003","만료된 토큰입니다."),
     BAD_CREDENTIAL("A004","자격증명에 실패하였습니다."),
+    SEND_MAIL_ERROR("A005","이메일 인증 과정 중 오류가 발생하였습니다."),
 
     // 채팅관련 에러
     EXCEED_PARTICIPANT("C002","최대 참가 인원을 초과하였습니다."),

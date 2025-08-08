@@ -15,24 +15,24 @@ import lombok.NoArgsConstructor;
 @Builder
 public class SignupRequest {
 
-    @NotBlank(message = "Name is Required.")
-    @Size(min=2,max=50,message="Name must be between 2 and 50 characters.")
+    @NotBlank(message = "이름은 필수 항목입니다.")
+    @Size(min=2,max=50,message="이름은 2~50 글자만 가능합니다.")
     private String name;
 
-    @NotBlank(message = "Email is required.")
-    @Email(message = "Email format is invalid.")
+    @NotBlank(message = "이메일은 필수 항목입니다.")
+    @Email(message = "이메일 형식이 올바르지 않습니다.")
     private String email;
 
-    @NotBlank(message = "ID is required.")
-    @Size(min = 7, max = 30, message = "ID must be between 7 and 30 characters.")
-    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "ID can only contain alphanumeric characters.")
+    @NotBlank(message = "아이디는 필수 항목입니다.")
+    @Size(min = 7, max = 30, message = "아이디는 7~30 글자만 가능합니다.")
+    @Pattern(regexp = "^[a-zA-Z0-9]+$", message = "아이디는 영문 또는 숫자만 가능합니다.")
     private String userId;
 
-    @NotBlank(message = "Password is required.")
-    @Size(min = 8, message = "Password must be at least 8 characters long.")
+    @NotBlank(message = "비밀번호는 필수 항목입니다.")
+    @Size(min = 8, message = "비밀번호는 최소 8글자 이상이어야 합니다.")
     @Pattern(
         regexp = "^(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$",
-        message = "Password must include at least one number and one special character."
+        message = "비밀번호는 특수문자 1개와 숫자 1개가 반드시 포함되어야 합니다."
     )
     private String password;
 

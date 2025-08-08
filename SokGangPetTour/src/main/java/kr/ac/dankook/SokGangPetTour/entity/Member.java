@@ -40,6 +40,10 @@ public class Member extends BaseEntity{
         this.role = role;
     }
 
+    public void updatePassword(String newPassword){
+        this.password = newPassword;
+    }
+
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private final List<ChatBotRoom> chatBotRooms = new ArrayList<>();
 

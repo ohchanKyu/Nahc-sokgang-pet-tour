@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/tour/v1/sync")
+@RequestMapping("/api/v1/tour/sync")
 @RequiredArgsConstructor
 @Slf4j
 public class TourContentSyncController {

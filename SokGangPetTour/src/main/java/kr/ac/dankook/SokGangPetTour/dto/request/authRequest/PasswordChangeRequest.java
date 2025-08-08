@@ -12,13 +12,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PasswordChangeRequest {
 
-    @NotBlank(message = "Auth Mail Token is required.")
-    private String authMailToken;
-    @NotBlank(message = "New Password is required.")
-    @Size(min = 8, message = "Password must be at least 8 characters long.")
+    @NotBlank(message = "비밀번호는 필수 항목입니다.")
+    @Size(min = 8, message = "비밀번호는 최소 8글자 이상이어야 합니다.")
     @Pattern(
             regexp = "^(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,}$",
-            message = "Password must include at least one number and one special character."
+            message = "비밀번호는 특수문자 1개와 숫자 1개가 반드시 포함되어야 합니다."
     )
     private String newPassword;
 }

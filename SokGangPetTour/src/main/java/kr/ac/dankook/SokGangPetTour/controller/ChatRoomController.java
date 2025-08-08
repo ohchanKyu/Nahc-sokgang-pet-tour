@@ -20,6 +20,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/chatRooms")
@@ -43,12 +45,17 @@ public class ChatRoomController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<Page<ChatRoomResponse>>> getAllChatRooms(
-            @RequestParam(value = "is_me", required = false) boolean isMe,
-            @AuthenticationPrincipal User user,
             Pageable pageable) {
+        return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
+                chatRoomService.getAllChatRoomList(pageable)));
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<ApiResponse<List<ChatRoomResponse>>> getMyChatRooms(
+            @AuthenticationPrincipal User user) {
         Member member = memberService.getCurrentMember(user.getUsername());
         return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
-                chatRoomService.getChatRoomList(isMe,member,pageable)));
+                chatRoomService.getMyChatRoomList(member)));
     }
 
     @GetMapping("/search")

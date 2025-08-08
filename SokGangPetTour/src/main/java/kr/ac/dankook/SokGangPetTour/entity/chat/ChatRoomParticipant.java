@@ -2,10 +2,7 @@ package kr.ac.dankook.SokGangPetTour.entity.chat;
 
 import jakarta.persistence.*;
 import kr.ac.dankook.SokGangPetTour.entity.Member;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
 @Table(name="chat_room_participant")
@@ -25,9 +22,13 @@ public class ChatRoomParticipant {
     @JoinColumn(name = "chat_room_id", nullable = false)
     private ChatRoom chatRoom;
 
+    @Setter
+    private Long currentReadNumber;
+
     @Builder
     public ChatRoomParticipant(Member member,ChatRoom chatRoom){
         this.member = member;
         this.chatRoom = chatRoom;
+        this.currentReadNumber = 0L;
     }
 }

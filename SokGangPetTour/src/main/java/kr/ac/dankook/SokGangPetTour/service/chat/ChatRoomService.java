@@ -5,19 +5,16 @@ import kr.ac.dankook.SokGangPetTour.dto.response.chatResponse.ChatRoomResponse;
 import kr.ac.dankook.SokGangPetTour.entity.Member;
 import kr.ac.dankook.SokGangPetTour.entity.chat.ChatRoom;
 import kr.ac.dankook.SokGangPetTour.entity.chat.ChatRoomParticipant;
-import kr.ac.dankook.SokGangPetTour.error.ErrorCode;
-import kr.ac.dankook.SokGangPetTour.error.exception.CustomException;
-import kr.ac.dankook.SokGangPetTour.error.exception.EntityNotFoundException;
-import kr.ac.dankook.SokGangPetTour.repository.MemberRepository;
 import kr.ac.dankook.SokGangPetTour.repository.chat.ChatRoomParticipantRepository;
 import kr.ac.dankook.SokGangPetTour.repository.chat.ChatRoomRepository;
-import kr.ac.dankook.SokGangPetTour.util.EncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,10 +42,14 @@ public class ChatRoomService {
         return new ChatRoomResponse(newEntity);
     }
 
-    public Page<ChatRoomResponse> getChatRoomList(boolean isMe, Member member, Pageable pageable) {
-        Page<ChatRoom> chatRooms = isMe ?
-                chatRoomRepository.findByMember(member,pageable) :
-                chatRoomRepository.findAll(pageable);
+    public List<ChatRoomResponse> getMyChatRoomList(Member member) {
+        List<ChatRoomParticipant> chatRooms = chatRoomParticipantRepository
+                .findByMemberWithFetchJoin(member);
+        return chatRooms.stream().map(ChatRoomResponse::new).toList();
+    }
+
+    public Page<ChatRoomResponse> getAllChatRoomList(Pageable pageable){
+        Page<ChatRoom> chatRooms = chatRoomRepository.findAll(pageable);
         return chatRooms.map(ChatRoomResponse::new);
     }
 

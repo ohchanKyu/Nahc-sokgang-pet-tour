@@ -1,5 +1,6 @@
 package kr.ac.dankook.SokGangPetTour.controller;
 
+import kr.ac.dankook.SokGangPetTour.config.principal.PrincipalDetails;
 import kr.ac.dankook.SokGangPetTour.dto.request.chatRequest.ChatMessageRequest;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiMessageResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiResponse;
@@ -44,10 +45,9 @@ public class ChatController {
     @PatchMapping("/api/v1/chat/count/{roomId}")
     public ResponseEntity<ApiMessageResponse> clearUnreadMessages(
             @PathVariable @DecryptId Long roomId,
-            @AuthenticationPrincipal User user
+            @AuthenticationPrincipal PrincipalDetails user
     ){
-        Member member = memberService.getCurrentMember(user.getUsername());
-        chatService.updateUnreadMessages(roomId,member);
+        chatService.updateUnreadMessages(roomId, user.getMember());
         return ResponseEntity.status(200).body(new ApiMessageResponse(true,200,
                 "읽지 않은 메시지를 초기화하였습니다."));
     }

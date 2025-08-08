@@ -7,9 +7,7 @@ import kr.ac.dankook.SokGangPetTour.error.ErrorCode;
 import kr.ac.dankook.SokGangPetTour.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -23,7 +21,6 @@ public class AuthMailService {
     @Value("{spring.mail.username}")
     private String adminMailAddress;
     private final JavaMailSender mailSender;
-    private final RedisTemplate<String,String> redisTemplate;
 
 
     @Async

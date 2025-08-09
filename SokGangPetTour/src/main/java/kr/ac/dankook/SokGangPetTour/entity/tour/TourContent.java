@@ -9,7 +9,8 @@ import java.util.List;
 @Entity
 @Table(name = "tour_content")
 @Getter
-@NoArgsConstructor
+@Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Builder
 public class TourContent {
@@ -45,24 +46,23 @@ public class TourContent {
     // 장소 이름
     private String title;
     // 개요
-    @Setter
     @Column(columnDefinition = "TEXT")
     private String overview;
     
     // 소개 정보
-    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<TourDetailIntro> detailIntros = new ArrayList<>();
 
     // 반복정보
-    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<TourDetailRepeat> detailRepeats = new ArrayList<>();
 
     // 반려동물 동반 이미지
-    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<TourDetailImage> detailImages = new ArrayList<>();
 
     // 반려동물 동반 정보
-    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<TourDetailPet> detailPet;
 
 }

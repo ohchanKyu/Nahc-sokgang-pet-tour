@@ -6,7 +6,7 @@ import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.repeat.TourDetailRep
 import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.repeat.TourDetailRepeatRoomRequest;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiMessageResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.tourResponse.TourSyncResponse;
-import kr.ac.dankook.SokGangPetTour.service.tour.TourContentUpdateService;
+import kr.ac.dankook.SokGangPetTour.service.tour.TourContentSyncService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,99 +19,110 @@ import java.util.List;
 @Slf4j
 public class TourContentSyncController {
 
-    private final TourContentUpdateService tourContentUpdateService;
+    private final TourContentSyncService tourContentSyncService;
 
     @PostMapping("")
     public ResponseEntity<ApiMessageResponse> saveSyncData(
             @RequestBody List<TourContentRequest> list){
-        tourContentUpdateService.saveAllSyncPetTourData(list);
+        tourContentSyncService.saveAllSyncPetTourData(list);
         return ResponseEntity.status(201)
-                .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_SYNC_ALL_DATE.getMessage()));
+                .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_SYNC_DATA.getMessage()));
     }
 
     @PostMapping("/common/{contentId}")
-    public ResponseEntity<?> saveOverviewData(
+    public ResponseEntity<ApiMessageResponse> saveOverviewData(
             @PathVariable String contentId , @RequestBody String overview){
-        tourContentUpdateService.saveOverviewData(overview,contentId);
-        return ResponseEntity.ok("데이터 저장 완료");
+        tourContentSyncService.saveOverviewData(overview,contentId);
+        return ResponseEntity.status(201)
+                .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_COMMON_DATA.getMessage()));
     }
 
     @PostMapping("/pet/{contentId}")
-    public ResponseEntity<?> savePetData(
+    public ResponseEntity<ApiMessageResponse> savePetData(
             @PathVariable String contentId, @RequestBody List<TourDetailPetRequest> list){
-        tourContentUpdateService.savePetTourAccompanyingData(list,contentId);
-        return ResponseEntity.ok("데이터 저장 완료");
+        tourContentSyncService.savePetTourAccompanyingData(list,contentId);
+        return ResponseEntity.status(201)
+                .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_PET_DATA.getMessage()));
     }
 
     @PostMapping("/image/{contentId}")
-    public ResponseEntity<?> saveImageData(
+    public ResponseEntity<ApiMessageResponse> saveImageData(
             @PathVariable String contentId, @RequestBody List<TourDetailImageRequest> list){
-        tourContentUpdateService.savePetTourImageData(list,contentId);
-        return ResponseEntity.ok("데이터 저장 완료");
+        tourContentSyncService.savePetTourImageData(list,contentId);
+        return ResponseEntity.status(201)
+                .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_IMAGE_DATA.getMessage()));
     }
 
     @PostMapping("/repeat/common/{contentId}")
-    public ResponseEntity<?> saveRepeatCommonData(
+    public ResponseEntity<ApiMessageResponse> saveRepeatCommonData(
             @PathVariable String contentId, @RequestBody List<TourDetailRepeatCommonRequest> list){
-        tourContentUpdateService.savePetTourRepeatCommonData(list,contentId);
-        return ResponseEntity.ok("데이터 저장 완료");
+        tourContentSyncService.savePetTourRepeatCommonData(list,contentId);
+        return ResponseEntity.status(201)
+                .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_REPEAT_DATA.getMessage()));
     }
 
     @PostMapping("/repeat/room/{contentId}")
-    public ResponseEntity<?> saveRepeatRoomData(
+    public ResponseEntity<ApiMessageResponse> saveRepeatRoomData(
             @PathVariable String contentId, @RequestBody List<TourDetailRepeatRoomRequest> list){
-        tourContentUpdateService.savePetTourRepeatRoomData(list,contentId);
-        return ResponseEntity.ok("데이터 저장 완료");
+        tourContentSyncService.savePetTourRepeatRoomData(list,contentId);
+        return ResponseEntity.status(201)
+                .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_REPEAT_DATA.getMessage()));
     }
 
     @PostMapping("/intro/culture/{contentId}")
-    public ResponseEntity<?> saveIntroCultureData(
+    public ResponseEntity<ApiMessageResponse> saveIntroCultureData(
             @PathVariable String contentId,
             @RequestBody List<TourDetailIntroCultureRequest> list) {
 
-        tourContentUpdateService.savePetTourIntroCultureData(list, contentId);
-        return ResponseEntity.ok("데이터 저장 완료");
+        tourContentSyncService.savePetTourIntroCultureData(list, contentId);
+        return ResponseEntity.status(201)
+                .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_INTRO_DATA.getMessage()));
     }
 
     @PostMapping("/intro/food/{contentId}")
-    public ResponseEntity<?> saveIntroFoodData(
+    public ResponseEntity<ApiMessageResponse> saveIntroFoodData(
             @PathVariable String contentId,
             @RequestBody List<TourDetailIntroFoodRequest> list) {
 
-        tourContentUpdateService.savePetTourIntroFoodData(list, contentId);
-        return ResponseEntity.ok("데이터 저장 완료");
+        tourContentSyncService.savePetTourIntroFoodData(list, contentId);
+        return ResponseEntity.status(201)
+                .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_INTRO_DATA.getMessage()));
     }
 
     @PostMapping("/intro/leports/{contentId}")
-    public ResponseEntity<?> saveIntroLeportsData(
+    public ResponseEntity<ApiMessageResponse> saveIntroLeportsData(
             @PathVariable String contentId,
             @RequestBody List<TourDetailIntroLeportsRequest> list) {
 
-        tourContentUpdateService.savePetTourIntroLeportsData(list, contentId);
-        return ResponseEntity.ok("데이터 저장 완료");
+        tourContentSyncService.savePetTourIntroLeportsData(list, contentId);
+        return ResponseEntity.status(201)
+                .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_INTRO_DATA.getMessage()));
     }
 
     @PostMapping("/intro/lodging/{contentId}")
-    public ResponseEntity<?> saveIntroLodgingData(
+    public ResponseEntity<ApiMessageResponse> saveIntroLodgingData(
             @PathVariable String contentId,
             @RequestBody List<TourDetailIntroLodgingRequest> list) {
-        tourContentUpdateService.savePetTourIntroLodgingData(list, contentId);
-        return ResponseEntity.ok("데이터 저장 완료");
+        tourContentSyncService.savePetTourIntroLodgingData(list, contentId);
+        return ResponseEntity.status(201)
+                .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_INTRO_DATA.getMessage()));
     }
 
     @PostMapping("/intro/shopping/{contentId}")
-    public ResponseEntity<?> saveIntroShoppingData(
+    public ResponseEntity<ApiMessageResponse> saveIntroShoppingData(
             @PathVariable String contentId,
             @RequestBody List<TourDetailIntroShoppingRequest> list) {
-        tourContentUpdateService.savePetTourIntroShoppingData(list, contentId);
-        return ResponseEntity.ok("데이터 저장 완료");
+        tourContentSyncService.savePetTourIntroShoppingData(list, contentId);
+        return ResponseEntity.status(201)
+                .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_INTRO_DATA.getMessage()));
     }
 
     @PostMapping("/intro/tourist/{contentId}")
-    public ResponseEntity<?> saveIntroTouristData(
+    public ResponseEntity<ApiMessageResponse> saveIntroTouristData(
             @PathVariable String contentId,
             @RequestBody List<TourDetailIntroTouristRequest> list) {
-        tourContentUpdateService.savePetTourIntroTouristData(list, contentId);
-        return ResponseEntity.ok("데이터 저장 완료");
+        tourContentSyncService.savePetTourIntroTouristData(list, contentId);
+        return ResponseEntity.status(201)
+                .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_INTRO_DATA.getMessage()));
     }
 }

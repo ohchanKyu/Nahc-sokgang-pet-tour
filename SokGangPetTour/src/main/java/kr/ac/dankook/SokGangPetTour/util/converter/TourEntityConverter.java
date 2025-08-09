@@ -32,6 +32,26 @@ public class TourEntityConverter {
                 .title(tourContent.getTitle())
                 .overview(tourContent.getOverview()).build();
     }
+
+    public static TourContent updateTourContentFromDto(TourContent entity, TourContentRequest dto) {
+        entity.setAddress(dto.getAddress());
+        entity.setDetailAddress(dto.getDetailAddress());
+        entity.setPostCode(dto.getPostCode());
+        entity.setAreaCode(dto.getAreaCode());
+        entity.setSigunguCode(dto.getSigunguCode());
+        entity.setCat1(dto.getCat1());
+        entity.setCat2(dto.getCat2());
+        entity.setCat3(dto.getCat3());
+        entity.setContentTypeId(dto.getContentTypeId());
+        entity.setOriginalImageUrl(dto.getOriginalImageUrl());
+        entity.setThumbnailImageUrl(dto.getThumbnailImageUrl());
+        entity.setLongitude(dto.getLongitude());
+        entity.setLatitude(dto.getLatitude());
+        entity.setTelephone(dto.getTelephone());
+        entity.setTitle(dto.getTitle());
+        return entity;
+    }
+
     // TourDetailImage -> TourDetailImageResponse
     public static TourDetailImageResponse convertToTourDetailImageResponse(TourDetailImage image) {
         return TourDetailImageResponse.builder()

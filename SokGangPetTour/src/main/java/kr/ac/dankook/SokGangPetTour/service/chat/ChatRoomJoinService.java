@@ -1,7 +1,9 @@
 package kr.ac.dankook.SokGangPetTour.service.chat;
 
+import kr.ac.dankook.SokGangPetTour.config.redis.RedisChatSubscriber;
 import kr.ac.dankook.SokGangPetTour.dto.response.chatResponse.ChatRoomResponse;
 import kr.ac.dankook.SokGangPetTour.entity.Member;
+import kr.ac.dankook.SokGangPetTour.entity.MessageType;
 import kr.ac.dankook.SokGangPetTour.entity.chat.ChatRoom;
 import kr.ac.dankook.SokGangPetTour.entity.chat.ChatRoomParticipant;
 import kr.ac.dankook.SokGangPetTour.entity.chat.ChatRoomStatus;
@@ -11,6 +13,7 @@ import kr.ac.dankook.SokGangPetTour.error.exception.EntityNotFoundException;
 import kr.ac.dankook.SokGangPetTour.event.EventDeleteChatRoom;
 import kr.ac.dankook.SokGangPetTour.repository.chat.ChatRoomParticipantRepository;
 import kr.ac.dankook.SokGangPetTour.repository.chat.ChatRoomRepository;
+import kr.ac.dankook.SokGangPetTour.util.EncryptionUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
@@ -27,6 +30,7 @@ public class ChatRoomJoinService {
     private final ChatRoomParticipantRepository chatRoomParticipantRepository;
     private final ChatRoomRepository chatRoomRepository;
     private final ApplicationEventPublisher eventPublisher;
+    private final RedisChatSubscriber redisChatSubscriber;
 
     public boolean isJoinChatRoom(Long roomId, Member member){
 
@@ -39,7 +43,7 @@ public class ChatRoomJoinService {
     }
 
     @Transactional
-    public ChatRoomResponse joinChatRoom(Long roomId, Member member){
+    public ChatRoomResponse joinChatRoom(Long roomId,String nickname,Member member){
 
         ChatRoom chatRoom = chatRoomRepository.findByIdWithOptimisticLock(roomId)
                 .orElseThrow(() -> new EntityNotFoundException("채팅방을 찾을 수 없습니다."));
@@ -50,13 +54,17 @@ public class ChatRoomJoinService {
         chatRoomRepository.saveAndFlush(chatRoom);
 
         ChatRoomParticipant newParticipant = ChatRoomParticipant.builder()
-                .chatRoom(chatRoom).member(member).build();
+                .chatRoom(chatRoom).member(member).nickname(nickname).build();
         chatRoomParticipantRepository.save(newParticipant);
+
+        // 입장 채팅 전송
+        redisChatSubscriber.handleExitAndEnterMessage(EncryptionUtil.encrypt(roomId),
+                nickname, MessageType.ENTER);
         return new ChatRoomResponse(chatRoom);
     }
 
     @Transactional
-    public void leaveChatRoom(Long roomId, Member member){
+    public void leaveChatRoom(Long roomId,Member member){
 
         ChatRoom chatRoom = chatRoomRepository.findByIdWithOptimisticLock(roomId)
                 .orElseThrow(() -> new EntityNotFoundException("채팅방을 찾을 수 없습니다."));
@@ -72,5 +80,8 @@ public class ChatRoomJoinService {
         }
         chatRoomRepository.save(chatRoom);
         chatRoomParticipantRepository.delete(participant);
+        // 퇴장 채팅 전송
+        redisChatSubscriber.handleExitAndEnterMessage(EncryptionUtil.encrypt(roomId),
+                participant.getNickname(), MessageType.QUIT);
     }
 }

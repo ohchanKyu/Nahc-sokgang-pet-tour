@@ -14,12 +14,14 @@ public class ChatResponse {
     private String memberId;
     private String roomId;
     private String message;
+    private String nickname;
     private LocalDateTime time;
 
     @Builder
     public ChatResponse(ChatMessage chatMessage) {
         this.memberId = chatMessage.getMemberId();
         this.roomId = chatMessage.getRoomId();
+        this.nickname = chatMessage.getNickname();
         this.message = chatMessage.getContent();
         this.time = chatMessage.getTime();
     }

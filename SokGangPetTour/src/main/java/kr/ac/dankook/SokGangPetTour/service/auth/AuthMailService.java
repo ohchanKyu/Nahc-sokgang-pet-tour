@@ -39,7 +39,7 @@ public class AuthMailService {
             mailSender.send(mimeMessage);
         }catch (MessagingException e){
             log.error("Failed to send mail - {}", e.getMessage());
-            throw new CustomException(ErrorCode.SEND_MAIL_ERROR);
+            throw new CustomException(ErrorCode.CERTIFICATE_SEND_MAIL_ERROR);
         }
     }
 

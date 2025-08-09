@@ -49,6 +49,7 @@ public class ChatService {
         ChatMessage chatMessage = ChatMessage.builder()
                 .memberId(request.getMemberId())
                 .roomId(request.getRoomId())
+                .nickname(request.getNickname())
                 .content(request.getMessage()).build();
         chatMessageRepository.save(chatMessage);
     }

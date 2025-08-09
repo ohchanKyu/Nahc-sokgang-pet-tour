@@ -16,15 +16,14 @@ import org.springframework.stereotype.Component;
 public class ChatRoomJoinFacade {
 
     private final ChatRoomJoinService chatRoomJoinService;
-    private final ChatRoomRepository chatRoomRepository;
     private static final int RETRY_DELAY_MS = 50;
     private static final int MAX_RETRY_COUNT = 20;
 
-    public ChatRoomResponse joinChatRoom(Long chatRoomId, Member member) throws InterruptedException {
+    public ChatRoomResponse joinChatRoom(Long chatRoomId, String nickname, Member member) throws InterruptedException {
         int retryCount = 0;
         while(retryCount < MAX_RETRY_COUNT) {
             try{
-                return chatRoomJoinService.joinChatRoom(chatRoomId,member);
+                return chatRoomJoinService.joinChatRoom(chatRoomId,nickname, member);
             }catch (Exception e){
                 retryCount++;
                 Thread.sleep(RETRY_DELAY_MS);
@@ -37,7 +36,7 @@ public class ChatRoomJoinFacade {
         int retryCount = 0;
         while(retryCount < MAX_RETRY_COUNT) {
             try{
-                chatRoomJoinService.leaveChatRoom(chatRoomId,member);
+                chatRoomJoinService.leaveChatRoom(chatRoomId, member);
             }catch (Exception e){
                 retryCount++;
                 Thread.sleep(RETRY_DELAY_MS);

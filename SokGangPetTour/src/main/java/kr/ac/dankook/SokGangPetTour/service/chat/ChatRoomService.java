@@ -37,7 +37,8 @@ public class ChatRoomService {
 
         // 채팅방 참여자 생성
         ChatRoomParticipant participant = ChatRoomParticipant.builder()
-                .chatRoom(newEntity).member(member).build();
+                .chatRoom(newEntity).member(member)
+                .nickname(chatRoomCreateRequest.getNickname()).build();
         chatRoomParticipantRepository.save(participant);
         return new ChatRoomResponse(newEntity);
     }

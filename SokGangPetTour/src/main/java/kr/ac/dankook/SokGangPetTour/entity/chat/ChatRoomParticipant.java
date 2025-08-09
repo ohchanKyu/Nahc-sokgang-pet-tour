@@ -24,11 +24,14 @@ public class ChatRoomParticipant {
 
     @Setter
     private Long currentReadNumber;
+    @Setter
+    private String nickname;
 
     @Builder
-    public ChatRoomParticipant(Member member,ChatRoom chatRoom){
+    public ChatRoomParticipant(Member member,ChatRoom chatRoom,String nickname){
         this.member = member;
         this.chatRoom = chatRoom;
+        this.nickname = nickname;
         this.currentReadNumber = 0L;
     }
 }

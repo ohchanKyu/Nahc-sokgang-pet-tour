@@ -20,14 +20,16 @@ public class ChatMessage {
     private String roomId;
     @Field("member_id")
     private String memberId;
+    private String nickname;
     private String content;
     private LocalDateTime time;
 
     @Builder
-    public ChatMessage(String roomId, String memberId, String content) {
+    public ChatMessage(String roomId, String memberId, String content,String nickname) {
         this.roomId = roomId;
         this.memberId = memberId;
         this.content = content;
+        this.nickname = nickname;
         this.time = LocalDateTime.now();
     }
 }

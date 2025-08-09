@@ -75,10 +75,11 @@ public class ChatRoomController {
     @PostMapping("/join/{roomId}")
     public ResponseEntity<ApiResponse<ChatRoomResponse>> joinChatRoom(
             @PathVariable @DecryptId Long roomId,
+            @RequestParam("nickname") String nickname,
             @AuthenticationPrincipal PrincipalDetails user
     ) throws InterruptedException {
         return ResponseEntity.status(200).body(new ApiResponse<>(true,201,
-                chatRoomJoinFacade.joinChatRoom(roomId,user.getMember())));
+                chatRoomJoinFacade.joinChatRoom(roomId,nickname,user.getMember())));
     }
 
     @DeleteMapping("/join/{roomId}")

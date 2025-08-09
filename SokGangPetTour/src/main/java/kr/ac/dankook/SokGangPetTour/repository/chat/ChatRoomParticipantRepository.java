@@ -18,4 +18,6 @@ public interface ChatRoomParticipantRepository extends JpaRepository<ChatRoomPar
 
     @Query("select p from ChatRoomParticipant p JOIN FETCH p.chatRoom where p.member = :member")
     List<ChatRoomParticipant> findByMemberWithFetchJoin(@Param("member") Member member);
+
+    List<ChatRoomParticipant> findByChatRoom(ChatRoom chatRoom);
 }

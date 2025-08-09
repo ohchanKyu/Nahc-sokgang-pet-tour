@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 
 @Getter
 @Setter
-@Builder
 public class ChatBotHistoryResponse {
 
     private String sessionId;

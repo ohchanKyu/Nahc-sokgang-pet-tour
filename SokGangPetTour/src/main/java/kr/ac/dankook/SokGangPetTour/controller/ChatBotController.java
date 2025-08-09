@@ -3,7 +3,6 @@ package kr.ac.dankook.SokGangPetTour.controller;
 import jakarta.validation.Valid;
 import kr.ac.dankook.SokGangPetTour.config.principal.PrincipalDetails;
 import kr.ac.dankook.SokGangPetTour.dto.request.chatBotRequest.ChatBotCreateRequest;
-import kr.ac.dankook.SokGangPetTour.dto.request.chatBotRequest.ChatBotRoomCreateRequest;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiMessageResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.chatBotResponse.ChatBotHistoryResponse;

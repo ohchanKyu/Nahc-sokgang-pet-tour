@@ -5,6 +5,7 @@ import kr.ac.dankook.SokGangPetTour.error.ErrorCode;
 import kr.ac.dankook.SokGangPetTour.error.exception.CustomException;
 import kr.ac.dankook.SokGangPetTour.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,6 +15,7 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class PrincipalDetailsService implements UserDetailsService {
 
     private final MemberRepository memberRepository;
@@ -22,6 +24,6 @@ public class PrincipalDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<Member> memberEntity = memberRepository.findByUserId(username);
         return memberEntity.map(PrincipalDetails::new)
-                .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.BAD_CREDENTIAL));
     }
 }

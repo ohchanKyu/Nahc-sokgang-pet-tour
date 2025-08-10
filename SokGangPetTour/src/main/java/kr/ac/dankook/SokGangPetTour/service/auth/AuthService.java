@@ -16,6 +16,8 @@ import kr.ac.dankook.SokGangPetTour.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -77,12 +79,16 @@ public class AuthService {
 
     public TokenResponse login(LoginRequest loginRequest){
 
-        UsernamePasswordAuthenticationToken authenticationToken
-                = new UsernamePasswordAuthenticationToken(loginRequest.getUserId(),loginRequest.getPassword());
-        Authentication authentication = authenticationManager.getObject()
-                .authenticate(authenticationToken);
+        try{
+            UsernamePasswordAuthenticationToken authenticationToken
+                    = new UsernamePasswordAuthenticationToken(loginRequest.getUserId(),loginRequest.getPassword());
+            Authentication authentication = authenticationManager.getObject()
+                    .authenticate(authenticationToken);
 
-        return createTokenAndSaveInCache(authentication,loginRequest.getUserId());
+            return createTokenAndSaveInCache(authentication,loginRequest.getUserId());
+        }catch (InternalAuthenticationServiceException | BadCredentialsException e){
+            throw new CustomException(ErrorCode.BAD_CREDENTIAL);
+        }
     }
 
     public TokenResponse reissueToken(String refreshToken){

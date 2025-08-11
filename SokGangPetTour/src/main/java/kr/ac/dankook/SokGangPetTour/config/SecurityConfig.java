@@ -46,7 +46,7 @@ public class SecurityConfig {
                         authorizeRequests
                                 .requestMatchers("/api/v1/auth/**","/ws","/pub","/sub").permitAll()
                                 .requestMatchers("/api/v1/tour/sync/**").hasRole("ADMIN")
-                                .anyRequest().permitAll()
+                                .anyRequest().authenticated()
                 )
                 .addFilterBefore(new JwtFilter(jwtTokenProvider, jwtErrorResponseHandler), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling((except) -> except.accessDeniedHandler(jwtAccessDeniedHandler)

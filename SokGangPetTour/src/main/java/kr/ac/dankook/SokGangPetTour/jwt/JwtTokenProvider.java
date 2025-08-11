@@ -66,6 +66,7 @@ public class JwtTokenProvider {
 
     private String getUserKeyFromToken(String jwtToken){
         return JWT.require(Algorithm.HMAC512(secretKey))
-                .build().verify(jwtToken).getClaim("key").asString();
+                .build().verify(jwtToken).getClaim("key")
+                .asString();
     }
 }

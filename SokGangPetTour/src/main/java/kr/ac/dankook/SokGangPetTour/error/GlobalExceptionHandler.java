@@ -4,8 +4,7 @@ import kr.ac.dankook.SokGangPetTour.error.exception.CustomException;
 import kr.ac.dankook.SokGangPetTour.error.exception.EntityNotFoundException;
 import kr.ac.dankook.SokGangPetTour.error.exception.ExternalApiException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.Ordered;
-import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -24,19 +23,19 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public ResponseEntity<ErrorResponse> handleCustomException(CustomException e) {
         ErrorCode errorCode = e.getErrorCode();
-        return ResponseEntity.status(500)
+        return ResponseEntity.status(errorCode.getHttpStatus())
                 .body(new ErrorResponse(errorCode.getCode(),errorCode.getMessage()));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException e) {
-        return ResponseEntity.status(404)
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErrorResponse("E001", e.getMessage()));
     }
 
     @ExceptionHandler(IllegalStateException.class)
     public ResponseEntity<ErrorResponse> handleIllegalStateException(IllegalStateException e) {
-        return ResponseEntity.status(401)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse("E002", e.getMessage()));
     }
 
@@ -48,20 +47,20 @@ public class GlobalExceptionHandler {
         String errorMessages = fieldErrors.stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.joining(", "));
-        return ResponseEntity.status(401)
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse("E003",errorMessages));
     }
 
     @ExceptionHandler(ExternalApiException.class)
     public ResponseEntity<ErrorResponse> handleExternalApiException(ExternalApiException e) {
-        return ResponseEntity.status(500)
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse("E004",e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleException(Exception e){
-        log.error("Unexpected error occurred : ", e);
-        return ResponseEntity.status(500)
+        log.error("Unexpected error occurred : {}", e.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(new ErrorResponse("E999",e.getMessage()));
     }
 }

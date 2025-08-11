@@ -28,9 +28,8 @@ public class StompHandler implements ChannelInterceptor {
     public Message<?> preSend(@NonNull Message<?> message, @NonNull MessageChannel channel) {
 
         StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-        // WebSocket 최초 연결 또는 메시지 전송 시 Token 인증 진행
-        if (StompCommand.CONNECT == accessor.getCommand()
-                || StompCommand.SEND == accessor.getCommand()) {
+        // WebSocket 최초 연결 시 Token 인증 진행
+        if (StompCommand.CONNECT == accessor.getCommand()) {
             String token = accessor.getFirstNativeHeader(NATIVE_HEADER_NAME);
             if (token.isBlank()){
                 throw new CustomException(ErrorCode.INVALID_TOKEN);

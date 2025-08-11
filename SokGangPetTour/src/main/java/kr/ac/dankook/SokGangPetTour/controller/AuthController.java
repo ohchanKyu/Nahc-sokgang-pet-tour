@@ -103,7 +103,7 @@ public class AuthController {
     // 토큰 갱신
     @PostMapping("/reissue")
     public ResponseEntity<ApiResponse<TokenResponse>> reissue(
-            @RequestBody String refreshToken
+            @RequestParam("refreshToken") String refreshToken
     ){
         return ResponseEntity.status(201).body(new ApiResponse<>(true,200,
                 authService.reissueToken(refreshToken)));

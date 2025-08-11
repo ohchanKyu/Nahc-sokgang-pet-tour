@@ -95,11 +95,10 @@ public class AuthService {
 
         Authentication authentication;
         try{
-            authentication = jwtTokenProvider.validateToken(refreshToken);
+            authentication = jwtTokenProvider.validateToken(refreshToken.trim());
         }catch (JWTVerificationException e){
             throw new CustomException(ErrorCode.INVALID_TOKEN);
         }
-
         PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
         String userId = principalDetails.getUsername();
 

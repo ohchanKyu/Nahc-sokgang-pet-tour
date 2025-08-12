@@ -68,4 +68,14 @@ public class TourContentController {
         return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
                 tourContentService.getTourContentByFilter(cat1,cat2,cat3,sigunguCode,ContentTypeId)));
     }
+
+    @GetMapping("/category/{type}")
+    public ResponseEntity<ApiResponse<List<String>>> getCategory(
+            @PathVariable int type,
+            @RequestParam("cat1") String cat1,
+            @RequestParam(value = "cat2",required = false) String cat2
+    ){
+        return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
+                tourContentService.getCategoryByParentCategory(type,cat1,cat2)));
+    }
 }

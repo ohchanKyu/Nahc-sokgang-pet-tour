@@ -21,7 +21,7 @@ public class TourContentSyncController {
 
     private final TourContentSyncService tourContentSyncService;
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<ApiMessageResponse> saveSyncData(
             @RequestBody List<TourContentRequest> list){
         tourContentSyncService.saveAllSyncPetTourData(list);
@@ -31,7 +31,7 @@ public class TourContentSyncController {
 
     @PostMapping("/common/{contentId}")
     public ResponseEntity<ApiMessageResponse> saveOverviewData(
-            @PathVariable String contentId , @RequestBody String overview){
+            @PathVariable String contentId , @RequestParam("overview") String overview){
         tourContentSyncService.saveOverviewData(overview,contentId);
         return ResponseEntity.status(201)
                 .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_COMMON_DATA.getMessage()));

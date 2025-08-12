@@ -34,7 +34,7 @@ public class ChatBotController {
                 chatBotHistoryService.getAllChatBotHistory(sessionId)));
     }
 
-    @PostMapping("")
+    @PostMapping
     public ResponseEntity<ApiMessageResponse> saveAllChatHistory(
             @RequestBody @Valid ChatBotCreateRequest chatBotCreateRequest){
         chatBotHistoryService.saveChatBotHistory(chatBotCreateRequest);

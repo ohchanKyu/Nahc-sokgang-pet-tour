@@ -4,6 +4,8 @@ import kr.ac.dankook.SokGangPetTour.entity.tour.TourContent;
 import kr.ac.dankook.SokGangPetTour.entity.tour.TourDetailRepeatCommon;
 import kr.ac.dankook.SokGangPetTour.entity.tour.TourDetailRepeatRoom;
 import kr.ac.dankook.SokGangPetTour.entity.tour.tourIntro.*;
+import kr.ac.dankook.SokGangPetTour.error.ErrorCode;
+import kr.ac.dankook.SokGangPetTour.error.exception.CustomException;
 import kr.ac.dankook.SokGangPetTour.repository.tour.TourContentRepository;
 import kr.ac.dankook.SokGangPetTour.util.converter.TourEntityConverter;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,16 @@ import static kr.ac.dankook.SokGangPetTour.util.DistCalculationUtil.getDistance;
 public class TourContentService {
 
     private final TourContentRepository tourContentRepository;
+
+    public List<String> getCategoryByParentCategory(int type,String cat1,String cat2){
+        if (type == 1){
+            return tourContentRepository.findCat2ByCat1(cat1);
+        }else if (type == 2){
+            if (cat2 == null) throw new CustomException(ErrorCode.INVALID_REQUEST_PARAM);
+            return tourContentRepository.findCat3ByCat2AndCat1(cat1,cat2);
+        }
+        return throw new CustomException(ErrorCode.INVALID_REQUEST_PARAM);
+    }
 
     public List<TourContentResponse> getAllTourContent(){
         List<TourContent> lists = tourContentRepository.findAll();

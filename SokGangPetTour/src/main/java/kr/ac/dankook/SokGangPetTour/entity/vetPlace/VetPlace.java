@@ -28,6 +28,9 @@ public class VetPlace {
     @OneToMany(mappedBy = "vetPlace", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<VetPlaceOperatingHour> operatingHours = new ArrayList<>();
 
+    @OneToMany(mappedBy = "vetPlace", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<VetStatic> vetStatics = new ArrayList<>();
+
     @Enumerated(EnumType.STRING)
     private VetPlaceCategory category;
 

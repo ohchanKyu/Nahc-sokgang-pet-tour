@@ -1,6 +1,7 @@
 package kr.ac.dankook.SokGangPetTour.entity.tour;
 
 import jakarta.persistence.*;
+import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetStatic;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -48,7 +49,10 @@ public class TourContent {
     // 개요
     @Column(columnDefinition = "TEXT")
     private String overview;
-    
+
+    @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TourStatic> tourStatics = new ArrayList<>();
+
     // 소개 정보
     @OneToMany(mappedBy = "content", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<TourDetailIntro> detailIntros = new ArrayList<>();

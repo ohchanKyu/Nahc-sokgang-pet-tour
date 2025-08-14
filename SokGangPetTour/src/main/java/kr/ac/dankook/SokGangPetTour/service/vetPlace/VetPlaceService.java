@@ -6,6 +6,8 @@ import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlace;
 import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlaceCategory;
 import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlaceOperatingHour;
 import kr.ac.dankook.SokGangPetTour.repository.vetPlace.VetPlaceRepository;
+import kr.ac.dankook.SokGangPetTour.util.date.DateUtil;
+import kr.ac.dankook.SokGangPetTour.util.date.Holiday;
 import kr.ac.dankook.SokGangPetTour.util.converter.VetPlaceEntityConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,10 +28,10 @@ public class VetPlaceService {
 
     private final VetPlaceRepository vetPlaceRepository;
 
-    public List<VetPlaceResponse> getAllVetPlace(){
+    public List<VetPlaceResponse> getAllVetPlace() {
         List<VetPlace> lists = vetPlaceRepository.findAllVetPlaceWithFetchJoin();
         return lists.stream().map(item ->
-                VetPlaceEntityConverter.convertToVetPlaceResponse(item,true)).toList();
+                VetPlaceEntityConverter.convertToVetPlaceResponse(item, true)).toList();
     }
 
     public List<VetPlaceResponse> getVetPlacesByKeyword(String keyword){
@@ -50,7 +52,7 @@ public class VetPlaceService {
         DayOfWeek today = LocalDateTime.now().getDayOfWeek();
 
         return lists.stream().filter(item ->
-                (!isOpen || isOpenNow(item.getOperatingHours(),now,today))
+                (!isOpen || DateUtil.isOpenNow(item.getOperatingHours(),now,today))
         ).map(item -> VetPlaceEntityConverter.convertToVetPlaceResponse(item,true)).toList();
     }
 
@@ -72,29 +74,4 @@ public class VetPlaceService {
         return distResponses;
     }
 
-    private boolean isOpenNow(
-            List<VetPlaceOperatingHour> hours,
-            LocalDateTime now, DayOfWeek today) {
-        DayType currentDayType = Holiday.isHoliday(now.toLocalDate()) ?
-                DayType.HOLIDAY
-                : switch(today) {
-                    case MONDAY -> DayType.MON;
-                    case TUESDAY -> DayType.TUE;
-                    case WEDNESDAY -> DayType.WED;
-                    case THURSDAY -> DayType.THU;
-                    case FRIDAY -> DayType.FRI;
-                    case SATURDAY -> DayType.SAT;
-                    case SUNDAY -> DayType.SUN;
-        };
-        LocalTime currentTime = now.toLocalTime();
-        return hours.stream()
-                .filter(h -> h.getDayType() == currentDayType)
-                .filter(VetPlaceOperatingHour::isOpen)
-                .anyMatch(h ->
-                    h.getOpenTime() != null &&
-                    h.getCloseTime() != null &&
-                    !currentTime.isBefore(h.getOpenTime()) &&
-                    currentTime.isBefore(h.getCloseTime())
-                );
-    }
 }

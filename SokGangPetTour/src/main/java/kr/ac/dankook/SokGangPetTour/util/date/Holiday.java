@@ -1,4 +1,4 @@
-package kr.ac.dankook.SokGangPetTour.entity;
+package kr.ac.dankook.SokGangPetTour.util.date;
 
 import java.time.LocalDate;
 

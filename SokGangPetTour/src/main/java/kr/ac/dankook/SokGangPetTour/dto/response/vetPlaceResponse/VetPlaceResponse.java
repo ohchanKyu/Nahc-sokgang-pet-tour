@@ -21,6 +21,7 @@ public class VetPlaceResponse {
     private String holidayInfo;
     private String maxSizeInfo;
     private boolean isParking;
+    private boolean isOpen;
     private VetPlaceCategory category;
     private List<VetPlaceOperatingHourResponse> operatingHours;
 }

@@ -4,7 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.vetPlaceResponse.VetPlaceDistResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.vetPlaceResponse.VetPlaceResponse;
+import kr.ac.dankook.SokGangPetTour.entity.PlaceEntityType;
 import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlaceCategory;
+import kr.ac.dankook.SokGangPetTour.service.PlaceStaticService;
 import kr.ac.dankook.SokGangPetTour.service.vetPlace.VetPlaceCacheService;
 import kr.ac.dankook.SokGangPetTour.service.vetPlace.VetPlaceService;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +24,7 @@ public class VetPlaceController {
 
     private final VetPlaceService vetPlaceService;
     private final VetPlaceCacheService vetPlaceCacheService;
+    private final PlaceStaticService placeStaticService;
 
     // 모든 장소 데이터
     @GetMapping("/places")
@@ -32,6 +35,8 @@ public class VetPlaceController {
     // 특정 장소 데이터
     @GetMapping("/place/{id}")
     public ResponseEntity<ApiResponse<VetPlaceResponse>> getVetPlace(@PathVariable String id) throws JsonProcessingException {
+        // Async
+        placeStaticService.countUp(id, PlaceEntityType.VET);
         return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
                 vetPlaceCacheService.getVetPlacesById(id)));
     }
@@ -62,5 +67,11 @@ public class VetPlaceController {
             ){
         return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
                 vetPlaceService.getVetPlacesByFilter(category,isParking,isOpen)));
+    }
+    // 오늘 하루 조회 순
+    @GetMapping("/place/count")
+    public ResponseEntity<ApiResponse<List<VetPlaceResponse>>> getVetPlaceCount(){
+        return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
+                placeStaticService.getVetPlaceByCount()));
     }
 }

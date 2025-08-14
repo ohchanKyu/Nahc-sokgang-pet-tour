@@ -12,10 +12,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+
 import static kr.ac.dankook.SokGangPetTour.util.DistCalculationUtil.getDistance;
 
 
@@ -33,7 +36,7 @@ public class TourContentService {
             if (cat2 == null) throw new CustomException(ErrorCode.INVALID_REQUEST_PARAM);
             return tourContentRepository.findCat3ByCat2AndCat1(cat1,cat2);
         }
-        return throw new CustomException(ErrorCode.INVALID_REQUEST_PARAM);
+        throw new CustomException(ErrorCode.INVALID_REQUEST_PARAM);
     }
 
     public List<TourContentResponse> getAllTourContent(){
@@ -47,15 +50,23 @@ public class TourContentService {
     }
 
     public List<TourContentResponse> getTourContentByFilter(
-            String cat1,String cat2,String cat3, int sigunguCode, String contentTypeId){
-        // Using Index - cat1
+            String cat1, String cat2, String cat3, Integer sigunguCode, String contentTypeId) {
+
+        final String c2 = StringUtils.hasText(cat2) ? cat2 : null;
+        final String c3 = StringUtils.hasText(cat3) ? cat3 : null;
+        final String ct = StringUtils.hasText(contentTypeId) ? contentTypeId : null;
+        final Integer sgg = (sigunguCode != null && sigunguCode != 0) ? sigunguCode : null;
         List<TourContent> lists = tourContentRepository.findTourContentByCat1(cat1);
-        return lists.stream().filter(item ->
-            (sigunguCode == 0 || item.getSigunguCode() == sigunguCode) &&
-            (cat2 == null || item.getCat2().equals(cat2)) &&
-            (cat3 == null || item.getCat3().equals(cat3)) &&
-            (contentTypeId == null || item.getContentTypeId().equals(contentTypeId))
-        ).map(TourEntityConverter::convertToTourContentResponse).toList();
+
+        return lists.stream()
+                .filter(item ->
+                        (sgg == null || Objects.equals(item.getSigunguCode(), sgg)) &&
+                        (c2 == null || Objects.equals(item.getCat2(), c2)) &&
+                        (c3 == null || Objects.equals(item.getCat3(), c3)) &&
+                        (ct == null || Objects.equals(item.getContentTypeId(), ct))
+                )
+                .map(TourEntityConverter::convertToTourContentResponse)
+                .toList();
     }
 
     public List<TourContentDistResponse> getTourPlaceOrderByDist(

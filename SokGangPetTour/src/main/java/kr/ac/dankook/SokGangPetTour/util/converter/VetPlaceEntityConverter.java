@@ -5,7 +5,10 @@ import kr.ac.dankook.SokGangPetTour.dto.response.vetPlaceResponse.VetPlaceRespon
 import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlace;
 import kr.ac.dankook.SokGangPetTour.entity.vetPlace.VetPlaceOperatingHour;
 import kr.ac.dankook.SokGangPetTour.util.EncryptionUtil;
+import kr.ac.dankook.SokGangPetTour.util.date.DateUtil;
 
+import java.time.DayOfWeek;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class VetPlaceEntityConverter {
@@ -30,6 +33,10 @@ public class VetPlaceEntityConverter {
                 .stream().map(VetPlaceEntityConverter::convertToVetPlaceOperatingHourResponse).toList();
         vetPlaceResponse.setOperatingHours(operatingHours);
 
+        LocalDateTime now = LocalDateTime.now();
+        DayOfWeek today = LocalDateTime.now().getDayOfWeek();
+        boolean isOpen = DateUtil.isOpenNow(vetPlace.getOperatingHours(),now,today);
+        vetPlaceResponse.setOpen(isOpen);
         return vetPlaceResponse;
     }
 

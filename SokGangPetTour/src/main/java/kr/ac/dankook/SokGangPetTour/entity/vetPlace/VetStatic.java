@@ -2,14 +2,21 @@ package kr.ac.dankook.SokGangPetTour.entity.vetPlace;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "vet_static")
+@Table(
+        name = "vet_static",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_vet_place_day",
+                        columnNames = { "vet_place_id", "day" }
+                )
+        }
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class VetStatic {
@@ -17,20 +24,14 @@ public class VetStatic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private LocalDate day;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vet_place_id")
+    @ManyToOne
+    @JoinColumn(name = "vet_place_id", nullable = false)
     private VetPlace vetPlace;
+
+    @Column(nullable = false)
     private Long count;
-
-    public VetStatic(VetPlace vetPlace) {
-        this.vetPlace = vetPlace;
-        this.count = 1L;
-        this.day = LocalDate.now();
-    }
-
-    public void countUp(){
-        this.count++;
-    }
 }

@@ -1,13 +1,17 @@
 package kr.ac.dankook.SokGangPetTour.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import jakarta.validation.Valid;
+import kr.ac.dankook.SokGangPetTour.dto.request.tourRequest.ItineraryRequest;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.tourPlaceResponse.TourContentDetailResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.tourPlaceResponse.TourContentDistResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.tourPlaceResponse.TourContentResponse;
+import kr.ac.dankook.SokGangPetTour.dto.response.tourResponse.ItineraryResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.vetPlaceResponse.VetPlaceResponse;
 import kr.ac.dankook.SokGangPetTour.entity.PlaceEntityType;
 import kr.ac.dankook.SokGangPetTour.service.PlaceStaticService;
+import kr.ac.dankook.SokGangPetTour.service.tour.ItineraryRecommenderService;
 import kr.ac.dankook.SokGangPetTour.service.tour.TourContentCacheService;
 import kr.ac.dankook.SokGangPetTour.service.tour.TourContentService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +30,7 @@ public class TourContentController {
     private final TourContentService tourContentService;
     private final TourContentCacheService tourContentCacheService;
     private final PlaceStaticService placeStaticService;
-
+    private final ItineraryRecommenderService itineraryRecommenderService;
     // 모든 기본 데이터 반환
     @GetMapping("/places")
     public ResponseEntity<ApiResponse<List<TourContentResponse>>> getAllPlaces(){
@@ -90,5 +94,14 @@ public class TourContentController {
     public ResponseEntity<ApiResponse<List<TourContentResponse>>> getTourPlaceCount(){
         return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
                 placeStaticService.getTourPlaceByCount()));
+    }
+
+    // 추천받기
+    @PostMapping("/place/recommend")
+    public ResponseEntity<ApiResponse<ItineraryResponse>> getRecommendPlace(
+            @Valid @RequestBody ItineraryRequest itineraryRequest
+    ){
+        return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
+                itineraryRecommenderService.recommend(itineraryRequest)));
     }
 }

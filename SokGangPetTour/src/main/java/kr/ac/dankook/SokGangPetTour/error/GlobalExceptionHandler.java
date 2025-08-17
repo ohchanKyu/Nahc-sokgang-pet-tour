@@ -4,6 +4,7 @@ import kr.ac.dankook.SokGangPetTour.error.exception.CustomException;
 import kr.ac.dankook.SokGangPetTour.error.exception.EntityNotFoundException;
 import kr.ac.dankook.SokGangPetTour.error.exception.ExternalApiException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -45,8 +46,8 @@ public class GlobalExceptionHandler {
         List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
         String errorMessages = fieldErrors.stream()
-                .map(error -> error.getField() + ": " + error.getDefaultMessage())
-                .collect(Collectors.joining(", "));
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .collect(Collectors.joining("\n"));
         return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                 .body(new ErrorResponse("E003",errorMessages));
     }

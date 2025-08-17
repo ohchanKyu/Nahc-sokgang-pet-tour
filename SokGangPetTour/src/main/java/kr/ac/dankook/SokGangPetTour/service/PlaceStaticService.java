@@ -44,30 +44,9 @@ public class PlaceStaticService {
 
         LocalDate now = LocalDate.now();
         if (entityType == PlaceEntityType.VET){
-            VetPlace vetPlace = vetPlaceRepository.findById(EncryptionUtil.decrypt(id))
-                    .orElseThrow(() -> new EntityNotFoundException("장소 데이터를 찾을 수 없습니다."));
-            Optional<VetStatic> staticsData = vetStaticRepository.findByVetPlaceAndDayWithPessimisticLock(vetPlace,now);
-            if (staticsData.isPresent()){
-                VetStatic vetStatic = staticsData.get();
-                vetStatic.countUp();
-                vetStaticRepository.save(vetStatic);
-            }else{
-                VetStatic newStatic = new VetStatic(vetPlace);
-                vetStaticRepository.save(newStatic);
-            }
+            vetStaticRepository.upsertCount(EncryptionUtil.decrypt(id), now);
         }else{
-            TourContent tourContent = tourContentRepository.findById(id)
-                    .orElseThrow(() -> new EntityNotFoundException("장소 데이터를 찾을 수 없습니다."));
-            Optional<TourStatic> staticsData = tourStaticRepository.
-                    findByTourContentAndDayWithPessimisticLock(tourContent,now);
-            if (staticsData.isPresent()){
-                TourStatic tourStatic = staticsData.get();
-                tourStatic.countUp();
-                tourStaticRepository.save(tourStatic);
-            }else{
-                TourStatic newStatic = new TourStatic(tourContent);
-                tourStaticRepository.save(newStatic);
-            }
+            tourStaticRepository.upsertCount(id,now);
         }
     }
 

@@ -8,7 +8,15 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@Table(name = "tour_static")
+@Table(
+        name = "tour_static",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_content_day",
+                        columnNames = { "content_id", "day" }
+                )
+        }
+)
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TourStatic {
@@ -16,21 +24,14 @@ public class TourStatic {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private LocalDate day;
 
     @ManyToOne
-    @JoinColumn(name = "content_id")
+    @JoinColumn(name = "content_id", nullable = false)
     private TourContent content;
 
+    @Column(nullable = false)
     private Long count;
-
-    public TourStatic(TourContent tourContent) {
-        this.content = tourContent;
-        this.count = 1L;
-        this.day = LocalDate.now();
-    }
-
-    public void countUp(){
-        this.count++;
-    }
 }

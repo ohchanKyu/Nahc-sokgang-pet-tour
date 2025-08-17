@@ -24,10 +24,11 @@ app.add_middleware(
 )
 
 async def verify_token(request: Request):
-    token = request.headers.get("X_NAHC_TOKEN")
+    token = request.headers.get("X_NAHC_TOKEN") or request.headers.get("X-NAHC-TOKEN")
     expected_token = os.getenv("X_NAHC_TOKEN")
     print(token)
     print(expected_token)
+    print("keys:", list(request.headers.keys()))
     if token != expected_token:
         raise HTTPException(
             status_code=403,

@@ -24,8 +24,6 @@ public class ChatBotRoom extends BaseEntity {
     @JoinColumn(name= "member_id", nullable = false)
     private Member member;
     private String title;
-    private String lastMessage;
-    private LocalDateTime lastMessageTime;
 
     @Builder
     public ChatBotRoom(Member member, String title) {
@@ -33,8 +31,7 @@ public class ChatBotRoom extends BaseEntity {
         this.title = title;
     }
 
-    public void updateLastMessage(String lastMessage){
-        this.lastMessage = lastMessage;
-        this.lastMessageTime = LocalDateTime.now();
+    public void updateTitle(String title){
+        this.title = title;
     }
 }

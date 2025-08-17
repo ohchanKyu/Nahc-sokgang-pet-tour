@@ -13,10 +13,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ChatBotCreateRequest {
 
-    @NotBlank(message = "세션 아이디는 필수입니다.")
     private String sessionId;
-    @NotBlank(message = "챗봇 질문 및 응답 내역은 필수입니다.")
     private String content;
-    @NotNull(message = "채팅 내역에 대한 역할은 필수입니다.")
     private ChatBotRole role;
 }

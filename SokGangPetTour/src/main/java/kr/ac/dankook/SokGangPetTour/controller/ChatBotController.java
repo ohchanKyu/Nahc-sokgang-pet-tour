@@ -1,6 +1,5 @@
 package kr.ac.dankook.SokGangPetTour.controller;
 
-import jakarta.validation.Valid;
 import kr.ac.dankook.SokGangPetTour.config.principal.PrincipalDetails;
 import kr.ac.dankook.SokGangPetTour.dto.request.chatBotRequest.ChatBotCreateRequest;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiMessageResponse;
@@ -34,14 +33,6 @@ public class ChatBotController {
                 chatBotHistoryService.getAllChatBotHistory(sessionId)));
     }
 
-    @PostMapping
-    public ResponseEntity<ApiMessageResponse> saveAllChatHistory(
-            @RequestBody @Valid ChatBotCreateRequest chatBotCreateRequest){
-        chatBotHistoryService.saveChatBotHistory(chatBotCreateRequest);
-        return ResponseEntity.status(201).body(new ApiMessageResponse(true,201,
-                "챗봇 메시지 저장을 완료하였습니다."));
-    }
-
     @GetMapping("/rooms")
     public ResponseEntity<ApiResponse<List<ChatBotRoomResponse>>> getAllChatBotRoomsByMember(
             @AuthenticationPrincipal PrincipalDetails user
@@ -66,5 +57,13 @@ public class ChatBotController {
         chatBotRoomService.deleteChatBotRoom(sessionId);
         return ResponseEntity.status(200).body(new ApiMessageResponse(true,200,
                 "챗봇방 삭제를 완료하였습니다."));
+    }
+
+    @PatchMapping("/room/{sessionId}/{title}")
+    public ResponseEntity<ApiResponse<Boolean>> updateChatBotRoom(
+            @PathVariable String sessionId, @PathVariable String title
+    ){
+        return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
+                chatBotRoomService.updateChatBotRoom(sessionId,title)));
     }
 }

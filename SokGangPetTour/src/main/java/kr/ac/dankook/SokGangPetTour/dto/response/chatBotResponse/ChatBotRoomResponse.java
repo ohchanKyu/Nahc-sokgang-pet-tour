@@ -12,16 +12,14 @@ import java.time.LocalDateTime;
 @Setter
 public class ChatBotRoomResponse {
 
-    private String roomId;
+    private String id;
     private String title;
-    private String lastMessage;
-    private LocalDateTime lastMessageTime;
+    private LocalDateTime time;
 
     @Builder
     public ChatBotRoomResponse(ChatBotRoom chatBotRoom){
-        this.roomId = EncryptionUtil.encrypt(chatBotRoom.getId());
+        this.id = EncryptionUtil.encrypt(chatBotRoom.getId());
         this.title = chatBotRoom.getTitle();
-        this.lastMessage = chatBotRoom.getLastMessage();
-        this.lastMessageTime = chatBotRoom.getLastMessageTime();
+        this.time = chatBotRoom.getCreatedDateTime();
     }
 }

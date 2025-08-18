@@ -33,21 +33,28 @@ class MongoDBChatMessageHistory(BaseChatMessageHistory):
                 messages.append(AIMessage(content=content))
         return messages
 
+    def add_human_message(self,message):
+        collection.insert_one({
+            "session_id": self.session_id,
+            "role": "human",
+            "content": message,
+            "timestamp": datetime.now(timezone("Asia/Seoul")),
+        })
+
     def add_message(self, message: BaseMessage) -> None:
-        print(message)
         if isinstance(message, HumanMessage):
-            role = "human"
+            return
         elif isinstance(message, AIMessage):
             role = "ai"
+            collection.insert_one({
+                "session_id": self.session_id,
+                "role": role,
+                "content": str(message.content).strip(),
+                "timestamp": datetime.now(timezone("Asia/Seoul")),
+            })
         else:
             raise ValueError("Unknown message type")
 
-        collection.insert_one({
-            "session_id": self.session_id,
-            "role": role,
-            "content": str(message.content).strip(),
-            "timestamp": datetime.now(timezone("Asia/Seoul")),
-        })
 
     def clear(self) -> None:
         collection.delete_many({"session_id": self.session_id})

@@ -33,7 +33,7 @@ def get_llm(model='solar-pro'):
 def get_history_retriever():
     llm = get_llm()
     retriever = get_retriever()
-    
+
     contextualize_q_system_prompt = (
         "Given a chat history and the latest user question, "
         "which might reference context in the chat history, "
@@ -88,13 +88,12 @@ def get_rag_chain():
 
     system_prompt = (
         "당신은 반려동물 건강 전문가입니다. 사용자의 반려동물 건강에 관한 질문에 답변해주세요."
-        "아래에 제공된 문서를 활용해서 답변해주시고,"
+        "아래에 제공된 문서를 활용해서 답변해주시고," 
         "답변을 알 수 없다면 모른다고 답변해주세요."
         "답변을 제공할 때는 '출처에 따르면' 이라고 시작하면서 답변해주시고,"
         "4 ~ 5 문장 정도의 내용의 답변을 원합니다."
-        "사용자 질문은 절대 변경하지마세요. 원래 요청 그대로 데이터베이스에 저장해야합니다."
-        "\n\n"
-        "{context}"
+        "사용자 질문은 절대 변경하지 마세요. 원래 요청 그대로 데이터베이스에 저장해야 합니다."
+        "\n\n{context}"
     )
     
     qa_prompt = ChatPromptTemplate.from_messages(
@@ -105,6 +104,7 @@ def get_rag_chain():
             ("human", "{input}"),
         ]
     )
+
     history_aware_retriever = get_history_retriever()
     question_answer_chain = create_stuff_documents_chain(llm, qa_prompt)
 
@@ -117,5 +117,5 @@ def get_rag_chain():
         history_messages_key="chat_history",
         output_messages_key="answer",
     ).pick('answer')
-    
+
     return conversational_rag_chain

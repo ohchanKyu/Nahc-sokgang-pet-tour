@@ -1,16 +1,23 @@
 import os
+import re
+import textwrap
+import json
 
-from fastapi import FastAPI, Request, HTTPException, Depends
-from fastapi.responses import PlainTextResponse, StreamingResponse
-from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
-
-from langchain_upstage import UpstageEmbeddings
+from pinecone import Pinecone
 from langchain_pinecone import PineconeVectorStore
+from langchain_upstage import UpstageEmbeddings
 from langchain_community.document_loaders import Docx2txtLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from llm import get_rag_chain, get_dictionary_chain
+from fastapi import FastAPI, Request, HTTPException, Depends
+from fastapi.responses import PlainTextResponse, JSONResponse
+from dotenv import load_dotenv
+from fastapi.responses import StreamingResponse
+from llm import get_rag_chain
+from llm import get_dictionary_chain
+from llm import get_llm
+from fastapi.middleware.cors import CORSMiddleware
+from mongoDBClient import MongoDBChatMessageHistory
 
 load_dotenv()
 
@@ -60,11 +67,14 @@ async def chat_with_ai(request: Request, _: None = Depends(verify_token)):
     user_message = payload.get("message", "")
     session_id = payload.get("session_id", "default-session")
 
+    chat_history = MongoDBChatMessageHistory(session_id)
+    chat_history.add_human_message(user_message)
+
     def response_stream():
         chain = get_rag_chain()
         dictionary_chain = get_dictionary_chain()
-        tax_chain = {"input": dictionary_chain} | chain
-        stream = tax_chain.stream(
+        vet_chain = {"input": dictionary_chain} | chain
+        stream = vet_chain.stream(
             {"question": user_message},
             config={"configurable": {"session_id": session_id}},
         )

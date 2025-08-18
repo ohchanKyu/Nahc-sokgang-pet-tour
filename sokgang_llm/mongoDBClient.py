@@ -34,6 +34,7 @@ class MongoDBChatMessageHistory(BaseChatMessageHistory):
         return messages
 
     def add_message(self, message: BaseMessage) -> None:
+        print(message)
         if isinstance(message, HumanMessage):
             role = "human"
         elif isinstance(message, AIMessage):

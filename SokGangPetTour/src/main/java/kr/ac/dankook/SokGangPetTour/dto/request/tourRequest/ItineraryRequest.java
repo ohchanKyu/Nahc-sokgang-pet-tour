@@ -16,8 +16,8 @@ public class ItineraryRequest {
     @DecimalMax(value = "180.0",  message = "출발경도는 180.0 이하여야 합니다.")
     private double startLongitude;
 
-    @Min(value = 1, message = "여행일수는 최소 1 이상이어야 합니다.")
-    @Max(value = 30, message = "여행일수는 최대 30일까지 허용됩니다.")
+    @Min(value = 2, message = "여행일수는 최소 2일 이상이어야 합니다.")
+    @Max(value = 5, message = "여행일수는 최대 5일까지 허용됩니다.")
     private int days = 1;
 
     @Pattern(regexp = "(?i)^(WALK|TRANSIT|DRIVE)$",

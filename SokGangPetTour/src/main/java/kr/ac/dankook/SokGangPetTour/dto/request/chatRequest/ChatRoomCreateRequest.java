@@ -23,6 +23,6 @@ public class ChatRoomCreateRequest {
     private Integer maxParticipants;
     
     @NotBlank(message = "사용하실 닉네임은 필수항목입니다.")
-    @Size(min=2, max=50, message = "사용하실 닉네임은 2~50 글자만 가능합니다.")
+    @Size(min=2, max=50, message = "사용하실 닉네임은 2~8 글자만 가능합니다.")
     private String nickname;
 }

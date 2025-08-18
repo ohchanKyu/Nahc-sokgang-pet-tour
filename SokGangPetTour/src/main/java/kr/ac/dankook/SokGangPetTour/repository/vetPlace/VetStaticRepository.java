@@ -22,6 +22,13 @@ public interface VetStaticRepository extends JpaRepository<VetStatic,Long> {
     void upsertCount(@Param("vetPlaceId") Long vetPlaceId,
                      @Param("day") LocalDate day);
 
-    @Query("select s.vetPlace from VetStatic s where s.day = :day order by s.count desc")
+    @Query("""
+        select distinct vp
+        from VetStatic s
+        join s.vetPlace vp
+        left join fetch vp.operatingHours oh
+        where s.day = :day
+        order by s.count desc, vp.id
+    """)
     List<VetPlace> findByDayOrderByCount(LocalDate day);
 }

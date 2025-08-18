@@ -54,7 +54,7 @@ public class PlaceStaticService {
         LocalDate now = LocalDate.now();
 
         List<VetPlace> statics = vetStaticRepository.findByDayOrderByCount(now);
-        List<VetPlace> places = vetPlaceRepository.findAll();
+        List<VetPlace> places = vetPlaceRepository.findAllVetPlaceWithFetchJoin();
 
         Set<Long> staticsId = statics.stream()
                 .map(VetPlace::getId).collect(Collectors.toSet());
@@ -65,7 +65,7 @@ public class PlaceStaticService {
         merged.addAll(noStatics);
 
         return merged.stream().map(item ->
-                    VetPlaceEntityConverter.convertToVetPlaceResponse(item,false)
+                    VetPlaceEntityConverter.convertToVetPlaceResponse(item,true)
                 ).toList();
     }
 

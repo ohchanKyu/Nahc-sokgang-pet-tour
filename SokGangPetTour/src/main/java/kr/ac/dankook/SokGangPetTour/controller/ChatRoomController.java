@@ -2,6 +2,7 @@ package kr.ac.dankook.SokGangPetTour.controller;
 
 import jakarta.validation.Valid;
 import kr.ac.dankook.SokGangPetTour.config.principal.PrincipalDetails;
+import kr.ac.dankook.SokGangPetTour.dto.request.chatRequest.ChatMessageRequest;
 import kr.ac.dankook.SokGangPetTour.dto.request.chatRequest.ChatRoomCreateRequest;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiMessageResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiResponse;
@@ -9,6 +10,7 @@ import kr.ac.dankook.SokGangPetTour.dto.response.chatResponse.ChatRoomResponse;
 import kr.ac.dankook.SokGangPetTour.facade.ChatRoomJoinFacade;
 import kr.ac.dankook.SokGangPetTour.service.chat.ChatRoomJoinService;
 import kr.ac.dankook.SokGangPetTour.service.chat.ChatRoomService;
+import kr.ac.dankook.SokGangPetTour.service.chat.ChatService;
 import kr.ac.dankook.SokGangPetTour.util.DecryptId;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,10 +43,9 @@ public class ChatRoomController {
     }
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Page<ChatRoomResponse>>> getAllChatRooms(
-            Pageable pageable) {
+    public ResponseEntity<ApiResponse<List<ChatRoomResponse>>> getAllChatRooms() {
         return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
-                chatRoomService.getAllChatRoomList(pageable)));
+                chatRoomService.getAllChatRoomList()));
     }
 
     @GetMapping("/me")
@@ -56,11 +57,11 @@ public class ChatRoomController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Page<ChatRoomResponse>>> searchChatRooms(
-            @RequestParam("keyword") String keyword, Pageable pageable
+    public ResponseEntity<ApiResponse<List<ChatRoomResponse>>> searchChatRooms(
+            @RequestParam("keyword") String keyword
     ){
         return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
-                chatRoomService.getChatRoomListByKeyword(keyword,pageable)));
+                chatRoomService.getChatRoomListByKeyword(keyword)));
     }
 
     @GetMapping("/join/{roomId}")
@@ -91,4 +92,5 @@ public class ChatRoomController {
         return ResponseEntity.status(200).body(new ApiMessageResponse(true,200,
                 "채팅방을 성공적으로 나갔습니다."));
     }
+
 }

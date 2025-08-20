@@ -9,8 +9,6 @@ import kr.ac.dankook.SokGangPetTour.repository.chat.ChatRoomParticipantRepositor
 import kr.ac.dankook.SokGangPetTour.repository.chat.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -49,13 +47,14 @@ public class ChatRoomService {
         return chatRooms.stream().map(ChatRoomResponse::new).toList();
     }
 
-    public Page<ChatRoomResponse> getAllChatRoomList(Pageable pageable){
-        Page<ChatRoom> chatRooms = chatRoomRepository.findAll(pageable);
-        return chatRooms.map(ChatRoomResponse::new);
+    public List<ChatRoomResponse> getAllChatRoomList(){
+        List<ChatRoom> chatRooms = chatRoomRepository.findAll();
+        return chatRooms.stream().map(ChatRoomResponse::new).toList();
     }
 
-    public Page<ChatRoomResponse> getChatRoomListByKeyword(String keyword,Pageable pageable){
-        Page<ChatRoom> chatRooms = chatRoomRepository.searchByKeyword(keyword,pageable);
-        return chatRooms.map(ChatRoomResponse::new);
+    public List<ChatRoomResponse> getChatRoomListByKeyword(String keyword){
+        List<ChatRoom> chatRooms = chatRoomRepository.searchByKeyword(keyword);
+        return chatRooms.stream().map(ChatRoomResponse::new).toList();
     }
+
 }

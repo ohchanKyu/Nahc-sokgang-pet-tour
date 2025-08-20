@@ -3,14 +3,12 @@ package kr.ac.dankook.SokGangPetTour.entity.chat;
 import jakarta.persistence.*;
 import kr.ac.dankook.SokGangPetTour.entity.BaseEntity;
 import kr.ac.dankook.SokGangPetTour.entity.Member;
-import kr.ac.dankook.SokGangPetTour.entity.chatBot.ChatBotRoom;
 import kr.ac.dankook.SokGangPetTour.error.ErrorCode;
 import kr.ac.dankook.SokGangPetTour.error.exception.CustomException;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -39,6 +37,7 @@ public class ChatRoom extends BaseEntity {
     @Column(nullable = false)
     private ChatRoomStatus status;
 
+    @Column(columnDefinition = "TEXT")
     private String lastMessage;
     private LocalDateTime lastMessageTime;
     private Long lastMessageNumber;

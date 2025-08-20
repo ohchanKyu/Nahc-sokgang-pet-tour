@@ -7,6 +7,7 @@ import kr.ac.dankook.SokGangPetTour.jwt.JwtTokenProvider;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -20,7 +21,8 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class StompHandler implements ChannelInterceptor {
 
-    private final JwtTokenProvider jwtTokenProvider;
+    @Value("${jwt.secret}")
+    private String secretKey;
     private static final String NATIVE_HEADER_NAME = "token";
 
     @Override
@@ -34,14 +36,11 @@ public class StompHandler implements ChannelInterceptor {
             if (token.isBlank()){
                 throw new CustomException(ErrorCode.INVALID_TOKEN);
             }
-            try{
-                Authentication authentication = jwtTokenProvider.validateToken(token);
-                PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
-                log.info("Successfully validated JWT token and connect socket - {} ", principalDetails.getUsername());
-            }catch (Exception e){
-                log.error("Invalid Jwt Token or server error - {}", e.getMessage());
+            if (!token.equals(secretKey)) {
+                log.error("Invalid server secret Token");
                 throw new CustomException(ErrorCode.UNAUTHORIZED);
             }
+            log.info("Successfully validated JWT token and connect socket");
         }
         return message;
     }

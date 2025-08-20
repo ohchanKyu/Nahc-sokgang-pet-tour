@@ -21,6 +21,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -53,11 +55,10 @@ public class ChatController {
     }
 
     @GetMapping("/api/v1/chat/messages/{roomId}")
-    public ResponseEntity<ApiResponse<Page<ChatResponse>>> getAllChatMessages(
-            @PathVariable String roomId,
-            Pageable pageable
+    public ResponseEntity<ApiResponse<List<ChatResponse>>> getAllChatMessages(
+            @PathVariable String roomId
     ){
         return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
-                chatService.getAllChats(roomId,pageable)));
+                chatService.getAllChats(roomId)));
     }
 }

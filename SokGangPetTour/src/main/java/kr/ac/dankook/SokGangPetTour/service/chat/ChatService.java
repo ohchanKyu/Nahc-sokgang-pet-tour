@@ -13,10 +13,10 @@ import kr.ac.dankook.SokGangPetTour.repository.chat.ChatRoomParticipantRepositor
 import kr.ac.dankook.SokGangPetTour.repository.chat.ChatRoomRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -45,8 +45,8 @@ public class ChatService {
 
     @Transactional
     public void saveChatMessage(ChatMessageRequest request){
-
         ChatMessage chatMessage = ChatMessage.builder()
+                .type(request.getType())
                 .memberId(request.getMemberId())
                 .roomId(request.getRoomId())
                 .nickname(request.getNickname())
@@ -54,8 +54,8 @@ public class ChatService {
         chatMessageRepository.save(chatMessage);
     }
 
-    public Page<ChatResponse> getAllChats(String roomId, Pageable pageable){
-        Page<ChatMessage> chatMessages = chatMessageRepository.findByRoomId(roomId, pageable);
-        return chatMessages.map(ChatResponse::new);
+    public List<ChatResponse> getAllChats(String roomId){
+        List<ChatMessage> chatMessages = chatMessageRepository.findByRoomId(roomId);
+        return chatMessages.stream().map(ChatResponse::new).toList();
     }
 }

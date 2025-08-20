@@ -1,6 +1,7 @@
 package kr.ac.dankook.SokGangPetTour.dto.request.chatRequest;
 
 import kr.ac.dankook.SokGangPetTour.entity.MessageType;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
@@ -16,6 +17,7 @@ public class ChatMessageRequest {
     private String message;
     private LocalDateTime time;
 
+    @Builder
     public ChatMessageRequest(
             MessageType type, String memberId, String roomId, String message,String nickname) {
         this.type = type;

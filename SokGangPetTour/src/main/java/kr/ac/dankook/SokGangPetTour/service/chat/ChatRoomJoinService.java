@@ -51,6 +51,9 @@ public class ChatRoomJoinService {
             throw new CustomException(ErrorCode.ALREADY_JOIN_CHATROOM);
         }
         chatRoom.increaseParticipants();
+        if(chatRoom.getMember().getId().equals(member.getId())){
+            chatRoom.updateChatRoomStatus(ChatRoomStatus.READ_WRITE);
+        }
         chatRoomRepository.saveAndFlush(chatRoom);
 
         ChatRoomParticipant newParticipant = ChatRoomParticipant.builder()
@@ -60,7 +63,7 @@ public class ChatRoomJoinService {
         // 입장 채팅 전송
         redisChatSubscriber.handleExitAndEnterMessage(EncryptionUtil.encrypt(roomId),
                 nickname, MessageType.ENTER);
-        return new ChatRoomResponse(chatRoom);
+        return new ChatRoomResponse(newParticipant);
     }
 
     @Transactional

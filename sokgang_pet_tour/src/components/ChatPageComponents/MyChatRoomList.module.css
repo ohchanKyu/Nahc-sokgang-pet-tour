@@ -1,0 +1,23 @@
+.chatRoom_list{
+  display:flex;
+  flex-wrap:wrap;
+  gap:16px;
+  padding:10px;
+  background:#111a2e;
+  border:1px solid #1c2740;
+  border-radius:16px;
+  box-shadow:0 8px 22px rgba(0,0,0,.42);
+  max-height:640px;
+  overflow:auto;
+}
+.chatRoom_list::-webkit-scrollbar{ width:8px; }
+.chatRoom_list::-webkit-scrollbar-thumb{ background:#38475e; border-radius:10px; }
+.chatRoom_list::-webkit-scrollbar-track{ background:#0b1220; }
+.no_room_message{
+  align-self:center;
+  margin:100px 0;
+  text-align:center;
+  font-weight:700;
+  color:#a9b3c3;
+  font-size:16px;
+}

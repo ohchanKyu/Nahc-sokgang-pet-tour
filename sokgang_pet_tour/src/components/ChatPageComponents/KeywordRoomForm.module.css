@@ -1,0 +1,104 @@
+.searchContainer {
+    padding: 0 24px 24px 24px;
+    font-family: "Noto Sans KR", sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.searchInput {
+    width: 100%;
+    padding: 16px 20px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    background-color: #fafafa;
+    color: #333;
+    box-sizing: border-box;
+    transition: border-color 0.3s ease;
+    outline: none;
+}
+.searchInput:focus {
+    border-color: #0f172a;
+    background-color: #ffffff;
+}
+.metaItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.title, .desc{
+    margin:0;  
+}
+.title{
+    font-size: 14px;
+    color:black;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 0;
+}
+.desc{
+    font-size: 12px;
+}
+.resultsContainer {
+    margin-top: 10px;
+    height: 550px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 18px;
+    background: #f9f9f9;
+    box-sizing: border-box;
+}
+
+.resultsContainer::-webkit-scrollbar {
+    width: 8px;
+}
+
+.resultsContainer::-webkit-scrollbar-thumb {
+    background-color: #0f172a;
+    border-radius: 10px;
+}
+
+.resultsContainer::-webkit-scrollbar-track {
+    background-color: #f5f5f5;
+}
+
+.resultItem {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px 18px;
+    background: #ffffff;
+    border-radius: 10px;
+    font-size: 15px;
+    color: #333;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+    gap:10px;
+}
+.mainResult {
+    flex: 1;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 220px;
+    min-width: 0;
+}
+.resultItem:hover {
+background: #f0f0f0;
+}
+
+.noResultsText,.loadingText, .errorText {
+    text-align: center;
+    color: #0f172a;
+    font-weight: bold;
+    margin: 250px 0 0 0;
+}
+  
+  

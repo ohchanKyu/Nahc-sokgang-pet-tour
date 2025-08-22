@@ -1,0 +1,26 @@
+.thumb {
+  margin:0 auto;
+  height: 140px;              
+  background: #f3f4f6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.fallback {
+  width: 100%; height: 100%;
+  display: grid; place-items: center;
+  background: linear-gradient(135deg, #e5e7eb, #f3f4f6);
+  padding: 8px;
+}
+.fallbackTitle {
+  word-break: keep-all;
+  font-weight: 700; color: #334155; text-align: center;
+  font-size: 12px; line-height: 1.2;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}

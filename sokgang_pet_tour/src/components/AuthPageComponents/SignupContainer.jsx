@@ -1,0 +1,48 @@
+import React from "react";
+import classes from "./AuthContainer.module.css";
+import SignupInput from "./input/SignupInput";
+import { signupService } from "../../api/AuthService";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+
+const SignupContainer = () => {
+    
+    const navigate = useNavigate();
+
+    const signupSubmitHandler = async (formData) => {
+        const signupResponseData = await signupService(formData);
+        if (signupResponseData.success){
+            toast.success("회원가입에 성공하셨습니다.", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+            navigate('/auth?type=1');
+        }else{
+            const message = signupResponseData.message;
+            toast.error(`${message}`, {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+    };
+
+    return (
+        <React.Fragment>
+            <div className={classes.auth_wrapper}>
+                <SignupInput signupSubmitHandler={signupSubmitHandler}/>
+            </div>
+        </React.Fragment>
+    );
+};
+
+export default SignupContainer;

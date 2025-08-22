@@ -29,4 +29,12 @@ public class MemberService {
         memberRepository.save(member);
     }
 
+    @Transactional
+    public boolean editMemberPassword(Member member, String originalPassword, String newPassword){
+        if (!passwordEncoder.matches(originalPassword, member.getPassword())) return false;
+        String encodedNewPassword = passwordEncoder.encode(newPassword);
+        member.updatePassword(encodedNewPassword);
+        memberRepository.save(member);
+        return true;
+    }
 }

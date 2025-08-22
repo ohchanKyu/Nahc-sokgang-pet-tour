@@ -31,8 +31,8 @@ public class TourContentSyncController {
 
     @PostMapping("/common/{contentId}")
     public ResponseEntity<ApiMessageResponse> saveOverviewData(
-            @PathVariable String contentId , @RequestParam("overview") String overview){
-        tourContentSyncService.saveOverviewData(overview,contentId);
+            @PathVariable String contentId, @RequestBody TourOverviewRequest tourOverviewRequest){
+        tourContentSyncService.saveOverviewData(tourOverviewRequest.getOverview(),contentId);
         return ResponseEntity.status(201)
                 .body(new ApiMessageResponse(true,201, TourSyncResponse.SUCCESS_COMMON_DATA.getMessage()));
     }

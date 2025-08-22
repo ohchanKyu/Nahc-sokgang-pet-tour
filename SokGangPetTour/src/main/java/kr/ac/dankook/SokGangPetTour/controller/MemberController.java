@@ -1,18 +1,18 @@
 package kr.ac.dankook.SokGangPetTour.controller;
 
+import jakarta.validation.Valid;
 import kr.ac.dankook.SokGangPetTour.config.principal.PrincipalDetails;
+import kr.ac.dankook.SokGangPetTour.dto.request.memberRequest.MemberPasswordChangeRequest;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiMessageResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.authResponse.MemberResponse;
 import kr.ac.dankook.SokGangPetTour.service.auth.AuthService;
+import kr.ac.dankook.SokGangPetTour.service.auth.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MemberController {
 
     private final AuthService authService;
+    private final MemberService memberService;
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<MemberResponse>> getCurrentMember(
@@ -37,5 +38,15 @@ public class MemberController {
         authService.logout(user.getUsername());
         return ResponseEntity.status(200).body(new ApiMessageResponse(true,200,
                 "로그아웃에 성공하였습니다."));
+    }
+
+    @PatchMapping("/password")
+    public ResponseEntity<ApiResponse<Boolean>> editPassword(
+            @AuthenticationPrincipal PrincipalDetails user,
+            @RequestBody @Valid MemberPasswordChangeRequest request
+            ){
+        return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
+                memberService.editMemberPassword(user.getMember(), request.getOriginalPassword(),
+                        request.getNewPassword())));
     }
 }

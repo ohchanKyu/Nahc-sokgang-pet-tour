@@ -3,6 +3,7 @@ package kr.ac.dankook.SokGangPetTour.entity;
 import jakarta.persistence.*;
 import kr.ac.dankook.SokGangPetTour.entity.chat.ChatRoom;
 import kr.ac.dankook.SokGangPetTour.entity.chatBot.ChatBotRoom;
+import kr.ac.dankook.SokGangPetTour.util.EncryptionUtil;
 import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,10 @@ public class Member extends BaseEntity{
     @Column(nullable = false)
     private Role role = Role.USER;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private MemberStatus status;
+
     @Builder
     public Member(String userId, String password, String email,
                   String name, Role role) {
@@ -38,10 +43,24 @@ public class Member extends BaseEntity{
         this.email = email;
         this.name = name;
         this.role = role;
+        this.status = MemberStatus.ACTIVE;
     }
 
     public void updatePassword(String newPassword){
         this.password = newPassword;
+    }
+
+    public void updateMemberInfo(String name,String email){
+        this.name = name;
+        this.email = email;
+    }
+
+    public void convertToDeletedMember(){
+        this.status = MemberStatus.WITHDRAWN;
+        this.password = "";
+        this.email = "";
+        this.name = "";
+        this.userId = EncryptionUtil.encrypt(this.getId());
     }
 
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)

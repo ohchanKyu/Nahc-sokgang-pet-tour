@@ -1,6 +1,7 @@
 package kr.ac.dankook.SokGangPetTour.repository.chat;
 
 import jakarta.persistence.LockModeType;
+import kr.ac.dankook.SokGangPetTour.entity.Member;
 import kr.ac.dankook.SokGangPetTour.entity.chat.ChatRoom;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
@@ -24,5 +25,8 @@ public interface ChatRoomRepository extends JpaRepository<ChatRoom,Long> {
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("select c from ChatRoom c where c.id = :id")
     Optional<ChatRoom> findByIdWithPessimisticLock(Long id);
+
+    @Query("select c from ChatRoom c where c.member = :member")
+    List<ChatRoom> findByManagerMember(@Param("member") Member member);
 
 }

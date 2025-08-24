@@ -41,6 +41,12 @@ public class ChatRoomService {
         return new ChatRoomResponse(newEntity);
     }
 
+    public List<ChatRoomResponse> getMyManagerChatRoomList(Member member){
+        List<ChatRoom> chatRooms = chatRoomRepository
+                .findByManagerMember(member);
+        return chatRooms.stream().map(ChatRoomResponse::new).toList();
+    }
+
     public List<ChatRoomResponse> getMyChatRoomList(Member member) {
         List<ChatRoomParticipant> chatRooms = chatRoomParticipantRepository
                 .findByMemberWithFetchJoin(member);

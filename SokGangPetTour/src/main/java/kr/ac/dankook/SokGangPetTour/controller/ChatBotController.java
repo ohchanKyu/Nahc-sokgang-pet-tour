@@ -37,7 +37,7 @@ public class ChatBotController {
             @AuthenticationPrincipal PrincipalDetails user
         ){
         return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
-                chatBotRoomService.getAllChatBotRoomByMember(user.getMember().getId())));
+                chatBotRoomService.getAllChatBotRoomByMember(user.getMember())));
     }
 
     @PostMapping("/room")

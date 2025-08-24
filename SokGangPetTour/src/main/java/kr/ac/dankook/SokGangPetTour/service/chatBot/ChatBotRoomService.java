@@ -19,7 +19,6 @@ import java.util.List;
 public class ChatBotRoomService {
 
     private final ChatBotRoomRepository chatBotRoomRepository;
-    private final MemberRepository memberRepository;
     private final ChatBotHistoryService chatBotHistoryService;
 
     @Transactional
@@ -32,10 +31,7 @@ public class ChatBotRoomService {
     }
 
     @Transactional
-    public List<ChatBotRoomResponse> getAllChatBotRoomByMember(Long memberId){
-
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+    public List<ChatBotRoomResponse> getAllChatBotRoomByMember(Member member){
         List<ChatBotRoom> lists = chatBotRoomRepository.findChatBotRoomByMember(member);
         return lists.stream().map(ChatBotRoomResponse::new).toList();
     }
@@ -56,4 +52,5 @@ public class ChatBotRoomService {
         chatBotRoomRepository.save(chatBotRoom);
         return true;
     }
+
 }

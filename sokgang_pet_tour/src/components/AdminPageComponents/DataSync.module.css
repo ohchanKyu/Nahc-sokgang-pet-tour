@@ -13,13 +13,13 @@
   letter-spacing: -0.02em;
   margin:10px 0;
   color: #202123;
-  padding-left: 5px;
+  text-align: center;
 }
 .desc{
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 30px;
-  padding-left: 5px;
+  text-align: center;
 }
 .grid {
   display: grid;
@@ -62,8 +62,7 @@
 }
 
 .btnPrimary {
-  background: linear-gradient(135deg, #4cc9f0, #4361ee);
-  border-color: #3b82f6;
+  background-color: #3b82f6;
   color: #fff;
   box-shadow: 0 8px 24px rgba(67,97,238,0.35);
 }

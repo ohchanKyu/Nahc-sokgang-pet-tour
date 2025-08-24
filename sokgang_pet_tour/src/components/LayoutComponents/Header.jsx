@@ -10,10 +10,12 @@ import { LuTickets } from "react-icons/lu";
 import { motion } from "framer-motion";
 
 const Header = () => {
+
   const loginCtx = useContext(loginContext);
   const navigate = useNavigate();
   const location = useLocation();
   const role = sessionStorage.getItem("USER_ROLE");
+  const token = sessionStorage.getItem("accessToken");
 
   const logoutHandler = async () => {
     const logoutResponseData = await logoutService();
@@ -60,7 +62,7 @@ const Header = () => {
             )}
         </nav>
         <div className={classes.buttonContainer}>
-            {!loginCtx?.userId ? (
+            {!token ? (
                 <>
                   <motion.div whileHover={{ scale : 1.03 }} >
                     <Link to="/auth" className={classes.actionLink}>

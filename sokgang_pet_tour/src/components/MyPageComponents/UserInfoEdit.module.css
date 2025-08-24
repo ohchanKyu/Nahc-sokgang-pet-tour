@@ -1,0 +1,121 @@
+.container{
+    width:600px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    background-color: #fff;
+    padding:50px;
+    min-height: 50vh;
+    text-align: center;
+}
+.title{
+    font-size: 24px;
+    font-weight: bold;
+    margin:20px 0;
+}
+.desc{
+    font-size: 14px;
+    font-weight: 500;
+    color:#333;
+    margin-bottom: 30px;
+}
+.desc2{
+    font-size: 14px;
+    font-weight: 500;
+    color:#333;
+    margin-top: 30px;
+}
+.auth_form {
+    max-width: 400px;
+    margin:0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.input_group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+.input_wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.input, .inputDisabled {
+    display:block;
+    height:45px;
+    padding:10px 10px;
+    border:1px solid #c4c4c4;
+    border-radius: 8px;
+    background-color:#fff;
+    color:#333;
+    font-size: 13px;
+    font-weight:500;
+    font-family: "Noto Sans KR", sans-serif;
+    box-sizing:border-box;
+    width:100%;
+}
+.inputDisabled{
+    color:#bdbdbd;
+    cursor: not-allowed;  
+}
+.inputDisabled::placeholder { color: #bdbdbd; }
+
+.inputDisabled:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #e6e6e6;
+}
+.input:focus {
+    border-color: #0aba16;
+    outline: none;
+}
+.input_error {
+    border-color: red;
+}
+.input_error:focus {
+    border-color: red;
+}
+.check_icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.error {
+    color: red;
+    font-size: 14px;
+    text-align: center;
+    margin:10px 0;
+    white-space: pre-line;
+}
+
+.submit_button {
+    width:100%;
+    margin:0 auto;
+    text-align: center;
+    font-size:15px;
+    font-weight: bold;
+    border: none;
+    padding: 15px 50px;
+    border-radius: 8px;
+    background-color:  #202123;
+    color: #ffffff;
+    cursor: pointer;
+}
+.submit_button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+.deleteButton{
+    margin:0 auto;
+    text-align: center;
+    font-size:13px;
+    font-weight: bold;
+    border: none;
+    padding:10px 20px;
+    border-radius: 8px;
+    background-color:  #fa4d4d;
+    color: #ffffff;
+    cursor: pointer;
+}

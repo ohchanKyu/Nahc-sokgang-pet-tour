@@ -1,29 +1,33 @@
-import React, { useState } from "react";
+import classes from "./UserPassChange.module.css";
 import { motion, AnimatePresence } from "framer-motion";
-import { CheckCircle } from "lucide-react";
-import classes from "./AuthInput.module.css";
 import { toast } from "react-toastify";
-import { changePasswordService } from "../../../api/AuthService";
+import { CheckCircle } from "lucide-react";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import { editPasswordService } from "../../api/MemberService";
 
 const passwordRegex = /^(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$/;
 
-const FindPasswordInput = (props) => {
+const UserPassChange = ({ onType }) => {
 
-    const [formData, setFormData] = new useState({
-        password: { value: "", placeholder: "비밀번호를 입력하세요" },
-        confirmPassword: { value: "", placeholder: "비밀번호를 다시 입력하세요" },
+    const [formData, setFormData] = useState({
+        password: { value: "", placeholder: "기존 비밀번호를 입력하세요" },
+        newPassword: { value: "", placeholder: "새로운 비밀번호를 입력하세요" },
+        newConfirmPassword : { value: "", placeholder: "새로운 비밀번호를 다시 입력하세요" },
     });
 
-    const [errors, setErrors] = new useState({});
-    const [touched, setTouched] = new useState({});
-    const [checking, setChecking] = new useState({});
+    const [errors, setErrors] =  useState({});
+    const [touched, setTouched] =  useState({});
+    const [checking, setChecking] =  useState({});
 
     const validateField = (name, value) => {
         switch (name) {
-            case "password":
+            case "password" :
+                return passwordRegex.test(value) ? "" : "기존 비밀번호를 정확히 입력해주세요.";
+            case "newPassword":
                 return passwordRegex.test(value) ? "" : "비밀번호는 최소 8자, 숫자 1개, \n 특수문자 1개를 포함해야 합니다.";
-            case "confirmPassword":
-                return value === formData.password.value && value.trim().length > 0 ? "" : "비밀번호가 일치하지 않습니다.";
+            case "newConfirmPassword":
+                return value === formData.newPassword.value && value.trim().length > 0 ? "" : "비밀번호가 일치하지 않습니다.";
             default:
                 return "";
         }
@@ -35,7 +39,7 @@ const FindPasswordInput = (props) => {
         const error = validateField(name, formData[name].value);
         setErrors({ ...errors, [name]: error });
     };
-    
+        
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: { ...formData[name], value } });
@@ -51,17 +55,18 @@ const FindPasswordInput = (props) => {
             newErrors[key] = validateField(key, formData[key].value);
         });
         setErrors(newErrors);
-        setTouched({ password: true, confirmPassword: true  });
+        setTouched({ password: true, newPassword: true, newConfirmPassword: true  });
+
         if (Object.values(newErrors).every((err) => err === "")) {
-            
             setChecking((prev) => ({ ...prev, ["formData"]: true }));
             const passwordChangeRequest = {
-                newPassword : formData.password.value,
+                originalPassword : formData.password.value,
+                newPassword : formData.newPassword.value,
             }
-            const passwordChangeResponseData = await changePasswordService(props.authMailToken, passwordChangeRequest);
-            if (passwordChangeResponseData.success){
-                if (passwordChangeResponseData){
-                    toast.success("비밀번호 변경에 성공하셨습니다. \n 로그인 페이지로 이동합니다.", {
+            const passwordChangeResponse = await editPasswordService(passwordChangeRequest);
+            if (passwordChangeResponse.success){
+                if (passwordChangeResponse.data){
+                    toast.success("비밀번호 변경에 성공하셨습니다.", {
                         position: "top-center",
                         autoClose: 2000,
                         hideProgressBar: false,
@@ -70,9 +75,9 @@ const FindPasswordInput = (props) => {
                         draggable: true,
                         progress: undefined,
                     });
-                    props.typeChangeHandler(1);
+                    onType();
                 }else{
-                    toast.error("비밀번호 변경에 실패하셨습니다. 다시 시도해주세요.", {
+                    toast.error("기존 비밀번호와 일치하지 않습니다. 다시 시도해주세요.", {
                         position: "top-center",
                         autoClose: 2000,
                         hideProgressBar: false,
@@ -108,20 +113,24 @@ const FindPasswordInput = (props) => {
         }
     };
 
-     return (
-        <motion.div
-            className={classes.signup_container}
-            initial={{ opacity: 0, y: -20 }}
+    return (
+        
+        <motion.section
+            key='petGang-my-userpass-change'          
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-        >
-            <motion.form
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.3 }}
+            className={classes.container}>
+             <h1 className={classes.title}>비밀번호 변경</h1>
+             <p className={classes.desc}>현재 비밀번호와 일치하는 경우 비밀번호를 변경하실 수 있습니다.</p>
+             <motion.form
                 onSubmit={handleSubmit}
                 className={classes.auth_form}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3 }}
-            >
+                >
                 {Object.keys(formData).map((key) => (
                     <div key={key} className={classes.input_group}>
                         <div className={classes.input_wrapper}>
@@ -135,7 +144,7 @@ const FindPasswordInput = (props) => {
                                 placeholder={formData[key].placeholder}
                             />
                             {!errors[key] && touched[key] && formData[key] && 
-                                ["password", "confirmPassword"].includes(key) && 
+                                ["password", "newPassword","newConfirmPassword"].includes(key) && 
                                 (
                                     <CheckCircle className={classes.check_icon} color="green" size={20} />
                                 )
@@ -165,8 +174,12 @@ const FindPasswordInput = (props) => {
                     {checking['formData'] ? '제출중...' : '비밀번호 변경'}
                 </motion.button>
             </motion.form>
-        </motion.div>
-    );
+            <p className={classes.desc2}>
+                현재 비밀번호가 기억나지 않으신다면 아래 링크에서 변경해주세요.
+            </p>
+            <Link to='/auth?type=4' className={classes.link}>바로가기</Link>
+        </motion.section>
+    )
 };
 
-export default FindPasswordInput;
+export default UserPassChange;

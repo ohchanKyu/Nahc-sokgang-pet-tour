@@ -2,6 +2,7 @@ package kr.ac.dankook.SokGangPetTour.controller;
 
 import jakarta.validation.Valid;
 import kr.ac.dankook.SokGangPetTour.config.principal.PrincipalDetails;
+import kr.ac.dankook.SokGangPetTour.dto.request.authRequest.MemberInfoChangeRequest;
 import kr.ac.dankook.SokGangPetTour.dto.request.memberRequest.MemberPasswordChangeRequest;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiMessageResponse;
 import kr.ac.dankook.SokGangPetTour.dto.response.ApiResponse;
@@ -49,4 +50,21 @@ public class MemberController {
                 memberService.editMemberPassword(user.getMember(), request.getOriginalPassword(),
                         request.getNewPassword())));
     }
-}
+
+    @PatchMapping("/me")
+    public ResponseEntity<ApiMessageResponse> editUserInfo(
+            @AuthenticationPrincipal PrincipalDetails user,
+            @RequestBody @Valid MemberInfoChangeRequest request
+    ){
+        memberService.editMemberInfo(user.getMember(), request.getName(),request.getEmail());
+        return ResponseEntity.status(200).body(new ApiMessageResponse(true,200,"회원 정보를 변경하였습니다."));
+    }
+
+    @DeleteMapping("/me")
+    public ResponseEntity<ApiMessageResponse> deleteMember(
+            @AuthenticationPrincipal PrincipalDetails user
+    ) throws InterruptedException {
+        memberService.deleteMember(user.getMember());
+        return ResponseEntity.status(200).body(new ApiMessageResponse(true,200,"회원 탈퇴가 완료되었습니다."));
+    }
+ }

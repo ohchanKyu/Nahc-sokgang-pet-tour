@@ -56,6 +56,14 @@ public class ChatRoomController {
                 chatRoomService.getMyChatRoomList(user.getMember())));
     }
 
+    @GetMapping("/manager")
+    public ResponseEntity<ApiResponse<List<ChatRoomResponse>>> getMyManagerRooms(
+            @AuthenticationPrincipal PrincipalDetails user
+    ){
+        return ResponseEntity.status(200).body(new ApiResponse<>(true,200,
+                chatRoomService.getMyManagerChatRoomList(user.getMember())));
+    }
+
     @GetMapping("/search")
     public ResponseEntity<ApiResponse<List<ChatRoomResponse>>> searchChatRooms(
             @RequestParam("keyword") String keyword

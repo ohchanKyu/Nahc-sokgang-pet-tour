@@ -20,7 +20,6 @@ public class ChatBotHistoryService {
         return lists.stream().map(ChatBotHistoryResponse::new).toList();
     }
 
-
     public void deleteChatBotHistory(String sessionId){
         chatBotHistoryRepository.deleteBySessionId(sessionId);
     }

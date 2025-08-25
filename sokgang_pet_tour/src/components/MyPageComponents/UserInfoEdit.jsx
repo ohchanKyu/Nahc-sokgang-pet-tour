@@ -3,15 +3,22 @@ import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import { CheckCircle } from "lucide-react";
-import { editMemberInfoService } from "../../api/MemberService";
-
+import { editMemberInfoService, deleteMemberService } from "../../api/MemberService";
+import { logoutService } from "../../api/MemberService";
+import Modal from "../LayoutComponents/Modal";
+import DeleteModal from "./DeleteModal";
+import Loading from "../LayoutComponents/Loading";
+import { useNavigate } from "react-router-dom";
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 const UserInfoEdit = ({ loginCtx, onType }) => {
 
     const { createTime, memberId, email, name, userId, role } = loginCtx || {};
-    
+    const [isModalOpen,setIsModalOpen] = useState(false);
+    const [isDelete,setIsDelete] = useState(false);
+    const navigate = useNavigate();
+
     const roleTitle = role === "USER" ? "일반 사용자 등급" : "관리자 등급";
     const [formData, setFormData] = useState({
         name : { value: name, placeholder: name },
@@ -49,6 +56,39 @@ const UserInfoEdit = ({ loginCtx, onType }) => {
             const error = validateField(name, value);
             setErrors({ ...errors, [name]: error });
         }
+    };
+
+    const handleDeleteMember = async () => {
+        setIsDelete(true);
+        const logoutResponseData = await logoutService();
+        if (logoutResponseData.success){
+            const deleteResponseData = await deleteMemberService();
+            if (deleteResponseData.success){
+                toast.success("계정이 탈퇴 처리되었습니다.", {
+                    position: "top-center",
+                    autoClose: 2000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                });
+                setIsDelete(false);
+                navigate('/auth');
+            }
+            loginCtx.logoutUser();
+        }else{
+            toast.warning("일시적 오류입니다. \n 다시 로그인 후 진행해주세요.", {
+                position: "top-center",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+            });
+        }
+        setIsDelete(false);
     };
 
     const handleSubmit = async (e) => {
@@ -126,6 +166,15 @@ const UserInfoEdit = ({ loginCtx, onType }) => {
 
     return (
         
+        <>
+        {isModalOpen && (
+            <Modal onClose={() => setIsModalOpen(false)}>
+                <DeleteModal 
+                    loginCtx={loginCtx}
+                    onClose={() => setIsModalOpen(false)} onConfirm={handleDeleteMember}/>
+            </Modal>
+        )}
+        {isDelete && <Loading/>}
         <motion.section
             key='petGang-my-userinfo-edit'          
             initial={{ opacity: 0, y: 10 }}
@@ -202,12 +251,13 @@ const UserInfoEdit = ({ loginCtx, onType }) => {
                 회원탈퇴를 원하시면 아래 버튼을 클릭해주세요.
             </p>
             <motion.button 
+                onClick={() => setIsModalOpen(true)}
                 whileHover={{ scale : 1.02 }}
                 className={classes.deleteButton}>
                 회원탈퇴
             </motion.button>
         </motion.section>
-                 
+        </>
     )
 };
 

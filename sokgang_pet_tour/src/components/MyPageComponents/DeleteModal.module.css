@@ -1,0 +1,68 @@
+.modal_content {
+    padding: 20px;
+    text-align: center;
+}
+.info_box {
+    background-color: #f4f4f4;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+    font-size: 14px;
+    color: #333;
+}
+.modal_btns {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 30px;
+}
+
+.confirm_btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 13px;
+}
+
+.cancel_btn {
+    background-color: #ccc;
+    color: #333;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 13px;
+}
+.modal_title{
+    font-size: 16px;
+    font-weight: bold;
+}
+.info{
+    font-size: 13px;
+    color:#333;
+    margin:10px 0;
+}
+.text{
+    text-align: center;
+    font-weight: bold;
+    font-size:11px;
+    margin:15px 0;
+    color:#333;
+}
+.check_list{
+    background-color: #333;
+    border-radius: 8px;
+    list-style: none;
+    color:#fff;
+    padding:20px 30px;
+}
+.check_one, .check_two{
+    font-size:11px;
+    margin:5px 0;
+    word-break: keep-all;
+}

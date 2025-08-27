@@ -7,8 +7,7 @@ import tourImg from "../assets/tour.png";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import tourRecommendImg from "../assets/tourRecommend.png";
-
-import tourRecommendResultImg from "../assets/tourRecommendResult.png";
+import tourRecommendResultImg from "../assets/tourResult.png";
 import chatBotImg from "../assets/chatBot.png";
 import chatImg from "../assets/chatImg.png";
 

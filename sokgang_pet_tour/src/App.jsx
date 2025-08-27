@@ -12,9 +12,10 @@ import TourPage from './page/TourPage';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import ChatPage from './page/ChatPage';
-import AIPage from './page/AiPage';
+import AIPage from './page/AIPage';
 import MyPage from './page/MyPage';
 import NotFoundPage from './page/NotFoundPage';
+
 const router = createBrowserRouter([
 
   {

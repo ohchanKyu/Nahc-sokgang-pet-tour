@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
 public interface TourContentRepository extends JpaRepository<TourContent, String> {
 
     @Query("select c from TourContent c JOIN FETCH c.detailImages")

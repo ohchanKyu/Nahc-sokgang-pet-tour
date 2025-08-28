@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface VetPlaceRepository extends JpaRepository<VetPlace,Long> {
 
     @Query("select p from VetPlace p JOIN FETCH p.operatingHours where p.category = :category and p.isParking = true")

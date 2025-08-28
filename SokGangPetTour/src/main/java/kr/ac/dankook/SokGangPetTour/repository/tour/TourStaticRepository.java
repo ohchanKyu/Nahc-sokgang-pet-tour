@@ -15,7 +15,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface TourStaticRepository extends JpaRepository<TourStatic,Long> {
 
     @Modifying(clearAutomatically = true, flushAutomatically = true)

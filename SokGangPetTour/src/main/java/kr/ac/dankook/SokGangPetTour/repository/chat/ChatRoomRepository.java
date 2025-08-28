@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
-@Repository
 public interface ChatRoomRepository extends JpaRepository<ChatRoom,Long> {
 
     @Query("select c from ChatRoom c where c.name LIKE %:keyword% or c.description LIKE %:keyword%")

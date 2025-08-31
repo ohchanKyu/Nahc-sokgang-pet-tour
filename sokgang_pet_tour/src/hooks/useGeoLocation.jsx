@@ -13,6 +13,7 @@ export const useGeoLocation = (options = {}) => {
       });
     };
   
+
     const handleError = (err) => {
       setError(err.message);
     };

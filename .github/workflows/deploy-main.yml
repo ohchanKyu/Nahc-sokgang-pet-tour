@@ -3,6 +3,9 @@ on:
   push:
     branches:
       - main
+    paths:
+      - 'sokgang_pet_tour/**'        
+      - '.github/workflows/**'
 jobs:
   deploy:
     runs-on: ubuntu-latest

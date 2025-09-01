@@ -27,6 +27,7 @@ const UserInfo = ({ loginCtx }) => {
 
     useEffect(() => {
         const fetchDatas = async () => {
+            if (loginCtx.userId === '') return;
             const chatBotResponse = await getMyChatBotService();
             const chatRoomResponse = await getMyChatRoomService();
             const managerChatRoomResponse = await getMyManagerChatRoomService();

@@ -15,6 +15,7 @@ import {
   MdContentCopy,
   MdDirections
 } from "react-icons/md";
+import Loading from "../components/LayoutComponents/Loading";
 
 const has = (v) => {
   if (v === null || v === undefined) return false;
@@ -30,6 +31,7 @@ const TourPlaceDetailPage = ({ id, location, isIncludeRoute = true }) => {
 
   const [tourDetail, setTourDetail] = useState(null);
   const [active, setActive] = useState("home"); 
+  const [loading, setLoading] = useState(false);
 
   const copyAddress = async () => {
     try {
@@ -58,7 +60,7 @@ const TourPlaceDetailPage = ({ id, location, isIncludeRoute = true }) => {
   useEffect(() => {
     
     const fetchTourDetail = async () => {
-
+      setLoading(true);
       const placeResponse = await getTourPlaceDetailService(id);
       if (placeResponse.success){
         const decorated = decorateTour(placeResponse.data.tourContentResponse);
@@ -75,6 +77,7 @@ const TourPlaceDetailPage = ({ id, location, isIncludeRoute = true }) => {
         toast.error(`일시적 오류입니다.\n${errorMessage}`, { position: "top-center", autoClose: 2000 });
       }
       setActive('home');
+      setLoading(false);      
     };
     if (id) fetchTourDetail();
   }, [id]);
@@ -95,6 +98,7 @@ const TourPlaceDetailPage = ({ id, location, isIncludeRoute = true }) => {
 
   return (
     <div className={classes.wrapper}>
+      {loading && <Loading />}
       {tourDetail && (
         <header className={classes.header}>
           <div className={classes.badges}>

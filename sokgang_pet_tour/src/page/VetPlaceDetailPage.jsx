@@ -17,6 +17,7 @@ import {
   MdExpandLess,
   MdDirections
 } from "react-icons/md";
+import Loading from "../components/LayoutComponents/Loading";
 
 const naverMapURL = 'http://map.naver.com/index.nhn?';
 const DAY_ORDER = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN", "HOLIDAY"];
@@ -56,11 +57,13 @@ const VetPlaceDetailPage = ({ id, location }) => {
 
   const [place, setPlace] = useState(null);
   const [expanded, setExpanded] = useState(false);
-
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const fetchPlaceData = async () => {
+      setLoading(true);
       const placeResponse = await getVetPlaceDetailService(id);
       if (placeResponse?.success) setPlace(placeResponse.data);
+      setLoading(false);
     };
     fetchPlaceData();
   }, [id]);
@@ -108,6 +111,7 @@ const VetPlaceDetailPage = ({ id, location }) => {
 
   return (
     <section className={classes.panel}>
+       {loading && <Loading />}
       <div className={classes.header}>
         <h1 className={classes.title}>{placeName}</h1>
         <div className={classes.metaRow}>

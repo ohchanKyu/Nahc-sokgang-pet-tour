@@ -27,7 +27,7 @@ const MyChatRoomList = ({ chatRoom, onFormatChatTime, onChatConnect }) => {
     const [isSubmit, setIsSubmit] = new useState(false);
 
     const leaveChatRoomHandler = async (roomId) => {
-    
+        
         setIsSubmit(true);
         const unregisterResponse = await leaveChatRoomService(roomId);
         if (unregisterResponse.success){

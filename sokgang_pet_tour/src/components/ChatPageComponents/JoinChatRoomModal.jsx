@@ -4,19 +4,23 @@ import Modal from "../LayoutComponents/Modal";
 import { joinChatRoomService } from "../../api/ChatRoomService";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
-
+import Loading from "../LayoutComponents/Loading";
 const JoinChatRoomModal = ({ onClose, onJoin , room }) => {
 
     const [nickname,setNickname] = useState('');
+    const [loading, setLoading] = useState(false);
+
     const submit = async (e) => {
         e.preventDefault();
         if (!nickname || nickname.trim().length < 2 || nickname.trim().length > 50) {
             toast.warn("닉네임은 2~8자입니다.", { position: "top-center", autoClose: 500 });
             return;
         }
+        setLoading(true);
         const res = await joinChatRoomService(room.roomId,nickname);
         if (res?.success) {
             toast.success("채팅방에 참여하였습니다..", { position: "top-center", autoClose: 500 });
+            setLoading(false);
             onJoin(res.data);
             onClose();
         } else {
@@ -26,6 +30,7 @@ const JoinChatRoomModal = ({ onClose, onJoin , room }) => {
 
     return (
         <Modal>
+            {loading && <Loading />}
             <div className={classes.joinContainer}>
                 <form className={classes.form} onSubmit={submit}>
                      <div className={classes.header}>

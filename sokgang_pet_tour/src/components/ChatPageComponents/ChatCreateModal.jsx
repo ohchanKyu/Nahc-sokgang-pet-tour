@@ -4,14 +4,15 @@ import Modal from "../LayoutComponents/Modal";
 import { toast } from "react-toastify";
 import { createChatRoomService } from "../../api/ChatRoomService";
 import { motion } from "framer-motion";
-
+import Loading from "../LayoutComponents/Loading";
 const ChatCreateModal = ({ onClose, onCreated }) => {
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
     const [maxParticipants, setMaxParticipants] = useState(50);
     const [nickname, setNickname] = useState("");
-    
+    const [loading, setLoading] = useState(false);
+
     const submit = async (e) => {
         e.preventDefault();
         if (name.trim().length < 2 || name.trim().length > 50) {
@@ -26,9 +27,11 @@ const ChatCreateModal = ({ onClose, onCreated }) => {
           toast.warn("닉네임은 2~8자입니다.", { position: "top-center", autoClose: 500 });
           return;
         }
+        setLoading(true);
         const req = { name, description, maxParticipants: Number(maxParticipants), nickname };
         const res = await createChatRoomService(req);
         if (res?.success) {
+             setLoading(false);
             toast.success("채팅방이 생성되었습니다.", { position: "top-center", autoClose: 500 });
             onCreated(res.data);
             onClose();
@@ -39,6 +42,7 @@ const ChatCreateModal = ({ onClose, onCreated }) => {
 
     return (
         <Modal onClose={onClose}>
+            {loading && <Loading />}
             <div className={classes.createContainer}>
                 <form className={classes.form} onSubmit={submit}>
                     <label>채팅방 이름</label>

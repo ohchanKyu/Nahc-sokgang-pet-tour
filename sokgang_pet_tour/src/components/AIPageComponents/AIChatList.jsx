@@ -24,6 +24,7 @@ const AIChatList = () => {
     const titleChangeHandler = (e) => setTitle(e.target.value);
 
     const fetchChatSections = async () => {        
+        setIsLoading(true);
         const chatSectionsResponse = await getMyChatBotService();
         if (chatSectionsResponse.success) {
             const reversedSections = [...chatSectionsResponse.data].reverse();
@@ -42,6 +43,7 @@ const AIChatList = () => {
                 progress: undefined,
             });
         }
+        setIsLoading(false);
     };
 
     useEffect(() => {
@@ -73,6 +75,7 @@ const AIChatList = () => {
             });
             return;
         }
+        setIsLoading(true);
         const createSectionsResponse = await saveNewChatBotRoomService(title);
         if (createSectionsResponse.success) {
             setCurrentSection(createSectionsResponse.data);
@@ -89,6 +92,7 @@ const AIChatList = () => {
                 progress: undefined,
             });
         }
+        setIsLoading(false);
     };  
 
     const setCurrentSectionHandler = (section) => setCurrentSection(section);
@@ -97,10 +101,12 @@ const AIChatList = () => {
         if (currentSection && sectionId === currentSection.id) {
             setCurrentSection(null);
         }
+        setIsLoading(true);
         const deleteSectionResponse = await deleteChatBotService(sectionId);
         if (deleteSectionResponse.success && deleteSectionResponse.data){
             setChatSections((prevSections) => prevSections.filter((section) => section.id !== sectionId));
         }
+        setIsLoading(false);
         fetchChatSections();
     };
 

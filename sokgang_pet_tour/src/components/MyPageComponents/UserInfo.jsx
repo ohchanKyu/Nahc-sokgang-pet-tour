@@ -4,14 +4,14 @@ import { getMyChatBotService } from "../../api/ChatBotService";
 import { getMyChatRoomService, getMyManagerChatRoomService } from "../../api/ChatRoomService";
 import { toast } from "react-toastify";
 import { motion } from "framer-motion";
-
+import Loading from "../LayoutComponents/Loading";
 const UserInfo = ({ loginCtx }) => {
 
     const { createTime, email, name, userId, role } = loginCtx || {};
     const roleTitle = role === "USER" ? "일반 사용자 등급" : "관리자 등급";
 
     const [data,setData] = useState({});
-
+    const [isLoading, setIsLoading] = useState(false);
     const joinedAt = useMemo(() => {
         if (!createTime) return '가입일 정보 없음';
         try {
@@ -28,6 +28,7 @@ const UserInfo = ({ loginCtx }) => {
     useEffect(() => {
         const fetchDatas = async () => {
             if (loginCtx.userId === '') return;
+            setIsLoading(true);
             const chatBotResponse = await getMyChatBotService();
             const chatRoomResponse = await getMyChatRoomService();
             const managerChatRoomResponse = await getMyManagerChatRoomService();
@@ -57,13 +58,15 @@ const UserInfo = ({ loginCtx }) => {
               aiChatRoom : chatBotData.length,
               unreadCount : count
             })
+            setIsLoading(false);
         };
         fetchDatas();
     },[loginCtx])
 
     return (
-        
-        <motion.section 
+        <>
+          {isLoading && <Loading />}
+          <motion.section 
             key='petGang-my-userinfo'          
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
@@ -102,6 +105,7 @@ const UserInfo = ({ loginCtx }) => {
             </div>
           </div>
         </motion.section>
+        </>
     )
 };
 

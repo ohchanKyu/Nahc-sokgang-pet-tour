@@ -41,33 +41,35 @@ const ChatCreateModal = ({ onClose, onCreated }) => {
     };
 
     return (
-        <Modal onClose={onClose}>
+        <>
             {loading && <Loading />}
-            <div className={classes.createContainer}>
-                <form className={classes.form} onSubmit={submit}>
-                    <label>채팅방 이름</label>
-                    <input value={name} onChange={(e) => setName(e.target.value)} placeholder="예) 반려여행 논의방" />
-        
-                    <label>설명</label>
-                    <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="방 소개를 적어주세요" />
-        
-                    <div className={classes.grid}>
-                        <div className={classes.element1}>
-                            <label>최대 인원</label>
-                            <input type="number" min={2} max={1000} value={maxParticipants} onChange={(e) => setMaxParticipants(e.target.value)} />
+            <Modal onClose={onClose}>
+                <div className={classes.createContainer}>
+                    <form className={classes.form} onSubmit={submit}>
+                        <label>채팅방 이름</label>
+                        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="예) 반려여행 논의방" />
+            
+                        <label>설명</label>
+                        <input value={description} onChange={(e) => setDescription(e.target.value)} placeholder="방 소개를 적어주세요" />
+            
+                        <div className={classes.grid}>
+                            <div className={classes.element1}>
+                                <label>최대 인원</label>
+                                <input type="number" min={2} max={1000} value={maxParticipants} onChange={(e) => setMaxParticipants(e.target.value)} />
+                            </div>
+                            <div className={classes.element2}>
+                                <label>사용 닉네임</label>
+                                <input value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="예) 홍길동" />
+                            </div>
                         </div>
-                        <div className={classes.element2}>
-                            <label>사용 닉네임</label>
-                            <input value={nickname} onChange={(e) => setNickname(e.target.value)} placeholder="예) 홍길동" />
+                        <div className={classes.modalActions}>
+                            <motion.button whileHover={{ scale:1.03 }} type="button" className={classes.btnGhost} onClick={onClose}>취소</motion.button>
+                            <motion.button whileHover={{ scale:1.03 }} type="submit" className={classes.btnPrimary}>생성</motion.button>
                         </div>
-                    </div>
-                    <div className={classes.modalActions}>
-                        <motion.button whileHover={{ scale:1.03 }} type="button" className={classes.btnGhost} onClick={onClose}>취소</motion.button>
-                        <motion.button whileHover={{ scale:1.03 }} type="submit" className={classes.btnPrimary}>생성</motion.button>
-                    </div>
-                </form>
-            </div>
-        </Modal>
+                    </form>
+                </div>
+            </Modal>
+        </>
     )
 };
 

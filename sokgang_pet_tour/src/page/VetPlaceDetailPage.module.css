@@ -148,3 +148,32 @@
   .title { font-size: 18px; }
   .metaLine, .dayLabel, .timeLabel { font-size: 12px; }
 }
+.item {
+  display: grid;
+  grid-template-columns: 120px 1fr;  
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  cursor: pointer;
+  transition: border-color .15s ease, box-shadow .2s ease, transform .06s ease;
+}
+.thumb {
+  width: 120px;
+  height: 90px;             
+  background: #f3f4f6;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.body { min-width: 0; display: grid; gap: 6px; }
+.skel .thumb { background: #e5e7eb; }
+.line, .lineShort {
+  height: 12px;
+  background: linear-gradient(90deg, #e5e7eb 25%, #f3f4f6 37%, #e5e7eb 63%);
+  background-size: 400% 100%;
+  border-radius: 6px;
+  animation: shimmer 1.2s ease infinite;
+  margin-top: 8px;
+}
+.lineShort { width: 60%; }

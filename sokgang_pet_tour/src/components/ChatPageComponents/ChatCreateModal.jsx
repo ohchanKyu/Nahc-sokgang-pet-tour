@@ -31,10 +31,11 @@ const ChatCreateModal = ({ onClose, onCreated }) => {
         const req = { name, description, maxParticipants: Number(maxParticipants), nickname };
         const res = await createChatRoomService(req);
         if (res?.success) {
-             setLoading(false);
+            onClose();
+            setLoading(false);
             toast.success("채팅방이 생성되었습니다.", { position: "top-center", autoClose: 500 });
             onCreated(res.data);
-            onClose();
+            
         } else {
             toast.error(res?.message || "채팅방 생성에 실패했습니다.", { position: "top-center", autoClose: 500});
         }

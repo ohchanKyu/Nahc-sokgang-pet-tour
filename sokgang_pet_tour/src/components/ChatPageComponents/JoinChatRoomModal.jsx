@@ -20,10 +20,11 @@ const JoinChatRoomModal = ({ onClose, onJoin , room }) => {
         setLoading(true);
         const res = await joinChatRoomService(room.roomId,nickname);
         if (res?.success) {
-            toast.success("채팅방에 참여하였습니다..", { position: "top-center", autoClose: 500 });
-            setLoading(false);
-            onJoin(res.data);
             onClose();
+            toast.success("채팅방에 참여하였습니다..", { position: "top-center", autoClose: 500 });
+            onJoin(res.data);
+            setLoading(false);
+            
         } else {
             toast.error(res?.message || "채팅방 참여에 실패했습니다.", { position: "top-center", autoClose: 500});
         }

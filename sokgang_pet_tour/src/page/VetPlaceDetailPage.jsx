@@ -57,13 +57,21 @@ const VetPlaceDetailPage = ({ id, location }) => {
 
   const [place, setPlace] = useState(null);
   const [expanded, setExpanded] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchPlaceData = async () => {
       setLoading(true);
+      setPlace(null);
       const placeResponse = await getVetPlaceDetailService(id);
-      if (placeResponse?.success) setPlace(placeResponse.data);
-      setLoading(false);
+      if (placeResponse?.success){
+        setTimeout(() => {
+          setLoading(false);  
+          setPlace(placeResponse.data);
+        },500);
+      }else{
+        setLoading(false);
+      }
     };
     fetchPlaceData();
   }, [id]);
@@ -107,108 +115,119 @@ const VetPlaceDetailPage = ({ id, location }) => {
         window.open(url, "_blank", "noopener,noreferrer");
   };
 
-  if (!place) return null;
-
   return (
     <section className={classes.panel}>
-       {loading && <Loading />}
-      <div className={classes.header}>
-        <h1 className={classes.title}>{placeName}</h1>
-        <div className={classes.metaRow}>
-          <CategoryBadge category={category} />
-          <StatusBadge open={!!open} />
-        </div>
-        <div className={classes.metaColumn}>
-          <div className={classes.metaLine}>
-            <MdAccessTime size={14} />
-            <span>
-              {(() => {
-                const weekday =
-                  operatingHours.find((o) => ["MON","TUE","WED","THU","FRI"].includes(o.dayType)) ||
-                  operatingHours[0];
-                return weekday
-                  ? `${formatTime(weekday.openTime)}–${formatTime(weekday.closeTime)}`
-                  : "시간 정보 없음";
-              })()}
-            </span>
+      {loading && (
+          <div className={`${classes.item} ${classes.skel}`}>
+            <div className={classes.thumb} />
+            <div className={classes.body}>
+              <div className={classes.line} />
+              <div className={classes.lineShort} />
+              <div className={classes.line} />
+            </div>
           </div>
+      )}
+      {place && (
+          <>
+            <div className={classes.header}>
+              <h1 className={classes.title}>{placeName}</h1>
+              <div className={classes.metaRow}>
+                <CategoryBadge category={category} />
+                <StatusBadge open={!!open} />
+              </div>
+              <div className={classes.metaColumn}>
+                <div className={classes.metaLine}>
+                  <MdAccessTime size={14} />
+                  <span>
+                    {(() => {
+                      const weekday =
+                        operatingHours.find((o) => ["MON","TUE","WED","THU","FRI"].includes(o.dayType)) ||
+                        operatingHours[0];
+                      return weekday
+                        ? `${formatTime(weekday.openTime)}–${formatTime(weekday.closeTime)}`
+                        : "시간 정보 없음";
+                    })()}
+                  </span>
+                </div>
 
-          {typeof parking === "boolean" && (
-            <div className={classes.metaLine}>
-              <MdLocalParking size={14} />
-              <span>주차 {parking ? "가능" : "불가"}</span>
+                {typeof parking === "boolean" && (
+                  <div className={classes.metaLine}>
+                    <MdLocalParking size={14} />
+                    <span>주차 {parking ? "가능" : "불가"}</span>
+                  </div>
+                )}
+
+                {phoneNumber && (
+                  <div className={classes.metaLine}>
+                    <MdPhone size={14} />
+                    <span>{phoneNumber}</span>
+                  </div>
+                )}
+
+                {address && (
+                  <div className={classes.metaLine}>
+                    <MdPlace size={14} />
+                    <span>{address}</span>
+                  </div>
+                )}
+              </div>
             </div>
-          )}
-
-          {phoneNumber && (
-            <div className={classes.metaLine}>
-              <MdPhone size={14} />
-              <span>{phoneNumber}</span>
+            <div className={classes.actionsRow}>
+              <button 
+                  type="button" className={classes.noActionBtn}>
+                  <MdPets size={14} />
+                  {maxSizeInfo}
+              </button>
+              <motion.button 
+                  whileHover={{ scale : 1.05 }}
+                  type="button" className={classes.actionBtn} onClick={copyAddress}>
+                <MdContentCopy size={14} />
+                주소 복사
+              </motion.button>
+              <motion.button 
+                  whileHover={{ scale : 1.05 }}
+                  type="button" className={classes.actionBtn} onClick={openNaverDirections}>
+                <MdDirections size={16} />
+                길찾기
+              </motion.button>
             </div>
-          )}
+            <div className={classes.section}>
+              <button
+                type="button"
+                className={classes.collapseBtn}
+                onClick={() => setExpanded((v) => !v)}
+                aria-expanded={expanded}
+              >
+                <span>운영시간</span>
+                {expanded ? <MdExpandLess size={16} /> : <MdExpandMore size={16} />}
+              </button>
 
-          {address && (
-            <div className={classes.metaLine}>
-              <MdPlace size={14} />
-              <span>{address}</span>
+              <AnimatePresence initial={false}>
+                {expanded && (
+                  <motion.div
+                    key="hours"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: "auto", opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.22, ease: "easeInOut" }}
+                    className={classes.hoursWrapper}
+                  >
+                    <ul className={classes.hoursList}>
+                      {hoursSorted.map((h) => (
+                        <li key={h.dayType} className={classes.hoursItem}>
+                          <span className={classes.dayLabel}>{DAY_KR_FULL[h.dayType]}</span>
+                          <span className={classes.timeLabel}>
+                            {h.open ? `${formatTime(h.openTime)}–${formatTime(h.closeTime)}` : "휴무"}
+                          </span>
+                        </li>
+                      ))}
+                    </ul>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-          )}
-        </div>
-      </div>
-      <div className={classes.actionsRow}>
-        <button 
-            type="button" className={classes.noActionBtn}>
-            <MdPets size={14} />
-            {maxSizeInfo}
-        </button>
-        <motion.button 
-            whileHover={{ scale : 1.05 }}
-            type="button" className={classes.actionBtn} onClick={copyAddress}>
-          <MdContentCopy size={14} />
-          주소 복사
-        </motion.button>
-        <motion.button 
-            whileHover={{ scale : 1.05 }}
-            type="button" className={classes.actionBtn} onClick={openNaverDirections}>
-          <MdDirections size={16} />
-          길찾기
-        </motion.button>
-      </div>
-      <div className={classes.section}>
-        <button
-          type="button"
-          className={classes.collapseBtn}
-          onClick={() => setExpanded((v) => !v)}
-          aria-expanded={expanded}
-        >
-          <span>운영시간</span>
-          {expanded ? <MdExpandLess size={16} /> : <MdExpandMore size={16} />}
-        </button>
-
-        <AnimatePresence initial={false}>
-          {expanded && (
-            <motion.div
-              key="hours"
-              initial={{ height: 0, opacity: 0 }}
-              animate={{ height: "auto", opacity: 1 }}
-              exit={{ height: 0, opacity: 0 }}
-              transition={{ duration: 0.22, ease: "easeInOut" }}
-              className={classes.hoursWrapper}
-            >
-              <ul className={classes.hoursList}>
-                {hoursSorted.map((h) => (
-                  <li key={h.dayType} className={classes.hoursItem}>
-                    <span className={classes.dayLabel}>{DAY_KR_FULL[h.dayType]}</span>
-                    <span className={classes.timeLabel}>
-                      {h.open ? `${formatTime(h.openTime)}–${formatTime(h.closeTime)}` : "휴무"}
-                    </span>
-                  </li>
-                ))}
-              </ul>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      </div>
+          </>
+      )}
     </section>
   );
 };

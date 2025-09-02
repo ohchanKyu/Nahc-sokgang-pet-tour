@@ -61,6 +61,7 @@ const TourPlaceDetailPage = ({ id, location, isIncludeRoute = true }) => {
     
     const fetchTourDetail = async () => {
       setLoading(true);
+      setTourDetail(null);
       const placeResponse = await getTourPlaceDetailService(id);
       if (placeResponse.success){
         const decorated = decorateTour(placeResponse.data.tourContentResponse);
@@ -71,13 +72,16 @@ const TourPlaceDetailPage = ({ id, location, isIncludeRoute = true }) => {
           smallImgUrl: decorated.thumbnailImageUrl,
         });
         decorated.imagesInfo = imagesInfo;
-        setTourDetail({ ...placeResponse.data, tourContentResponse: decorated });
+        setTimeout(() => {
+          setLoading(false);  
+          setTourDetail({ ...placeResponse.data, tourContentResponse: decorated });
+        },500);
       } else {
         const errorMessage = placeResponse?.message ?? "알 수 없는 오류";
         toast.error(`일시적 오류입니다.\n${errorMessage}`, { position: "top-center", autoClose: 2000 });
+        setLoading(false); 
       }
-      setActive('home');
-      setLoading(false);      
+      setActive('home'); 
     };
     if (id) fetchTourDetail();
   }, [id]);
@@ -95,10 +99,18 @@ const TourPlaceDetailPage = ({ id, location, isIncludeRoute = true }) => {
     return [...base, ...extra];
   }, [tourDetail]);
 
-
   return (
     <div className={classes.wrapper}>
-      {loading && <Loading />}
+      {loading && (
+          <div className={`${classes.item} ${classes.skel}`}>
+            <div className={classes.thumb} />
+            <div className={classes.body}>
+              <div className={classes.line} />
+              <div className={classes.lineShort} />
+              <div className={classes.line} />
+            </div>
+          </div>
+      )}
       {tourDetail && (
         <header className={classes.header}>
           <div className={classes.badges}>

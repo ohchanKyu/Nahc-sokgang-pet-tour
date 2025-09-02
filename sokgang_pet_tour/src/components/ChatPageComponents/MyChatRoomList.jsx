@@ -21,7 +21,7 @@ const NoChatRoomMessage = () => {
     )
 }
 
-const MyChatRoomList = ({ chatRoom, onFormatChatTime, onChatConnect }) => {
+const MyChatRoomList = ({ signal,chatRoom, onFormatChatTime, onChatConnect }) => {
 
     const [myChatRooms,setMyChatRooms] = new useState([]);
     const [isSubmit, setIsSubmit] = new useState(false);
@@ -81,7 +81,7 @@ const MyChatRoomList = ({ chatRoom, onFormatChatTime, onChatConnect }) => {
 
     useEffect( () => {
         fetchMyChatRoomsHandler();
-    }, [chatRoom]);
+    }, [chatRoom,signal]);
 
     return (
         <React.Fragment>

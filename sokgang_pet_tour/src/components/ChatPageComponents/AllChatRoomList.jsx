@@ -31,6 +31,7 @@ const AllChatRoomList = ({ onChatConnect, chatRoom, onFormatChatTime  }) => {
     const [isCreate,setIsCreate] = useState(false);
     const [isSubmit, setIsSubmit] = useState(false);
     const [type,setType] = useState(1);
+    const [signal, setSignal] = useState(false);
     
     const typeChangeHandler = (type) => {
         setType(type);
@@ -91,6 +92,7 @@ const AllChatRoomList = ({ onChatConnect, chatRoom, onFormatChatTime  }) => {
 
     const createRoomHandler = async () => {
         setType(2);
+        setSignal(!signal);
     };
 
     const joinChatRoomHandler = async (chatRoom) => {
@@ -162,19 +164,20 @@ const AllChatRoomList = ({ onChatConnect, chatRoom, onFormatChatTime  }) => {
                 )}
 
                 {type === 2 && (
-                <MyChatRoomList
-                    chatRoom={chatRoom}
-                    onFormatChatTime={onFormatChatTime}
-                    onChatConnect={fetchConnectChatHandler}
-                />
+                    <MyChatRoomList
+                        signal={signal}
+                        chatRoom={chatRoom}
+                        onFormatChatTime={onFormatChatTime}
+                        onChatConnect={fetchConnectChatHandler}
+                    />
                 )}
 
                 {type === 3 && (
-                <KeywordRoomForm
-                    onType={() => typeChangeHandler(2)}
-                    onChatConnect={fetchConnectChatHandler}
-                    onJoin={joinChatRoomHandler}
-                />
+                    <KeywordRoomForm
+                        onType={() => typeChangeHandler(2)}
+                        onChatConnect={fetchConnectChatHandler}
+                        onJoin={joinChatRoomHandler}
+                    />
                 )}
             </div>
             </div>

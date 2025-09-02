@@ -15,6 +15,7 @@ const ChatCreateModal = ({ onClose, onCreated }) => {
 
     const submit = async (e) => {
         e.preventDefault();
+        if (loading) return;
         if (name.trim().length < 2 || name.trim().length > 50) {
           toast.warn("채팅방 이름은 2~50자입니다.", { position: "top-center", autoClose: 500 });
           return;
@@ -32,10 +33,9 @@ const ChatCreateModal = ({ onClose, onCreated }) => {
         const res = await createChatRoomService(req);
         if (res?.success) {
             onClose();
+            onCreated(res.data);
             setLoading(false);
             toast.success("채팅방이 생성되었습니다.", { position: "top-center", autoClose: 500 });
-            onCreated(res.data);
-            
         } else {
             toast.error(res?.message || "채팅방 생성에 실패했습니다.", { position: "top-center", autoClose: 500});
         }
@@ -43,7 +43,6 @@ const ChatCreateModal = ({ onClose, onCreated }) => {
 
     return (
         <>
-            {loading && <Loading />}
             <Modal onClose={onClose}>
                 <div className={classes.createContainer}>
                     <form className={classes.form} onSubmit={submit}>
@@ -65,7 +64,24 @@ const ChatCreateModal = ({ onClose, onCreated }) => {
                         </div>
                         <div className={classes.modalActions}>
                             <motion.button whileHover={{ scale:1.03 }} type="button" className={classes.btnGhost} onClick={onClose}>취소</motion.button>
-                            <motion.button whileHover={{ scale:1.03 }} type="submit" className={classes.btnPrimary}>생성</motion.button>
+                            <motion.button
+                                type="submit"
+                                className={classes.btnPrimary}
+                                disabled={loading}
+                                aria-busy={loading}
+                                aria-disabled={loading}
+                                whileHover={loading ? undefined : { scale: 1.03 }}
+                                whileTap={loading ? undefined : { scale: 0.98 }}
+                            >
+                                {loading ? (
+                                <>
+                                    생성중
+                                    <span className={classes.spinner} aria-hidden />
+                                </>
+                                ) : (
+                                "생성"
+                                )}
+                            </motion.button>
                         </div>
                     </form>
                 </div>

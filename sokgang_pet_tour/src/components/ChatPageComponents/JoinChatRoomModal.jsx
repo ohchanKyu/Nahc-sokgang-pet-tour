@@ -24,7 +24,6 @@ const JoinChatRoomModal = ({ onClose, onJoin , room }) => {
             toast.success("채팅방에 참여하였습니다..", { position: "top-center", autoClose: 500 });
             onJoin(res.data);
             setLoading(false);
-            
         } else {
             toast.error(res?.message || "채팅방 참여에 실패했습니다.", { position: "top-center", autoClose: 500});
         }
@@ -61,7 +60,24 @@ const JoinChatRoomModal = ({ onClose, onJoin , room }) => {
                         </div>
                         <div className={classes.modalActions}>
                             <motion.button whileHover={{ scale:1.03 }} type="button" className={classes.btnGhost} onClick={onClose}>취소하기</motion.button>
-                            <motion.button whileHover={{ scale:1.03 }} type="submit" className={classes.btnPrimary}>참여하기</motion.button>
+                            <motion.button
+                                type="submit"
+                                className={classes.btnPrimary}
+                                disabled={loading}
+                                aria-busy={loading}
+                                aria-disabled={loading}
+                                whileHover={loading ? undefined : { scale: 1.03 }}
+                                whileTap={loading ? undefined : { scale: 0.98 }}
+                            >
+                                {loading ? (
+                                <>
+                                    참여중
+                                    <span className={classes.spinner} aria-hidden />
+                                </>
+                                ) : (
+                                "참여하기"
+                                )}
+                            </motion.button>
                         </div>
                     </form>
                 </div>

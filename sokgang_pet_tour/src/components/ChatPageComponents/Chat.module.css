@@ -97,6 +97,7 @@
   flex-direction: column;
   align-self: flex-end;
   max-width: 75%;
+  margin:5px 0;
 }
 .chat_message_container{
   display: flex;

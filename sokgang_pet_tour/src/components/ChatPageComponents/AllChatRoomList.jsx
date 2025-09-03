@@ -9,6 +9,7 @@ import KeywordRoomForm from "./KeywordRoomForm";
 import ChatCreateModal from "./ChatCreateModal";
 import ChatRoom from "./ChatRoom";
 import MyChatRoomList from "./MyChatRoomList";
+import { clearUnreadMessageService } from "../../api/ChatService";
 
 const NoChatRoomMessage = () => {
     
@@ -33,7 +34,10 @@ const AllChatRoomList = ({ onChatConnect, chatRoom, onFormatChatTime  }) => {
     const [type,setType] = useState(1);
     const [signal, setSignal] = useState(false);
     
-    const typeChangeHandler = (type) => {
+    const typeChangeHandler = async (type) => {
+        if (chatRoom.roomId){
+            await clearUnreadMessageService(chatRoom.roomId);
+        }
         setType(type);
     };
 

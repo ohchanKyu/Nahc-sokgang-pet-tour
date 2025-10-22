@@ -9,8 +9,12 @@ import kr.ac.dankook.SokGangPetTour.dto.response.tourResponse.TourSyncResponse;
 import kr.ac.dankook.SokGangPetTour.service.tour.TourContentSyncService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestClient;
+
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -20,6 +24,17 @@ import java.util.List;
 public class TourContentSyncController {
 
     private final TourContentSyncService tourContentSyncService;
+
+    @PostMapping("/data")
+    public ResponseEntity<String> getDataFromTourApi(@RequestBody TourUriRequest tourUriRequest){
+        RestClient restClient = RestClient.create();
+        String responseBody = restClient.get()
+                .uri(URI.create(tourUriRequest.getUri()))
+                .header("Content-Type","application/json")
+                .retrieve()
+                .body(String.class);
+        return ResponseEntity.ok(responseBody);
+    }
 
     @PostMapping
     public ResponseEntity<ApiMessageResponse> saveSyncData(

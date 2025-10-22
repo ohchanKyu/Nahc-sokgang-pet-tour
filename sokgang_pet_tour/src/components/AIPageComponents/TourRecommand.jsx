@@ -31,6 +31,7 @@ const TourRecommand = () => {
 
   const [form, setForm] = useState(DEFAULT_FORM);
   const [loading, setLoading] = useState(false);
+  const [loading2,setLoading2] = useState(false);
   const [error, setError] = useState("");
   const [postPopup,setPostPopup] = useState(false);
   const [results, setResults] = useState([]);
@@ -52,6 +53,7 @@ const TourRecommand = () => {
     };
 
     const onComplete = async (data) =>{
+      setLoading2(true);
       let fullAddress = data.address;
       let extraAddress = '';
 
@@ -87,6 +89,7 @@ const TourRecommand = () => {
               progress: undefined,
           });
       }
+      setLoading2(false);
   }
   const onChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -180,7 +183,9 @@ const TourRecommand = () => {
                         />
                         <motion.button 
                           whileHover={{ scale : 1.03 }}
-                          className={classes.postButton} type='button' onClick={popupOverlay}>주소 검색</motion.button>
+                          className={classes.postButton} type="button" onClick={popupOverlay} disabled={loading2}>
+                          {loading2 ? "주소 변환.." : "주소 검색"}
+                        </motion.button>
                     </div>
                     <div className={classes.flexSection}>
                       <input

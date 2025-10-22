@@ -18,6 +18,7 @@ const FilterForm = ({ onSelect }) => {
   const [cat2, setCat2] = useState("");
   const [cat3, setCat3] = useState("");
   const [sigunguCode, setSigunguCode] = useState("0");
+  const [loading,setLoading] = useState(false);
 
   const [cat2List, setCat2List] = useState([]);
   const [cat3List, setCat3List] = useState([]);
@@ -97,9 +98,11 @@ const FilterForm = ({ onSelect }) => {
   }, [cat1, cat2]);
 
   const onSubmit = async (e) => {
+    setLoading(true);
     e.preventDefault();
     if (!cat1){
       toast.warning("대분류는 필수 항목입니다.", { position: "top-center", autoClose: 800 });
+      setLoading(false);
       return;
     }
     const resp = await getTourPlacesByFilterService(
@@ -112,6 +115,7 @@ const FilterForm = ({ onSelect }) => {
     const converted = decorateTour(payload);
     setResults(Array.isArray(converted) ? converted : []);
     setShowResults(true);
+    setLoading(false);
   };
 
   const container = {
@@ -195,16 +199,28 @@ const FilterForm = ({ onSelect }) => {
               </div>
             </motion.div>
 
-
-            <motion.div className={classes.actions} variants={item}>
-              <motion.button
-                type="submit"
-                className={classes.submit}
-                whileHover={{ scale : 1.03 }}
-              >
-                검색하기
-              </motion.button>
-            </motion.div>
+            {!loading && (
+              <motion.div className={classes.actions} variants={item}>
+                <motion.button
+                  type="submit"
+                  className={classes.submit}
+                  whileHover={{ scale : 1.03 }}
+                >
+                  검색하기
+                </motion.button>
+              </motion.div>
+            )}
+            {loading && (
+                <motion.div className={classes.actions} variants={item}>
+                <motion.button
+                  disabled={true}
+                  className={classes.submit}
+                  whileHover={{ scale : 1.03 }}
+                >
+                  검색중...
+                </motion.button>
+              </motion.div>
+            )}
           </motion.form>
         )}
       </AnimatePresence>

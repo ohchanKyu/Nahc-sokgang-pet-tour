@@ -40,7 +40,7 @@ const TourPage = () => {
 
   const handleMode = (mode) => {
      setMode(mode);
-     if (mode === 'vet') setSubType('count');
+     setSubType('count');
   };
 
   const setDetailContents = async (content,placeType) => {
